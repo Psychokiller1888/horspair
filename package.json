@@ -14,8 +14,9 @@
     "vue-router": "^3.5.3",
     "sqlite3": "^5.0.2",
     "vuex-persistedstate": "^4.1.0",
-    "@fortawesome/fontawesome-pro": "^6.0.0-beta3",
-    "@fortawesome/vue-fontawesome": "^2.0.6"
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/vue-fontawesome": "^2.0.6",
+    "@fortawesome/pro-regular-svg-icons": "^6.0.0-beta3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
