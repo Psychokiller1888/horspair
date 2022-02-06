@@ -1,15 +1,33 @@
 <template>
-
-	<ul>
-		<li>Home</li>
-		<li>Témoignages</li>
-		<li>Mon tracker d'humeur</li>
-		<li>Séance d'EMDR</li>
-		<li>Respiration accompagnée</li>
-		<li>Mon carnet de bord</li>
-		<li>Mes tâches</li>
-		<li>Configurations</li>
-	</ul>
+	<div class="header">
+		<div class="logo" title="Par des HP pour des HP"></div>
+		<ul>
+			<router-link to="/">
+				<li title="Accueil"><font-awesome-icon :icon="['far', 'house']" /></li>
+			</router-link>
+			<router-link to="/temoignages">
+				<li title="Témoignages"><font-awesome-icon :icon="['far', 'messages']" /></li>
+			</router-link>
+			<router-link to="/traqueur">
+				<li title="Traqueur d'humeur"><font-awesome-icon :icon="['far', 'face-clouds']" /></li>
+			</router-link>
+			<router-link to="/emdr">
+				<li title="EMDR"><font-awesome-icon :icon="['far', 'eyes']" /></li>
+			</router-link>
+			<router-link to="/respiration">
+				<li title="Respiration accompagnée"><font-awesome-icon :icon="['far', 'face-exhaling']" /></li>
+			</router-link>
+			<router-link to="/carnet">
+				<li title="Carnet de bord"><font-awesome-icon :icon="['far', 'memo-pad']" /></li>
+			</router-link>
+			<router-link to="/notes">
+				<li title="Tâches"><font-awesome-icon :icon="['far', 'notes']" /></li>
+			</router-link>
+			<router-link to="/settings">
+				<li title="Configuration"><font-awesome-icon :icon="['far', 'gear']" /></li>
+			</router-link>
+		</ul>
+	</div>
 </template>
 
 <script>
@@ -19,21 +37,29 @@ export default {
 </script>
 
 <style scoped>
+  .header {
+		display: flex;
+		border-bottom: 1px solid var(--main-text-color);
+		margin-top: 15px;
+	}
+  .logo {
+		background-image: url('../assets/logo.png');
+		background-repeat: no-repeat;
+		background-size: contain;
+		width: 100px;
+	}
 	ul {
-		width: 98%;
 		padding: 0;
-		margin: 0 auto;
 		display: flex;
 		justify-content: end;
 		align-items: center;
-		border-bottom: 1px solid var(--main-text-color);
-		height: 7em;
+		flex-grow: 1;
 	}
 
 	li {
 		font-family: var(--nav-font), sans-serif;
 		font-weight: lighter;
-		font-size: 1.1em;
+		font-size: 2em;
 		display: inline-block;
 		margin: 10px;
 		text-transform: uppercase;
