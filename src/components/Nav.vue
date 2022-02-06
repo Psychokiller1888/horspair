@@ -38,15 +38,19 @@ export default {
 
 <style scoped>
   .header {
+		position: sticky;
+		top: 0;
 		display: flex;
+		flex-grow: 1;
+		background-color: var(--main-bg-color);
 		border-bottom: 1px solid var(--main-text-color);
-		margin-top: 15px;
 	}
   .logo {
 		background-image: url('../assets/logo.png');
 		background-repeat: no-repeat;
 		background-size: contain;
 		width: 100px;
+		margin-top: 10px;
 	}
 	ul {
 		padding: 0;
