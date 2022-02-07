@@ -57,4 +57,95 @@ a {
 	color: var(--hover-text-color);
 	cursor: pointer;
 }
+
+.calendar {
+	background: var(--secondary-bg-color) !important;
+	color: var(--secondary-text-color) !important;
+}
+
+.vdp-datepicker {
+	flex-grow: 1 !important;
+}
+
+.confirmCancelButtonsWrapper {
+	display: flex;
+	height: 2.5em;
+	width: 120px;
+	background-color: var(--main-bg-color);
+	justify-content: space-evenly;
+	align-items: center;
+	box-sizing: border-box;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-radius: 5px;
+	border: 1px solid black;
+}
+
+.inputWrapper {
+	display: flex;
+	height: 50px;
+	background-color: var(--secondary-bg-color);
+	justify-content: right;
+	align-items: center;
+	box-sizing: border-box;
+	padding-left: 10px;
+	padding-right: 5px;
+	border-radius: 5px;
+	border: 1px solid black;
+	margin-bottom: 10px;
+}
+
+input,
+select {
+	display: flex;
+	flex-grow: 1;
+	outline: none;
+	border: none;
+	background-color: var(--secondary-bg-color);
+	text-align: right;
+	margin-right: 5px;
+	box-sizing: border-box;
+	padding-right: 10px;
+	font-size: 1.25em;
+	height: 100%;
+	width: 100%;
+	color: var(--main-text-color);
+	cursor: pointer;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+button {
+	margin: 0 auto;
+	background-color: var(--tertiary-bg-color);
+	border-radius: 5px;
+	font-size: 1.2em;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.calendar {
+	background: var(--main-bg-color) !important;
+	color: var(--main-text-color) !important;
+}
+
+.button {
+	cursor: pointer;
+}
+
+.button:hover {
+	color: var(--hover-text-color);
+	cursor: pointer;
+}
+
 </style>
