@@ -28,7 +28,7 @@ export default {
 	--tertiary-text-color: #525252;
 	--hover-text-color: #a4a4a4;
 
-	--main-font: "Trebuchet MS";
+	--main-font: Montserrat, Helvetica, Arial, sans-serif;
 	--main-font-size: 1.1em;
 }
 
@@ -48,6 +48,8 @@ a {
 .mainContainer {
 	margin-top: 15px;
 	font-family: var(--main-font);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 	color: var(--main-text-color);
 	font-size: var(--main-font-size);
 	line-height: 150%;
@@ -69,16 +71,15 @@ a {
 
 .confirmCancelButtonsWrapper {
 	display: flex;
-	height: 2.5em;
-	width: 120px;
-	background-color: var(--main-bg-color);
+	background-color: var(--secondary-bg-color);
 	justify-content: space-evenly;
 	align-items: center;
 	box-sizing: border-box;
-	padding-left: 5px;
-	padding-right: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	border-radius: 5px;
-	border: 1px solid black;
+	border: 1px solid var(--tertiary-bg-color);
+	font-size: 2em;
 }
 
 .inputWrapper {
@@ -91,7 +92,7 @@ a {
 	padding-left: 10px;
 	padding-right: 5px;
 	border-radius: 5px;
-	border: 1px solid black;
+	border: 1px solid var(--tertiary-bg-color);
 	margin-bottom: 10px;
 }
 

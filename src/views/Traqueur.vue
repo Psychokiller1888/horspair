@@ -3,11 +3,11 @@
 		<div class="recorder">
 			<p class="inputWrapper">
 				<span><font-awesome-icon :icon="['far', 'calendar-days']" size="2x"/></span>
-				<datepicker first-day-of-week="mon" year-picker-range="2" :full-month-name="true" :language="fr" calendar-class="calendar"></datepicker>
+				<datepicker first-day-of-week="mon" :year-picker-range="2" :full-month-name="true" :language="fr" calendar-class="calendar" v-model="date"></datepicker>
 			</p>
 			<p class="inputWrapper">
 				<span><font-awesome-icon :icon="['far', 'clock']" size="2x"/></span>
-				<select>
+				<select v-model="time">
 					<option>00:00</option>
 					<option>00:30</option>
 					<option>01:00</option>
@@ -59,28 +59,35 @@
 				</select>
 			</p>
 			<p class="moodSelectors">
-				<span class="smiley">
-					<font-awesome-icon :icon="['far', 'face-angry']" class="button" />
+				<span class="smiley" :class="{selected: selected === -3}">
+					<font-awesome-icon :icon="['far', 'face-angry']" class="button" @click="selected = -3"/>
 				</span>
-				<span class="smiley">
-					<font-awesome-icon :icon="['far', 'face-sad-tear']" class="button" />
+				<span class="smiley" :class="{selected: selected === -2}">
+					<font-awesome-icon :icon="['far', 'face-sad-tear']" class="button" @click="selected = -2"/>
 				</span>
-				<span class="smiley">
-					<font-awesome-icon :icon="['far', 'face-frown-open']" class="button" />
+				<span class="smiley" :class="{selected: selected === -1}">
+					<font-awesome-icon :icon="['far', 'face-frown-open']" class="button" @click="selected = -1"/>
 				</span>
-				<span class="smiley">
-					<font-awesome-icon :icon="['far', 'face-meh']" class="button" />
+				<span class="smiley" :class="{selected: selected === 0}">
+					<font-awesome-icon :icon="['far', 'face-meh']" class="button" @click="selected = 0"/>
 				</span>
-				<span class="smiley">
-					<font-awesome-icon :icon="['far', 'face-grin']" class="button" />
+				<span class="smiley" :class="{selected: selected === 1}">
+					<font-awesome-icon :icon="['far', 'face-grin']" class="button" @click="selected = 1"/>
 				</span>
-				<span class="smiley">
-					<font-awesome-icon :icon="['far', 'face-grin-beam']" class="button" />
+				<span class="smiley" :class="{selected: selected === 2}">
+					<font-awesome-icon :icon="['far', 'face-grin-beam']" class="button" @click="selected = 2"/>
 				</span>
-				<span class="smiley">
-					<font-awesome-icon :icon="['far', 'face-grin-tears']" class="button" />
+				<span class="smiley" :class="{selected: selected === 3}">
+					<font-awesome-icon :icon="['far', 'face-grin-tears']" class="button" @click="selected = 3"/>
 				</span>
 			</p>
+			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;" v-if="selected !== ''">
+				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="save" title="enregistrer"/>
+				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="selected = ''" title="annuler"/>
+			</p>
+		</div>
+		<div class="chart">
+
 		</div>
 	</div>
 </template>
@@ -92,7 +99,15 @@ export default {
 	name: 'Home',
 	data: function() {
 		return {
-			fr: fr
+			fr: fr,
+			selected: '',
+			time: '08:00',
+			date: new Date()
+		}
+	},
+	methods: {
+		save() {
+
 		}
 	}
 }
@@ -107,6 +122,7 @@ export default {
 
 .moodSelectors {
 	margin-top: 40px;
+	margin-bottom: 40px;
 	display: flex;
 	justify-content: space-between;
 }
@@ -121,6 +137,11 @@ export default {
 	height: 58px;
 	background-color: #ffff48;
 	border-radius: 50%;
+}
+
+.selected {
+	-webkit-transform: scale(1.2);
+	background-color: #488a4b;
 }
 
 .smiley:hover {
