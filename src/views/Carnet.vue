@@ -1,5 +1,5 @@
 <template>
-	<div>carnet de bord</div>
+	<div class="mainContainer">carnet de bord</div>
 </template>
 
 <script>

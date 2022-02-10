@@ -1,5 +1,5 @@
 <template>
-	<div>respiration</div>
+	<div class="mainContainer">respiration</div>
 </template>
 
 <script>

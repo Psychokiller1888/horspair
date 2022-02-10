@@ -41,7 +41,6 @@ export default {
 		position: sticky;
 		top: 0;
 		display: flex;
-		flex-grow: 1;
 		background-color: var(--main-bg-color);
 		border-bottom: 1px solid var(--main-text-color);
 	}
@@ -61,7 +60,7 @@ export default {
 	}
 
 	li {
-		font-family: var(--nav-font), sans-serif;
+		font-family: var(--main-font), sans-serif;
 		font-weight: lighter;
 		font-size: 2em;
 		display: inline-block;

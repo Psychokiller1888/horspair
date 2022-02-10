@@ -1,5 +1,5 @@
 <template>
-	<div>emdr</div>
+	<div class="mainContainer">emdr</div>
 </template>
 
 <script>

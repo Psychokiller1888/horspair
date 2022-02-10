@@ -2,17 +2,22 @@
   <div id="app">
 		<Nav/>
 		<router-view/>
+		<Footer/>
   </div>
 </template>
 
 <script>
 import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
 
 export default {
   name: 'App',
   components: {
-		Nav
-  }
+		Nav,
+		Footer
+  },
+	created() {
+	}
 }
 </script>
 
@@ -39,6 +44,13 @@ html, body {
 	margin: 0 auto;
 	padding: 0 15px 0 15px;
 	box-sizing: border-box;
+	height: 100%;
+}
+
+#app {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 a {
@@ -53,6 +65,7 @@ a {
 	color: var(--main-text-color);
 	font-size: var(--main-font-size);
 	line-height: 150%;
+	flex-grow: 1;
 }
 
 .clickable:hover {
