@@ -18,7 +18,10 @@
     "vue": "^2.6.11",
     "vue-router": "^3.5.3",
     "vuex": "^3.6.2",
-    "vuex-persistedstate": "^4.1.0"
+    "vuex-persistedstate": "^4.1.0",
+    "pouchdb": "^7.2.2",
+    "vue-pouchdb-lite": "^0.9.3",
+    "pouchdb-browser": "^7.2.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -41,9 +44,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-		"rules": {
-			"no-unused-vars": "off"
-		}
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",
