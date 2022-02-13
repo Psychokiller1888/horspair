@@ -3,28 +3,37 @@
 		<div class="logo" title="Par des HP pour des HP"></div>
 		<ul>
 			<router-link to="/">
-				<li title="Accueil" class="button"><font-awesome-icon :icon="['far', 'house']" /></li>
+				<tooltip label="Accueil" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'house']" /></li></tooltip>
 			</router-link>
 			<router-link to="/temoignages">
-				<li title="Témoignages" class="button"><font-awesome-icon :icon="['far', 'messages']" /></li>
+				<tooltip label="Témoignages" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'messages']" /></li></tooltip>
 			</router-link>
-			<router-link to="/traqueur">
-				<li title="Traqueur d'humeur" class="button"><font-awesome-icon :icon="['far', 'face-clouds']" /></li>
+			<router-link to="/traqueur" v-if="$store.state.user">
+				<tooltip label="Traqueur d'humeur" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'face-clouds']" /></li></tooltip>
 			</router-link>
-			<router-link to="/emdr">
-				<li title="EMDR" class="button"><font-awesome-icon :icon="['far', 'eyes']" /></li>
+			<router-link to="/emdr" v-if="$store.state.user">
+				<tooltip label="EMDR" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'eyes']" /></li></tooltip>
 			</router-link>
-			<router-link to="/respiration">
-				<li title="Respiration accompagnée" class="button"><font-awesome-icon :icon="['far', 'face-exhaling']" /></li>
+			<router-link to="/respiration" v-if="$store.state.user">
+				<tooltip label="Respiration accompagnée" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'face-exhaling']" /></li></tooltip>
 			</router-link>
-			<router-link to="/carnet">
-				<li title="Carnet de bord" class="button"><font-awesome-icon :icon="['far', 'memo-pad']" /></li>
+			<router-link to="/carnet" v-if="$store.state.user">
+				<tooltip label="Carnet de bord" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'memo-pad']" /></li></tooltip>
 			</router-link>
-			<router-link to="/notes">
-				<li title="Tâches" class="button"><font-awesome-icon :icon="['far', 'notes']" /></li>
+			<router-link to="/notes" v-if="$store.state.user">
+				<tooltip label="Tâches" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'notes']" /></li></tooltip>
 			</router-link>
-			<router-link to="/settings">
-				<li title="Configuration" class="button"><font-awesome-icon :icon="['far', 'gear']" /></li>
+			<router-link to="/settings" v-if="$store.state.user">
+				<tooltip label="Mon compte" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'circle-user']" /></li></tooltip>
+			</router-link>
+			<router-link to="/logout" v-if="$store.state.user">
+				<tooltip label="Déconnecter" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'right-from-bracket']" /></li></tooltip>
+			</router-link>
+			<router-link to="/signin" v-if="!$store.state.user">
+				<tooltip label="S'enregistrer" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'user-plus']" /></li></tooltip>
+			</router-link>
+			<router-link to="/login" v-if="!$store.state.user">
+				<tooltip label="Se connecter" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'right-to-bracket']" /></li></tooltip>
 			</router-link>
 		</ul>
 	</div>

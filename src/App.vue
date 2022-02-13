@@ -17,15 +17,6 @@ export default {
 		Footer
   },
 	created() {
-		this.$store.dispatch('init')
-		this.$store.dispatch(
-			'insert',
-			{
-				'table': 'moodTracking',
-				'timestamp': Date.now(),
-				'mood': '-1'
-			}
-		)
 	}
 }
 </script>

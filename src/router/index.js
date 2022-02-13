@@ -58,6 +58,14 @@ const routes = [
 		name: 'Settings',
 		component: Settings,
 		meta: {}
+	},
+	{
+		path: '/logout',
+		name: 'Home',
+		component: Home,
+		meta: {
+			doLogout: true
+		}
 	}
 ]
 const router = new VueRouter({
