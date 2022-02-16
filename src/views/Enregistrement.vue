@@ -67,7 +67,7 @@ export default {
 			this.invalidLastname = this.lastName.length <= 0
 		},
 		validateInviteCode: function() {
-			this.invalidInvite = this.lastName.length < 10
+			this.invalidInvite = this.inviteCode.length < 10
 		},
 		validateEmail: function() {
 			let re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -91,6 +91,10 @@ export default {
 			handler() {
 				if (this.$store.state.user) {
 					this.$router.replace({path: '/'})
+				}
+				if ('invite' in this.$route.query) {
+					this.inviteCode = this.$route.query.invite
+					this.validateInviteCode()
 				}
 			}
 		}
