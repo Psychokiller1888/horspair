@@ -1,34 +1,35 @@
 <template>
 	<div class="mainContainer">
 		<div class="connectionBox">
+			<p class="inputWrapper" :class="{redBorders: invalidInvite}">
+				<span><font-awesome-icon :icon="['far', 'key-skeleton']" size="2x"/></span>
+				<input type="text" v-model="inviteCode" placeholder="Code d'invitation" @keyup="validate"/>
+			</p>
+			<div class="explanation" v-if="invalidInvite">Pour recevoir ton code d'invitation valide, parles en avec ton/ta thérapeute ou pose la question sur notre serveur Discord</div>
 			<p class="inputWrapper" :class="{redBorders: invalidFirstname}">
 				<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-				<input type="text" v-model="firstName" placeholder="Prénom" @keyup="validateFirstname"/>
+				<input type="text" v-model="firstName" placeholder="Prénom" @keyup="validate"/>
 			</p>
 			<p class="inputWrapper" :class="{redBorders: invalidLastname}">
 				<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-				<input type="text" v-model="lastName" placeholder="Nom de famille" @keyup="validateLastname"/>
-			</p>
-			<p class="inputWrapper" :class="{redBorders: invalidInvite}">
-				<span><font-awesome-icon :icon="['far', 'key-skeleton']" size="2x"/></span>
-				<input type="text" v-model="inviteCode" placeholder="Code d'invitation" @keyup="validateInviteCode"/>
+				<input type="text" v-model="lastName" placeholder="Nom de famille" @keyup="validate"/>
 			</p>
 			<p class="inputWrapper" :class="{redBorders: invalidEmail}">
 				<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
-				<input type="text" v-model="email" placeholder="Email" @keyup="validateEmail"/>
+				<input type="text" v-model="email" placeholder="Email" @keyup="validate"/>
 			</p>
 			<p class="inputWrapper" :class="{redBorders: invalidPassword}">
 				<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
-				<input type="password" v-model="password" placeholder="Mot de passe" @keyup="validatePassword"/>
+				<input type="password" v-model="password" placeholder="Mot de passe" @keyup="validate"/>
 			</p>
 			<div class="explanation" v-if="invalidPassword">Min. 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial</div>
 			<p class="inputWrapper" :class="{redBorders: invalidPasswordControl}">
 				<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
-				<input type="password" v-model="password2" placeholder="Vérification mot de passe" @keyup="validatePasswordControl"/>
+				<input type="password" v-model="password2" placeholder="Vérification mot de passe" @keyup="validate"/>
 			</p>
 			<div class="explanation" v-if="invalidPasswordControl">Les mots de passe ne correspondent pas</div>
 			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;">
-				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="register" title="Créer!"/>
+				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="register" title="Créer!" v-if="allValid"/>
 				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="cancel" title="Annuler"/>
 			</p>
 		</div>
@@ -47,18 +48,31 @@ export default {
 			username: '',
 			password: '',
 			password2: '',
-			invalidFirstname: true,
-			invalidLastname: true,
+			invalidFirstname: false,
+			invalidLastname: false,
 			invalidInvite: true,
-			invalidEmail: true,
-			invalidPassword: true,
+			invalidEmail: false,
+			invalidPassword: false,
 			invalidPasswordControl: false
+		}
+	},
+	computed: {
+		allValid: function() {
+			return !this.invalidFirstname && !this.invalidLastname && !this.invalidInvite && !this.invalidEmail && !this.invalidPassword && !this.invalidPasswordControl
 		}
 	},
 	methods: {
 		register: function() {
 		},
 		cancel: function() {
+		},
+		validate: function() {
+			this.validateFirstname()
+			this.validateLastname()
+			this.validateEmail()
+			this.validatePassword()
+			this.validatePasswordControl()
+			this.validateInviteCode()
 		},
 		validateFirstname: function() {
 			this.invalidFirstname = this.firstName.length <= 0
@@ -67,7 +81,7 @@ export default {
 			this.invalidLastname = this.lastName.length <= 0
 		},
 		validateInviteCode: function() {
-			this.invalidInvite = this.inviteCode.length < 10
+			this.invalidInvite = this.inviteCode.length !== 15
 		},
 		validateEmail: function() {
 			let re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -94,7 +108,7 @@ export default {
 				}
 				if ('invite' in this.$route.query) {
 					this.inviteCode = this.$route.query.invite
-					this.validateInviteCode()
+					this.validate()
 				}
 			}
 		}
@@ -104,11 +118,12 @@ export default {
 
 <style scoped>
 	.connectionBox {
-		width: 400px;
+		width: 500px;
 		background-color: var(--secondary-bg-color);
 		padding: 15px;
 		box-sizing: border-box;
 		border-radius: 10px;
+		border: 1px solid var(--tertiary-bg-color);
 	}
 	.mainContainer {
 		display: flex;

@@ -50,6 +50,7 @@ export default {
 		padding: 15px;
 		box-sizing: border-box;
 		border-radius: 10px;
+		border: 1px solid var(--tertiary-bg-color);
 	}
 	.mainContainer {
 		display: flex;
