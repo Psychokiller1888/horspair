@@ -8,7 +8,7 @@ Vue.use(Vuex)
 // Create store
 export default new Vuex.Store({
 	state: {
-		user: 'a',
+		user: null,
 		databaseUrl: null
 	},
 	getters: {

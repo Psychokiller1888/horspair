@@ -8,6 +8,8 @@ import Respiration from '@/views/Respiration'
 import Carnet from '@/views/Carnet'
 import Notes from '@/views/Notes'
 import Settings from '@/views/Settings'
+import Connexion from '@/views/Connexion';
+import Enregistrement from '@/views/Enregistrement';
 
 Vue.use(VueRouter)
 const routes = [
@@ -66,10 +68,22 @@ const routes = [
 		meta: {
 			doLogout: true
 		}
+	},
+	{
+		path: '/login',
+		name: 'Connexion',
+		component: Connexion,
+		meta: {}
+	},
+	{
+		path: '/signin',
+		name: 'Enregistrement',
+		component: Enregistrement,
+		meta: {}
 	}
 ]
 const router = new VueRouter({
-	mode: 'history',
+	mode: 'abstract',
 	base: process.env.BASE_URL,
 	routes
 })

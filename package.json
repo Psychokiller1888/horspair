@@ -19,10 +19,10 @@
     "vue-router": "^3.5.3",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0",
-		"pouchdb-browser": "^7.2.2",
-		"vue-pouch-db": "^2.0.2",
-		"axios": "^0.25.0",
-		"@adamdehaven/vue-custom-tooltip": "^1.4.4"
+    "pouchdb-browser": "^7.2.2",
+    "vue-pouch-db": "^2.0.2",
+    "axios": "^0.25.0",
+    "@adamdehaven/vue-custom-tooltip": "^1.4.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
