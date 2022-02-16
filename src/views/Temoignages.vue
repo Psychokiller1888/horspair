@@ -81,7 +81,7 @@
 
 <script>
 export default {
-	name: 'Home',
+	name: 'Témoignages',
 	data: function() {
 		return {
 			readingArticle: 0

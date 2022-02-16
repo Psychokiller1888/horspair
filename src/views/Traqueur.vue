@@ -96,7 +96,7 @@
 import { fr } from '@sum.cumo/vue-datepicker/dist/locale'
 
 export default {
-	name: 'Home',
+	name: 'Traqueur d\'humeur',
 	data: function() {
 		return {
 			fr: fr,

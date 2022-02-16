@@ -23,7 +23,7 @@
 			<router-link to="/notes" v-if="$store.state.user">
 				<tooltip label="Tâches" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'notes']" /></li></tooltip>
 			</router-link>
-			<router-link to="/settings" v-if="$store.state.user">
+			<router-link to="/account" v-if="$store.state.user">
 				<tooltip label="Mon compte" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'circle-user']" /></li></tooltip>
 			</router-link>
 			<router-link to="/logout" v-if="$store.state.user">

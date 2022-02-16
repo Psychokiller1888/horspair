@@ -7,10 +7,10 @@ import Emdr from '@/views/Emdr'
 import Respiration from '@/views/Respiration'
 import Carnet from '@/views/Carnet'
 import Notes from '@/views/Notes'
-import Settings from '@/views/Settings'
 import Connexion from '@/views/Connexion';
 import Enregistrement from '@/views/Enregistrement';
 import Logout from '@/views/Logout';
+import Account from '@/views/Account';
 
 Vue.use(VueRouter)
 const routes = [
@@ -57,9 +57,9 @@ const routes = [
 		meta: {}
 	},
 	{
-		path: '/settings',
-		name: 'Settings',
-		component: Settings,
+		path: '/account',
+		name: 'Mon compte',
+		component: Account,
 		meta: {}
 	},
 	{

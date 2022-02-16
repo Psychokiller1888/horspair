@@ -19,7 +19,7 @@
 
 <script>
 export default {
-	name: 'Home',
+	name: 'Connection',
 	data: function() {
 		return {
 			username: '',
@@ -28,6 +28,20 @@ export default {
 	},
 	methods: {
 		connect: function() {
+			if (parseInt(process.env.VUE_APP_DEMO_MODE) === 1) {
+				this.$store.commit('connect', {
+					username: 'Demo',
+					email: this.email,
+					firstName: this.firstName,
+					lastName: this.lastName,
+					address: 'Ruelles des Gerles 5',
+					cityCode: 1788,
+					city: 'Praz-Vully',
+					phone: '0797985351',
+					access: 99
+				})
+				this.$router.replace({path: '/'})
+			}
 		},
 		cancel: function() {
 			this.username = ''

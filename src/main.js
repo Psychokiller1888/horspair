@@ -39,10 +39,18 @@ import {
 	faKey,
 	faAt,
 	faIdCard,
-	faKeySkeleton
+	faKeySkeleton,
+	faLocationCrosshairs,
+	faCity,
+	faInputNumeric,
+	faPhone
 } from '@fortawesome/pro-regular-svg-icons'
 
 library.add(
+	faPhone,
+	faInputNumeric,
+	faCity,
+	faLocationCrosshairs,
 	faKeySkeleton,
 	faIdCard,
 	faKey,
