@@ -10,6 +10,7 @@ import Notes from '@/views/Notes'
 import Settings from '@/views/Settings'
 import Connexion from '@/views/Connexion';
 import Enregistrement from '@/views/Enregistrement';
+import Logout from '@/views/Logout';
 
 Vue.use(VueRouter)
 const routes = [
@@ -63,8 +64,8 @@ const routes = [
 	},
 	{
 		path: '/logout',
-		name: 'Home',
-		component: Home,
+		name: 'Logout',
+		component: Logout,
 		meta: {
 			doLogout: true
 		}

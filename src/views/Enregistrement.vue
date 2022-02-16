@@ -63,6 +63,24 @@ export default {
 	},
 	methods: {
 		register: function() {
+			if (parseInt(process.env.VUE_APP_DEMO_MODE) === 1) {
+				if (this.inviteCode === 'je teste le truc') {
+					this.$store.commit('connect', {
+						username: 'Demo',
+						email: this.email,
+						firstName: this.firstName,
+						lastName: this.lastName,
+						address: 'Ruelles des Gerles 5',
+						cityCode: 1788,
+						city: 'Praz-Vully',
+						phone: '0797985351',
+						access: 99
+					})
+					this.$router.replace({path: '/'})
+				}
+			} else {
+				return
+			}
 		},
 		cancel: function() {
 		},
@@ -81,7 +99,7 @@ export default {
 			this.invalidLastname = this.lastName.length <= 0
 		},
 		validateInviteCode: function() {
-			this.invalidInvite = this.inviteCode.length !== 15
+			this.invalidInvite = this.inviteCode.length !== 16
 		},
 		validateEmail: function() {
 			let re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

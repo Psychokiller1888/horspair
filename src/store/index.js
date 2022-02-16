@@ -8,16 +8,18 @@ Vue.use(Vuex)
 // Create store
 export default new Vuex.Store({
 	state: {
-		user: null,
-		databaseUrl: null
+		user: null
 	},
 	getters: {
 	},
 	actions: {
 	},
 	mutations: {
-		setDatabaseUrl(state, data) {
-			state.databaseUrl = data
+		connect(state, userdata) {
+			state.user = userdata
+		},
+		disconnect(state) {
+			state.user = null
 		}
 	},
 	plugins: [createPersistedState()]

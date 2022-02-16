@@ -10,8 +10,8 @@
 				<input type="password" v-model="password" placeholder="Mot de passe" @keydown.enter="connect"/>
 			</p>
 			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;">
-				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="connect" title="Connecter"/>
-				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler"/>
+				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="connect" title="Connecter" v-if="username && password"/>
+				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
 			</p>
 		</div>
 	</div>
@@ -28,6 +28,11 @@ export default {
 	},
 	methods: {
 		connect: function() {
+		},
+		cancel: function() {
+			this.username = ''
+			this.password = ''
+			this.$router.replace({path: '/'})
 		}
 	},
 	watch:       {
