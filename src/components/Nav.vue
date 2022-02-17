@@ -76,4 +76,11 @@ export default {
 		margin: 10px;
 		text-transform: uppercase;
 	}
+	.button {
+		padding: 0;
+		border: unset;
+	}
+	.button:hover {
+		background-color: unset;
+	}
 </style>

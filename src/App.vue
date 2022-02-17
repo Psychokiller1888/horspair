@@ -84,21 +84,28 @@ a {
 
 .confirmCancelButtonsWrapper {
 	display: flex;
-	background-color: var(--secondary-bg-color);
-	justify-content: space-evenly;
+	justify-content: space-around;
 	align-items: center;
 	box-sizing: border-box;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	border-radius: 5px;
-	border: 1px solid var(--tertiary-bg-color);
 	font-size: 2em;
+}
+
+.inputsWrapper {
+	width: 500px;
+	background-color: var(--secondary-bg-color);
+	padding: 15px;
+	box-sizing: border-box;
+	border-radius: 10px;
+	border: 1px solid var(--tertiary-bg-color);
 }
 
 .inputWrapper {
 	display: flex;
 	height: 50px;
-	background-color: var(--secondary-bg-color);
+	background-color: var(--main-bg-color);
 	justify-content: right;
 	align-items: center;
 	box-sizing: border-box;
@@ -115,7 +122,7 @@ select {
 	flex-grow: 1;
 	outline: none;
 	border: none;
-	background-color: var(--secondary-bg-color);
+	background-color: var(--main-bg-color);
 	text-align: right;
 	margin-right: 5px;
 	box-sizing: border-box;
@@ -125,6 +132,16 @@ select {
 	width: 100%;
 	color: var(--main-text-color);
 	cursor: pointer;
+}
+
+input:focus,
+select:focus {
+	font-style: italic;
+}
+
+input:disabled,
+select:disabled {
+	color: var(--tertiary-text-color)
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -141,7 +158,7 @@ input[type=number] {
 
 button {
 	margin: 0 auto;
-	background-color: var(--tertiary-bg-color);
+	background-color: var(--main-bg-color);
 	border-radius: 5px;
 	font-size: 1.2em;
 	padding: 5px;
@@ -154,12 +171,22 @@ button {
 }
 
 .button {
+	background-color: var(--main-bg-color);
 	cursor: pointer;
+	padding: 10px 25px 10px 25px;
+	border-radius: 5px;
+	border: 1px solid var(--tertiary-bg-color);
+	color: var(--main-text-color);
 }
 
 .button:hover {
+	background-color: var(--secondary-bg-color);
 	color: var(--hover-text-color);
 	cursor: pointer;
+}
+
+.redBorders {
+	border: 1px solid red;
 }
 
 </style>

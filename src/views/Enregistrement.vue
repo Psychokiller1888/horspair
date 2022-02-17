@@ -1,6 +1,6 @@
 <template>
 	<div class="mainContainer">
-		<div class="connectionBox">
+		<div class="inputsWrapper">
 			<p class="inputWrapper" :class="{redBorders: invalidInvite}">
 				<span><font-awesome-icon :icon="['far', 'key-skeleton']" size="2x"/></span>
 				<input type="text" v-model="inviteCode" placeholder="Code d'invitation" @keyup="validate"/>
@@ -134,21 +134,10 @@ export default {
 </script>
 
 <style scoped>
-	.connectionBox {
-		width: 500px;
-		background-color: var(--secondary-bg-color);
-		padding: 15px;
-		box-sizing: border-box;
-		border-radius: 10px;
-		border: 1px solid var(--tertiary-bg-color);
-	}
 	.mainContainer {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-	.redBorders {
-		border: 1px solid red;
 	}
 	.explanation {
 		text-align: center;

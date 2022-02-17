@@ -1,6 +1,6 @@
 <template>
 	<div class="mainContainer">
-		<div class="connectionBox">
+		<div class="inputsWrapper">
 			<p class="inputWrapper">
 				<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
 				<input type="text" v-model="username" placeholder="Email"/>

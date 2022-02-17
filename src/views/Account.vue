@@ -3,12 +3,15 @@
 		<div class="subMenu">
 			<ul>
 				<li @click="page = 'data'">Mes données</li>
-				<li @click="page = 'doctors'">Mes thérapeutes</li>
+				<li @click="page = 'therapists'">Mes thérapeutes</li>
 				<li @click="page = 'friends'">Mes amis</li>
 			</ul>
 		</div>
 		<div class="content">
-			<div class="profilDataHolder" v-if="page === 'data'">
+			<div class="inputsWrapper" v-if="page === 'data'">
+				<p class="holderTitle">
+					Mes données
+				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
 					<input type="text" v-model="firstName" placeholder="Prénom"/>
@@ -37,8 +40,58 @@
 					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
 					<input type="text" v-model="email" placeholder="Email" disabled/>
 				</p>
-				<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;">
+				<p class="confirmCancelButtonsWrapper">
 					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Mettre à jour!" @click="update"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
+				</p>
+			</div>
+			<div class="inputsWrapper" v-if="page === 'therapists'">
+				<p class="holderTitle">
+					Ajouter un thérapeute
+				</p>
+				<p class="inputWrapper">
+					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
+					<input type="text" v-model="newTherapistFirstName" placeholder="Prénom"/>
+				</p>
+				<p class="inputWrapper">
+					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
+					<input type="text" v-model="newTherapistLastName" placeholder="Nom de famille"/>
+				</p>
+				<p class="inputWrapper">
+					<span><font-awesome-icon :icon="['far', 'phone']" size="2x"/></span>
+					<input type="text" v-model="newTherapistPhone" placeholder="Téléphone"/>
+				</p>
+				<p class="inputWrapper" :class="{redBorders: !newTherapistEmail}">
+					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
+					<input type="text" v-model="newTherapistEmail" placeholder="Email"/>
+				</p>
+				<p class="confirmCancelButtonsWrapper">
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="update"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
+				</p>
+			</div>
+			<div class="inputsWrapper" v-if="page === 'friends'">
+				<p class="holderTitle">
+					Ajouter un ami
+				</p>
+				<p class="inputWrapper">
+					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
+					<input type="text" v-model="newFriendFirstName" placeholder="Prénom"/>
+				</p>
+				<p class="inputWrapper">
+					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
+					<input type="text" v-model="newFriendLastName" placeholder="Nom de famille"/>
+				</p>
+				<p class="inputWrapper">
+					<span><font-awesome-icon :icon="['far', 'phone']" size="2x"/></span>
+					<input type="text" v-model="newFriendPhone" placeholder="Téléphone"/>
+				</p>
+				<p class="inputWrapper" :class="{redBorders: !newTherapistEmail}">
+					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
+					<input type="text" v-model="newFriendEmail" placeholder="Email"/>
+				</p>
+				<p class="confirmCancelButtonsWrapper">
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="update"/>
 					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
 				</p>
 			</div>
@@ -58,7 +111,15 @@ export default {
 			cityCode: this.$store.state.user['cityCode'],
 			city: this.$store.state.user['city'],
 			phone: this.$store.state.user['phone'],
-			email: this.$store.state.user['email']
+			email: this.$store.state.user['email'],
+			newTherapistFirstName: '',
+			newTherapistLastName: '',
+			newTherapistPhone: '',
+			newTherapistEmail: '',
+			newFriendFirstName: '',
+			newFriendLastName: '',
+			newFriendPhone: '',
+			newFriendEmail: ''
 		}
 	},
 	methods: {
@@ -106,6 +167,8 @@ li:hover {
 }
 .mainContainer {
 	display: flex;
+	padding-top: 50px;
+	box-sizing: border-box;
 }
 
 .content {
@@ -113,7 +176,10 @@ li:hover {
 	margin-bottom: 15px;
 }
 
-.profilDataHolder {
-	width: 500px;
+.holderTitle {
+	font-size: 25px;
+	text-transform: uppercase;
+	position: relative;
+	top: -53px;
 }
 </style>

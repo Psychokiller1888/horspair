@@ -8,7 +8,9 @@ Vue.use(Vuex)
 // Create store
 export default new Vuex.Store({
 	state: {
-		user: null
+		user: null,
+		doctors: [],
+		friends: []
 	},
 	getters: {
 	},
@@ -23,6 +25,12 @@ export default new Vuex.Store({
 		},
 		updateProfile(state, userdata){
 			state.user = Object.assign({}, state.user, userdata)
+		},
+		addFriend(state, data) {
+			state.friends.push(data)
+		},
+		addTherapist(state, data) {
+			state.friends.push(data)
 		}
 	},
 	plugins: [createPersistedState()]
