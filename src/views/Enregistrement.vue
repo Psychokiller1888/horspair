@@ -66,7 +66,6 @@ export default {
 			if (parseInt(process.env.VUE_APP_DEMO_MODE) === 1) {
 				if (this.inviteCode === 'je teste le truc') {
 					this.$store.commit('connect', {
-						username: 'Demo',
 						email: this.email,
 						firstName: this.firstName,
 						lastName: this.lastName,

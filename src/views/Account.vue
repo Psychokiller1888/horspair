@@ -38,8 +38,8 @@
 					<input type="text" v-model="email" placeholder="Email" disabled/>
 				</p>
 				<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;">
-					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Mettre à jour!"/>
-					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler"/>
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Mettre à jour!" @click="update"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
 				</p>
 			</div>
 		</div>
@@ -59,6 +59,28 @@ export default {
 			city: this.$store.state.user['city'],
 			phone: this.$store.state.user['phone'],
 			email: this.$store.state.user['email']
+		}
+	},
+	methods: {
+		update: function() {
+			this.$store.commit('updateProfile', {
+				firstName: this.firstName,
+				lastName: this.lastName,
+				address: this.address,
+				cityCode: this.cityCode,
+				city: this.city,
+				phone: this.phone
+			})
+		},
+		cancel: function() {
+			this.firstName = this.$store.state.user['firstName']
+			this.lastName = this.$store.state.user['lastName']
+			this.address = this.$store.state.user['address']
+			this.cityCode = this.$store.state.user['cityCode']
+			this.city = this.$store.state.user['city']
+			this.phone = this.$store.state.user['phone']
+			this.email = this.$store.state.user['email']
+			this.$router.push({path: '/'})
 		}
 	}
 }

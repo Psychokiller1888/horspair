@@ -20,6 +20,9 @@ export default new Vuex.Store({
 		},
 		disconnect(state) {
 			state.user = null
+		},
+		updateProfile(state, userdata){
+			state.user = Object.assign({}, state.user, userdata)
 		}
 	},
 	plugins: [createPersistedState()]
