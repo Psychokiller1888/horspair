@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import commons from '@/js/commons'
+
 export default {
 	name: 'Enregistrement',
 	data: function() {
@@ -67,11 +69,11 @@ export default {
 				if (this.inviteCode === 'je teste le truc') {
 					this.$store.commit('connect', {
 						email: this.email,
-						firstName: this.firstName,
-						lastName: this.lastName,
-						address: 'Ruelles des Gerles 5',
+						firstName: commons.capitalFirst(this.firstName),
+						lastName: commons.capitalFirst(this.lastName),
+						address: commons.capitalFirst('Ruelles des Gerles 5'),
 						cityCode: 1788,
-						city: 'Praz-Vully',
+						city: commons.capitalFirst('Praz-Vully'),
 						phone: '0797985351',
 						access: 99
 					})
@@ -101,8 +103,7 @@ export default {
 			this.invalidInvite = this.inviteCode.length !== 16
 		},
 		validateEmail: function() {
-			let re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-			this.invalidEmail = !re.test(this.email)
+			this.invalidEmail = !commons.isEmailValid(this.email)
 		},
 		validatePassword: function() {
 			const length = this.password.length >= 8

@@ -43,10 +43,12 @@ import {
 	faLocationCrosshairs,
 	faCity,
 	faInputNumeric,
-	faPhone
+	faPhone,
+	faTrashCan
 } from '@fortawesome/pro-regular-svg-icons'
 
 library.add(
+	faTrashCan,
 	faPhone,
 	faInputNumeric,
 	faCity,

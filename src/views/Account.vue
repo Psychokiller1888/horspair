@@ -34,7 +34,7 @@
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'phone']" size="2x"/></span>
-					<input type="text" v-model="phone" placeholder="Téléphone"/>
+					<input type="tel" v-model="phone" placeholder="Téléphone"/>
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
@@ -59,16 +59,28 @@
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'phone']" size="2x"/></span>
-					<input type="text" v-model="newTherapistPhone" placeholder="Téléphone"/>
+					<input type="tel" v-model="newTherapistPhone" placeholder="Téléphone"/>
 				</p>
-				<p class="inputWrapper" :class="{redBorders: !newTherapistEmail}">
+				<p class="inputWrapper" :class="{redBorders: !emailValid('therapist')}">
 					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
 					<input type="text" v-model="newTherapistEmail" placeholder="Email"/>
 				</p>
+				<div class="explanation" v-if="newTherapistExists">Ce thérapeute existe déjà</div>
 				<p class="confirmCancelButtonsWrapper">
-					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="update"/>
-					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addTherapist" v-if="emailValid('therapist')"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelTherapist"/>
 				</p>
+			</div>
+			<div class="inputsWrapper" style="width: auto;" v-if="page === 'therapists'">
+				<p class="holderTitle">
+					Mes thérapeutes
+				</p>
+				<div class="contactEntry" v-for="therapist in $store.state.therapists" :key="therapist.email">
+					<div class="contactName">{{ therapist.firstName }} {{ therapist.lastName }}</div>
+					<div class="contactEmail"><a :href="`mailto:${therapist.email}`">{{ therapist.email }}</a></div>
+					<div class="contactPhone"><a :href="`tel:${therapist.phone}`">{{ therapist.phone }}</a></div>
+					<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteTherapist(therapist.email)"/></div>
+				</div>
 			</div>
 			<div class="inputsWrapper" v-if="page === 'friends'">
 				<p class="holderTitle">
@@ -84,22 +96,36 @@
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'phone']" size="2x"/></span>
-					<input type="text" v-model="newFriendPhone" placeholder="Téléphone"/>
+					<input type="tel" v-model="newFriendPhone" placeholder="Téléphone"/>
 				</p>
-				<p class="inputWrapper" :class="{redBorders: !newTherapistEmail}">
+				<p class="inputWrapper" :class="{redBorders: !emailValid('friend')}">
 					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
 					<input type="text" v-model="newFriendEmail" placeholder="Email"/>
 				</p>
+				<div class="explanation" v-if="newFriendExists">Ce contact existe déjà</div>
 				<p class="confirmCancelButtonsWrapper">
-					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="update"/>
-					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addFriend" v-if="emailValid('friend')"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelFriend"/>
 				</p>
+			</div>
+			<div class="inputsWrapper" style="width: auto;" v-if="page === 'friends'">
+				<p class="holderTitle">
+					Mes amis
+				</p>
+				<div class="contactEntry" v-for="friend in $store.state.friends" :key="friend.email">
+					<div class="contactName">{{ friend.firstName }} {{ friend.lastName }}</div>
+					<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
+					<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
+					<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import commons from '@/js/commons'
+
 export default {
 	name: 'Compte',
 	data: function() {
@@ -122,6 +148,24 @@ export default {
 			newFriendEmail: ''
 		}
 	},
+	computed: {
+		newTherapistExists: function() {
+			return this.$store.getters.getTherapistsEmails.includes(this.newTherapistEmail.trim())
+		},
+		newFriendExists: function() {
+			return this.$store.getters.getFriendsEmails.includes(this.newFriendEmail.trim())
+		},
+		emailValid: function() {
+			let self = this
+			return function(type) {
+				if (type === 'therapist') {
+					return commons.isEmailValid(self.newTherapistEmail) && !this.$store.getters.getTherapistsEmails.includes(self.newTherapistEmail.trim())
+				} else if (type === 'friend') {
+					return commons.isEmailValid(self.newFriendEmail) && !this.$store.getters.getFriendsEmails.includes(self.newFriendEmail.trim())
+				}
+			}
+		}
+	},
 	methods: {
 		update: function() {
 			this.$store.commit('updateProfile', {
@@ -142,6 +186,48 @@ export default {
 			this.phone = this.$store.state.user['phone']
 			this.email = this.$store.state.user['email']
 			this.$router.push({path: '/'})
+		},
+		cancelTherapist: function() {
+			this.newTherapistFirstName = ''
+			this.newTherapistLastName = ''
+			this.newTherapistEmail = ''
+			this.newTherapistPhone = ''
+		},
+		cancelFriend: function() {
+			this.newFriendFirstName = ''
+			this.newFriendLastName = ''
+			this.newFriendPhone = ''
+			this.newFriendEmail = ''
+		},
+		addTherapist: function() {
+			this.$store.commit('addTherapist', {
+				email: this.newTherapistEmail,
+				data: {
+					firstName: commons.capitalFirst(this.newTherapistFirstName),
+					lastName: commons.capitalFirst(this.newTherapistLastName),
+					phone: this.newTherapistPhone,
+					email: this.newTherapistEmail
+				}
+			})
+			this.cancelTherapist()
+		},
+		deleteTherapist: function(email) {
+			this.$store.commit('removeTherapist', email)
+		},
+		addFriend: function() {
+			this.$store.commit('addFriend', {
+				email: this.newFriendEmail,
+				data: {
+					firstName: commons.capitalFirst(this.newFriendFirstName),
+					lastName: commons.capitalFirst(this.newFriendLastName),
+					phone: this.newFriendPhone,
+					email: this.newFriendEmail
+				}
+			})
+			this.cancelFriend()
+		},
+		deleteFriend: function(email) {
+			this.$store.commit('removeFriend', email)
 		}
 	}
 }
@@ -170,16 +256,43 @@ li:hover {
 	padding-top: 50px;
 	box-sizing: border-box;
 }
-
 .content {
 	flex-grow: 1;
 	margin-bottom: 15px;
 }
-
 .holderTitle {
 	font-size: 25px;
 	text-transform: uppercase;
 	position: relative;
 	top: -53px;
+}
+.inputsWrapper {
+	float: left;
+	margin-right: 25px;
+}
+.contactEntry {
+	width: 100%;
+	display: flex;
+}
+
+.contactName {
+	width: 250px;
+	overflow: hidden;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.contactEmail {
+	width: 250px;
+	overflow: hidden;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.contactPhone {
+	width: 250px;
+	overflow: hidden;
+	padding: 10px;
+	box-sizing: border-box;
 }
 </style>
