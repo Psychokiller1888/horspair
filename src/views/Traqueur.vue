@@ -59,26 +59,26 @@
 				</select>
 			</p>
 			<p class="moodSelectors">
-				<span class="smiley" :class="{selected: selected === -3}">
-					<font-awesome-icon :icon="['far', 'face-angry']" class="button" @click="selected = -3"/>
+				<span class="smiley" :class="{selected: selected === -3}" @click="selected = -3">
+					<font-awesome-icon :icon="['far', 'face-angry']"/>
 				</span>
-				<span class="smiley" :class="{selected: selected === -2}">
-					<font-awesome-icon :icon="['far', 'face-sad-tear']" class="button" @click="selected = -2"/>
+				<span class="smiley" :class="{selected: selected === -2}" @click="selected = -2">
+					<font-awesome-icon :icon="['far', 'face-sad-tear']"/>
 				</span>
-				<span class="smiley" :class="{selected: selected === -1}">
-					<font-awesome-icon :icon="['far', 'face-frown-open']" class="button" @click="selected = -1"/>
+				<span class="smiley" :class="{selected: selected === -1}" @click="selected = -1">
+					<font-awesome-icon :icon="['far', 'face-frown-open']"/>
 				</span>
-				<span class="smiley" :class="{selected: selected === 0}">
-					<font-awesome-icon :icon="['far', 'face-meh']" class="button" @click="selected = 0"/>
+				<span class="smiley" :class="{selected: selected === 0}" @click="selected = 0">
+					<font-awesome-icon :icon="['far', 'face-meh']"/>
 				</span>
-				<span class="smiley" :class="{selected: selected === 1}">
-					<font-awesome-icon :icon="['far', 'face-grin']" class="button" @click="selected = 1"/>
+				<span class="smiley" :class="{selected: selected === 1}" @click="selected = 1">
+					<font-awesome-icon :icon="['far', 'face-grin']"/>
 				</span>
-				<span class="smiley" :class="{selected: selected === 2}">
-					<font-awesome-icon :icon="['far', 'face-grin-beam']" class="button" @click="selected = 2"/>
+				<span class="smiley" :class="{selected: selected === 2}" @click="selected = 2">
+					<font-awesome-icon :icon="['far', 'face-grin-beam']"/>
 				</span>
-				<span class="smiley" :class="{selected: selected === 3}">
-					<font-awesome-icon :icon="['far', 'face-grin-tears']" class="button" @click="selected = 3"/>
+				<span class="smiley" :class="{selected: selected === 3}" @click="selected = 3">
+					<font-awesome-icon :icon="['far', 'face-grin-tears']"/>
 				</span>
 			</p>
 			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;" v-if="selected !== ''">
@@ -146,6 +146,7 @@ export default {
 
 .smiley:hover {
 	-webkit-transform: scale(1.2);
+	cursor: pointer;
 }
 
 </style>
