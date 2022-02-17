@@ -46,6 +46,7 @@ import {
 	faPhone,
 	faTrashCan
 } from '@fortawesome/pro-regular-svg-icons'
+import axios from 'axios'
 
 library.add(
 	faTrashCan,
@@ -88,7 +89,10 @@ Vue.component('datepicker', Datepicker)
 Vue.component('tooltip', VueCustomTooltip)
 //Chart.plugins.register(ChartDataLabels)
 
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = process.env.VUE_API_BASEURL
 Vue.config.productionTip = false
+
 new Vue({
   store,
   router,
