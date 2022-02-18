@@ -10,6 +10,8 @@ Vue.use(Vuex)
 // Create store
 export default new Vuex.Store({
 	state: {
+		connecting: false,
+		connectionError: false,
 		user: null,
 		username: null,
 		token: null,
@@ -59,19 +61,33 @@ export default new Vuex.Store({
 	},
 	actions: {
 		async login({commit}, Data) {
-			Data.set('client_id', 'horspair.org')
-			Data.set('grant_type', 'password')
+			commit('connecting', true)
+			commit('connectionError', false)
+			Data.set('client_id', 'horspairorg')
 			await axios.post('/oauth', Data).then(async response => {
-				await commit('setToken', response.data['access_token'])
-				await commit('setRefreshToken', response.data['refresh_token'])
+				//this.$cookies.set('token', response.data['access_token'])
+				//this.$cookies.set('refreshToken', response.data['refresh_token'])
+				//this.$cookies.set('token_expires', response.data['expires_in'])
 				await commit('setUsername', Data.get('username'))
 				await commit('connect', Data.get('username'))
+				commit('connecting', false)
+			}).catch(async (reason) => {
+				commit('connectionError', true)
+				throw(new Error(reason))
+			}).finally(() => {
+				commit('connecting', false)
 			})
 		},
 	},
 	mutations: {
 		connect(state, userdata) {
 			state.user = userdata
+		},
+		connecting(state, data) {
+			state.connecting = data
+		},
+		connectionError(state, data) {
+			state.connectionError = data
 		},
 		disconnect(state) {
 			state.user = null
