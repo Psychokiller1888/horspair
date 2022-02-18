@@ -7,6 +7,7 @@ import '@sum.cumo/vue-datepicker/dist/Datepicker.css'
 import VueCustomTooltip from '@adamdehaven/vue-custom-tooltip'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { ToggleButton } from 'vue-js-toggle-button'
 //import { Chart } from 'chart.js'
 //import ChartDataLabels from 'chartjs-plugin-datalabels'
 
@@ -87,6 +88,7 @@ library.add(
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('datepicker', Datepicker)
 Vue.component('tooltip', VueCustomTooltip)
+Vue.component('toggle', ToggleButton)
 //Chart.plugins.register(ChartDataLabels)
 
 axios.defaults.withCredentials = true

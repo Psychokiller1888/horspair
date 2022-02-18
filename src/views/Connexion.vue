@@ -3,14 +3,17 @@
 		<div class="inputsWrapper">
 			<p class="inputWrapper">
 				<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
-				<input type="text" v-model="username" placeholder="Email"/>
+				<input type="text" v-model="form.username" placeholder="Email"/>
 			</p>
 			<p class="inputWrapper">
 				<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
-				<input type="password" v-model="password" placeholder="Mot de passe" @keydown.enter="connect"/>
+				<input type="password" v-model="form.password" placeholder="Mot de passe" @keydown.enter="submit"/>
+			</p>
+			<p class="inputWrapper">
+				<toggle :labels="{checked: 'Retenir', unchecked: 'Ne pas retenir'}" :width="120" :height="40" :color="{checked: 'var(--secondary-bg-color)', unchecked: 'var(--tertiary-bg-color)'}"></toggle>
 			</p>
 			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;">
-				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="connect" title="Connecter" v-if="username && password"/>
+				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="submit" title="Connecter" v-if="form.username && form.password"/>
 				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
 			</p>
 		</div>
@@ -18,15 +21,20 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
 	name: 'Connection',
 	data: function() {
 		return {
-			username: '',
-			password: ''
+			form: {
+				username: '',
+				password: ''
+			}
 		}
 	},
 	methods: {
+		...mapActions(['login']),
 		connect: function() {
 			if (parseInt(process.env.VUE_APP_DEMO_MODE) === 1) {
 				this.$store.commit('connect', {
@@ -44,9 +52,25 @@ export default {
 			}
 		},
 		cancel: function() {
-			this.username = ''
-			this.password = ''
+			this.form.username = ''
+			this.form.password = ''
 			this.$router.replace({path: '/'})
+		},
+		async submit() {
+			const User = new FormData()
+			User.append('username', this.form.username)
+			User.append('password', this.form.password)
+			try {
+				try {
+					await this.login(User)
+				} catch (error) {
+					await this.$store.dispatch('logout')
+				}
+				this.$store.commit('loggingIn', false)
+				await this.$router.push('/')
+			} catch (error) {
+				return
+			}
 		}
 	},
 	watch:       {
