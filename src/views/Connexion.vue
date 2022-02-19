@@ -53,9 +53,6 @@ export default {
 							self.$refs.loginContainer.classList.remove('shrinkAway')
 							self.$router.push('/')
 						}, 500)
-						setTimeout(function() {
-							self.$refs.loginContainer.classList.remove('shrinkAway')
-						}, 750)
 					})
 				} catch (error) {
 					this.$refs.loginContainer.classList.add('shake')

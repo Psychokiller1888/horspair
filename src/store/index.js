@@ -65,14 +65,15 @@ export default new Vuex.Store({
 			commit('connectionError', false)
 			Data.set('client_id', 'horspairorg')
 			await axios.post('/oauth', Data).then(async response => {
-				//this.$cookies.set('token', response.data['access_token'])
-				//this.$cookies.set('refreshToken', response.data['refresh_token'])
-				//this.$cookies.set('token_expires', response.data['expires_in'])
+				Vue.$cookies.set('token', response.data['access_token'])
+				Vue.$cookies.set('refreshToken', response.data['refresh_token'])
+				Vue.$cookies.set('tokenExpires', response.data['expires_in'])
 				await commit('setUsername', Data.get('username'))
 				await commit('connect', Data.get('username'))
 				commit('connecting', false)
 			}).catch(async (reason) => {
 				commit('connectionError', true)
+				console.warn(reason)
 				throw(new Error(reason))
 			}).finally(() => {
 				commit('connecting', false)
