@@ -29,7 +29,7 @@
 			</p>
 			<div class="explanation" v-if="invalidPasswordControl">Les mots de passe ne correspondent pas</div>
 			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;">
-				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="register" title="Créer!"/>
+				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="register" title="Créer!" v-if="allValid"/>
 				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="cancel" title="Annuler"/>
 			</p>
 		</div>
@@ -68,10 +68,10 @@ export default {
 		register: function() {
 			const account = new FormData()
 			account.append('firstName', this.firstName)
-			//account.append('lastName', this.lastName)
-			//account.append('email', this.email)
-			//account.append('inviteCode', this.inviteCode)
-			//account.append('password', this.password)
+			account.append('lastName', this.lastName)
+			account.append('email', this.email)
+			account.append('inviteCode', this.inviteCode)
+			account.append('password', this.password)
 
 			axios.post('/accounts/', account).then(async response => {
 				console.log(response.data)
