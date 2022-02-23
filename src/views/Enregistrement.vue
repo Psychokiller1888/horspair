@@ -1,6 +1,6 @@
 <template>
 	<div class="mainContainer">
-		<div class="inputsWrapper">
+		<div class="inputsWrapper" v-if="!serverError && !registrationDone">
 			<p class="inputWrapper" :class="{redBorders: invalidInvite}">
 				<span><font-awesome-icon :icon="['far', 'key-skeleton']" size="2x"/></span>
 				<input type="text" v-model="inviteCode" placeholder="Code d'invitation" @keyup="validate"/>
@@ -18,6 +18,7 @@
 				<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
 				<input type="text" v-model="email" placeholder="Email" @keyup="validate"/>
 			</p>
+			<div class="explanation" v-if="emailAlreadyInUse">Cette adresse email est déjà utilisée</div>
 			<p class="inputWrapper" :class="{redBorders: invalidPassword}">
 				<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
 				<input type="password" v-model="password" placeholder="Mot de passe" @keyup="validate"/>
@@ -32,6 +33,12 @@
 				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="register" title="Créer!" v-if="allValid"/>
 				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="cancel" title="Annuler"/>
 			</p>
+		</div>
+		<div class="textBlock redBorders" v-if="serverError && !registrationDone">
+			Désolé, mais ta demande d'enregistrement a rencontré un problème technique
+		</div>
+		<div class="textBlock" v-if="!serverError && registrationDone">
+			Merci de t'être enregistré! Nous venons de t'envoyer un email à ton adresse email pour confirmer celle-ci. Le lien inclus est valide pendant 15 minutes, ouvres-le vite pour pouvoir commencer à utiliser notre site!
 		</div>
 	</div>
 </template>
@@ -48,7 +55,6 @@ export default {
 			lastName: '',
 			inviteCode: '',
 			email: '',
-			username: '',
 			password: '',
 			password2: '',
 			invalidFirstname: false,
@@ -56,7 +62,10 @@ export default {
 			invalidInvite: true,
 			invalidEmail: false,
 			invalidPassword: false,
-			invalidPasswordControl: false
+			invalidPasswordControl: false,
+			emailAlreadyInUse: false,
+			serverError: false,
+			registrationDone: false
 		}
 	},
 	computed: {
@@ -66,6 +75,11 @@ export default {
 	},
 	methods: {
 		register: function() {
+			if (!this.allValid) {
+				return
+			}
+
+			const self = this
 			const account = new FormData()
 			account.append('firstName', this.firstName)
 			account.append('lastName', this.lastName)
@@ -73,15 +87,47 @@ export default {
 			account.append('inviteCode', this.inviteCode)
 			account.append('password', this.password)
 
-			axios.post('/accounts/', account).then(async response => {
-				console.log(response.data)
-			}).catch(async (reason) => {
-
-			}).finally(() => {
-
+			axios.post('/register/', account).then(_response => {
+				self.registrationDone = true
+				self.cancel()
+			}).catch(reason => {
+				if (reason.response) {
+					const response = reason.response
+					if (response.status === 403) {
+						self.invalidEmail = true
+						self.emailAlreadyInUse = true
+					} else if (response.status === 400) {
+						if (response.data.error.includes('first name')) {
+							self.invalidFirstname = true
+						} else if (response.data.error.includes('last name')) {
+							self.invalidLastname = true
+						} else if (response.data.error.includes('email')) {
+							self.invalidEmail = true
+						} else if (response.data.error.includes('invite code')) {
+							self.invalidInvite = true
+						} else if (response.data.error.includes('password')) {
+							self.invalidPassword = true
+						}
+					} else if (response.status === 500) {
+						self.serverError = true
+					}
+				}
 			})
 		},
 		cancel: function() {
+			this.firstName = ''
+			this.lastName = ''
+			this.inviteCode = ''
+			this.email = ''
+			this.password = ''
+			this.password2 = ''
+			this.invalidFirstname = false
+			this.invalidLastname = false
+			this.invalidInvite = true
+			this.invalidEmail = false
+			this.invalidPassword = false
+			this.invalidPasswordControl = false
+			this.emailAlreadyInUse = false
 		},
 		validate: function() {
 			this.validateFirstname()

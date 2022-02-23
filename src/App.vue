@@ -116,6 +116,17 @@ a {
 	margin-bottom: 10px;
 }
 
+.textBlock {
+	font-size: 1.1em;
+	width: 500px;
+	background-color: var(--secondary-bg-color);
+	padding: 35px;
+	box-sizing: border-box;
+	border-radius: 10px;
+	border: 1px solid var(--tertiary-bg-color);
+	text-align: justify;
+}
+
 input,
 select {
 	display: flex;
@@ -185,10 +196,6 @@ button {
 	cursor: pointer;
 }
 
-.redBorders {
-	border: 1px solid red;
-}
-
 .textCentered {
 	text-align: center;
 }
@@ -229,4 +236,7 @@ button {
 	100% { transform: scale(0%) rotate(-240deg); }
 }
 
+.redBorders {
+	border: 1px solid red;
+}
 </style>
