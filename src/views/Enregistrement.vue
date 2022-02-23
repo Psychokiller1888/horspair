@@ -1,6 +1,6 @@
 <template>
 	<div class="mainContainer">
-		<div class="inputsWrapper" v-if="!serverError && !registrationDone">
+		<div class="inputsWrapper" v-if="!serverError && !registrationDone && !confirmedAccount && !expiredLink && !invalidLink && !alreadyActive &&!wait">
 			<p class="inputWrapper" :class="{redBorders: invalidInvite}">
 				<span><font-awesome-icon :icon="['far', 'key-skeleton']" size="2x"/></span>
 				<input type="text" v-model="inviteCode" placeholder="Code d'invitation" @keyup="validate"/>
@@ -34,11 +34,23 @@
 				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="cancel" title="Annuler"/>
 			</p>
 		</div>
-		<div class="textBlock redBorders" v-if="serverError && !registrationDone">
+		<div class="textBlock redBorders" v-if="serverError">
 			Désolé, mais ta demande d'enregistrement a rencontré un problème technique
 		</div>
-		<div class="textBlock" v-if="!serverError && registrationDone">
+		<div class="textBlock" v-if="registrationDone">
 			Merci de t'être enregistré! Nous venons de t'envoyer un email à ton adresse email pour confirmer celle-ci. Le lien inclus est valide pendant 15 minutes, ouvres-le vite pour pouvoir commencer à utiliser notre site!
+		</div>
+		<div class="textBlock" v-if="confirmedAccount">
+			Super, merci d'avoir confirmé ton email. Tu peux maintenant utiliser toutes les fonctions du site!
+		</div>
+		<div class="textBlock redBorders" v-if="expiredLink">
+			Le lien que tu as utilisé n'est plus valable, merci de t'enregistrer à nouveau.
+		</div>
+		<div class="textBlock redBorders" v-if="invalidLink">
+			Le lien que tu as utilisé n'est pas valide.
+		</div>
+		<div class="textBlock redBorders" v-if="alreadyActive">
+			Ton compte est déjà actif! Tu peux te <a href="/login">connecter ici</a>
 		</div>
 	</div>
 </template>
@@ -63,9 +75,14 @@ export default {
 			invalidEmail: false,
 			invalidPassword: false,
 			invalidPasswordControl: false,
+			wait: false,
 			emailAlreadyInUse: false,
 			serverError: false,
-			registrationDone: false
+			registrationDone: false,
+			confirmedAccount: false,
+			expiredLink: false,
+			invalidLink: false,
+			alreadyActive: false
 		}
 	},
 	computed: {
@@ -165,6 +182,36 @@ export default {
 		$route: {
 			immediate: true,
 			handler() {
+				if ('a' in this.$route.query && 'b' in this.$route.query) {
+					this.wait = true
+					const self = this
+					const data = {
+						registerKey: this.$route.query.a,
+						userId: this.$route.query.b
+					}
+					axios.post('/register/confirm/', data).then(response => {
+						if (response.status !== 200) {
+							self.invalidLink = true
+						} else {
+							self.confirmedAccount = true
+						}
+					}).catch(reason => {
+						let code = reason.response.status
+						switch (code) {
+							case 412:
+								self.alreadyActive = true
+								break
+							case 401:
+								self.expiredLink = true
+								break
+							case 403:
+								self.invalidLink = true
+								break
+							default:
+								self.serverError = true
+						}
+					})
+				}
 				if (this.$store.state.user) {
 					this.$router.replace({path: '/'})
 				}

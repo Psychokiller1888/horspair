@@ -1,7 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
-import router from '../router'
 import createPersistedState from 'vuex-persistedstate'
 
 // Load Vuex
@@ -13,7 +12,6 @@ export default new Vuex.Store({
 		connecting: false,
 		connectionError: false,
 		user: null,
-		username: null,
 		token: null,
 		refreshToken: null,
 		therapists: {
@@ -63,12 +61,10 @@ export default new Vuex.Store({
 		async login({commit}, Data) {
 			commit('connecting', true)
 			commit('connectionError', false)
-			Data.set('client_id', 'horspairorg')
 			await axios.post('/login/', Data).then(async response => {
 				Vue.$cookies.set('token', response.data['access_token'])
 				Vue.$cookies.set('refreshToken', response.data['refresh_token'])
 				Vue.$cookies.set('tokenExpires', response.data['expires_in'])
-				await commit('setUsername', Data.get('username'))
 				await commit('connect', Data.get('username'))
 				commit('connecting', false)
 			}).catch(async (reason) => {
@@ -107,9 +103,6 @@ export default new Vuex.Store({
 		},
 		removeFriend(state, email) {
 			Vue.delete(state.friends, email)
-		},
-		async setUsername(state, username) {
-			state.username = username
 		},
 		async setToken(state, token) {
 			state.token = token
