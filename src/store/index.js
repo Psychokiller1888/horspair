@@ -62,11 +62,16 @@ export default new Vuex.Store({
 			commit('connecting', true)
 			commit('connectionError', false)
 			await axios.post('/login/', Data).then(async response => {
-				Vue.$cookies.set('token', response.data['access_token'])
-				Vue.$cookies.set('refreshToken', response.data['refresh_token'])
-				Vue.$cookies.set('tokenExpires', response.data['expires_in'])
-				await commit('connect', Data.get('username'))
-				commit('connecting', false)
+				if (response.status !== 200) {
+					commit('connectionError', true)
+					throw(new Error())
+				} else {
+					Vue.$cookies.set('token', response.data['access_token'])
+					Vue.$cookies.set('refreshToken', response.data['refresh_token'])
+					Vue.$cookies.set('tokenExpires', response.data['expires_in'])
+					await commit('connect', Data.get('email'))
+					commit('connecting', false)
+				}
 			}).catch(async (reason) => {
 				commit('connectionError', true)
 				console.warn(reason)
