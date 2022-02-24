@@ -35,13 +35,13 @@
 			</p>
 		</div>
 		<div class="textBlock redBorders" v-if="serverError">
-			Désolé, mais ta demande d'enregistrement a rencontré un problème technique
+			Désolé, mais ta demande d'enregistrement a rencontré un problème technique.
 		</div>
 		<div class="textBlock" v-if="registrationDone">
 			Merci de t'être enregistré! Nous venons de t'envoyer un email à ton adresse email pour confirmer celle-ci. Le lien inclus est valide pendant 15 minutes, ouvres-le vite pour pouvoir commencer à utiliser notre site!
 		</div>
 		<div class="textBlock" v-if="confirmedAccount">
-			Super, merci d'avoir confirmé ton email. Tu peux maintenant utiliser toutes les fonctions du site!
+			Super, merci d'avoir confirmé ton email. Tu peux maintenant utiliser toutes les fonctions du site, en te <a href="/login">connectant ici</a>.
 		</div>
 		<div class="textBlock redBorders" v-if="expiredLink">
 			Le lien que tu as utilisé n'est plus valable, merci de t'enregistrer à nouveau.
@@ -50,7 +50,7 @@
 			Le lien que tu as utilisé n'est pas valide.
 		</div>
 		<div class="textBlock redBorders" v-if="alreadyActive">
-			Ton compte est déjà actif! Tu peux te <a href="/login">connecter ici</a>
+			Ton compte est déjà actif! Tu peux te <a href="/login">connecter ici</a>.
 		</div>
 	</div>
 </template>

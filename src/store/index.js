@@ -66,9 +66,10 @@ export default new Vuex.Store({
 					commit('connectionError', true)
 					throw(new Error())
 				} else {
-					Vue.$cookies.set('token', response.data['access_token'])
-					Vue.$cookies.set('refreshToken', response.data['refresh_token'])
-					Vue.$cookies.set('tokenExpires', response.data['expires_in'])
+					Vue.$cookies.set('token', response.data['accessToken'])
+					Vue.$cookies.set('refreshToken', response.data['refreshToken'])
+					Vue.$cookies.set('tokenExpiry', response.data['expiry'])
+					Vue.$cookies.set('userId', response.data['userId'])
 					await commit('connect', Data.get('email'))
 					commit('connecting', false)
 				}
