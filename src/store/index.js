@@ -1,7 +1,6 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
-import createPersistedState from 'vuex-persistedstate'
 
 // Load Vuex
 Vue.use(Vuex)
@@ -117,5 +116,5 @@ export default new Vuex.Store({
 			state.refreshToken = token
 		},
 	},
-	plugins: [createPersistedState()]
+	plugins: []
 })
