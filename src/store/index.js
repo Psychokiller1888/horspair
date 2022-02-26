@@ -1,9 +1,15 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
+import VuexPersist from 'vuex-persist'
 
 // Load Vuex
 Vue.use(Vuex)
+
+const vuexLocalStorage = new VuexPersist({
+	key: 'vuex',
+	storage: window.sessionStorage
+})
 
 // Create store
 export default new Vuex.Store({
@@ -11,8 +17,6 @@ export default new Vuex.Store({
 		connecting: false,
 		connectionError: false,
 		user: null,
-		token: null,
-		refreshToken: null,
 		therapists: {
 			'yep@notatall.ch': {
 				firstName: 'Claire',
@@ -65,11 +69,12 @@ export default new Vuex.Store({
 					commit('connectionError', true)
 					throw(new Error())
 				} else {
-					Vue.$cookies.set('token', response.data['accessToken'])
-					Vue.$cookies.set('refreshToken', response.data['refreshToken'])
-					Vue.$cookies.set('tokenExpiry', response.data['expiry'])
 					Vue.$cookies.set('userId', response.data['userId'])
-					await commit('connect', Data.get('email'))
+					Vue.$cookies.set('accessToken', response.data['accessToken'])
+					Vue.$cookies.set('tokenExpiry', response.data['accessTokenExpiry'])
+					Vue.$cookies.set('refreshToken', response.data['refreshToken'])
+					Vue.$cookies.set('refreshTokenExpiry', response.data['refreshTokenExpiry'])
+					await commit('connect', response.data['userData'])
 					commit('connecting', false)
 				}
 			}).catch(async (reason) => {
@@ -108,13 +113,7 @@ export default new Vuex.Store({
 		},
 		removeFriend(state, email) {
 			Vue.delete(state.friends, email)
-		},
-		async setToken(state, token) {
-			state.token = token
-		},
-		async setRefreshToken(state, token) {
-			state.refreshToken = token
-		},
+		}
 	},
-	plugins: []
+	plugins: [vuexLocalStorage.plugin]
 })
