@@ -107,10 +107,10 @@ export default {
 	data: function() {
 		return {
 			page: 'data',
-			firstName: this.$store.state.user['firstName'],
-			lastName: this.$store.state.user['lastName'],
+			firstName: this.$store.state.user['firstname'],
+			lastName: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
-			cityCode: this.$store.state.user['cityCode'],
+			cityCode: this.$store.state.user['zip'],
 			city: this.$store.state.user['city'],
 			phone: this.$store.state.user['phone'],
 			email: this.$store.state.user['email'],
