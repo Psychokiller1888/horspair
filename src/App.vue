@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+		<notifications position="top center"/>
 		<Nav/>
 		<router-view/>
 		<Footer/>
@@ -238,5 +239,9 @@ button {
 
 .redBorders {
 	border: 1px solid red;
+}
+
+.vue-notification {
+	font-size: 16px!important;
 }
 </style>

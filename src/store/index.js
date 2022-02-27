@@ -7,39 +7,20 @@ import VuexPersist from 'vuex-persist'
 Vue.use(Vuex)
 
 const vuexLocalStorage = new VuexPersist({
-	key: 'vuex',
+	key:     'vuex',
 	storage: window.sessionStorage
 })
 
 // Create store
 export default new Vuex.Store({
-	state: {
-		connecting: false,
+	state:     {
+		connecting:      false,
 		connectionError: false,
-		user: null,
-		therapists: {
-			'yep@notatall.ch': {
-				firstname: 'Claire',
-				lastname: 'Di Paola',
-				phone: '011 111 11 11',
-				email: 'yep@notatall.ch'
-			},
-			'thisisit@nobody.ch': {
-				firstname: 'Anaïs',
-				lastname: 'Do Carmo',
-				phone: '011 111 11 11',
-				email: 'thisisit@nobody.ch'
-			},
-			'jpl@lestoises.ch': {
-				firstname: 'Jean-Philippe',
-				lastname: 'Lang',
-				phone: '011 111 11 11',
-				email: 'jpl@lestoises.ch'
-			}
-		},
-		friends: {}
+		user:            null,
+		therapists:      {},
+		friends:         {}
 	},
-	getters: {
+	getters:   {
 		getTherapistsEmails(state) {
 			return Object.keys(state.therapists)
 		},
@@ -47,7 +28,7 @@ export default new Vuex.Store({
 			return Object.keys(state.friends)
 		}
 	},
-	actions: {
+	actions:   {
 		async login({commit}, Data) {
 			commit('connecting', true)
 			commit('connectionError', false)
@@ -56,7 +37,7 @@ export default new Vuex.Store({
 					commit('connectionError', true)
 					throw(new Error())
 				} else {
-					Vue.$cookies.set('userId', response.data['userId'])
+					Vue.$cookies.set('userId', response.data['userData']['id'])
 					Vue.$cookies.set('accessToken', response.data['accessToken'])
 					Vue.$cookies.set('tokenExpiry', response.data['accessTokenExpiry'])
 					Vue.$cookies.set('refreshToken', response.data['refreshToken'])
@@ -73,6 +54,32 @@ export default new Vuex.Store({
 				commit('connecting', false)
 			})
 		},
+		async updateProfile({commit}, data) {
+			axios.patch(`/users/${Vue.$cookies.get('userId')}/`, data, {headers: {
+				'Authorization': `Bearer ${Vue.$cookies.get('accessToken')}`
+			}}).then(response => {
+				if (response.status === 200) {
+					commit('updateProfile', data)
+					Vue.notify({
+						title: 'Succès',
+						type: 'success',
+						text: 'Ton profil a été mis à jour!'
+					})
+				} else {
+					Vue.notify({
+						title: 'Erreur',
+						type: 'error',
+						text: 'Malheureusement une erreur s\'est produite au moment d\'enregistrer tes données.'
+					})
+				}
+			}).catch(_reason => {
+				Vue.notify({
+					title: 'Erreur',
+					type: 'error',
+					text: 'Malheureusement une erreur s\'est produite au moment d\'enregistrer tes données.'
+				})
+			})
+		}
 	},
 	mutations: {
 		connect(state, userdata) {
@@ -88,13 +95,9 @@ export default new Vuex.Store({
 			state.user = null
 			state.friends = {}
 			state.therapists = {}
-			Vue.$cookies.remove('userId')
-			Vue.$cookies.remove('accessToken')
-			Vue.$cookies.remove('tokenExpiry')
-			Vue.$cookies.remove('refreshToken')
-			Vue.$cookies.remove('refreshTokenExpiry')
+			Vue.$cookies.keys().forEach(cookie => Vue.$cookies.remove(cookie))
 		},
-		updateProfile(state, userdata){
+		updateProfile(state, userdata) {
 			state.user = Object.assign({}, state.user, userdata)
 		},
 		addFriend(state, data) {
@@ -113,5 +116,5 @@ export default new Vuex.Store({
 			state.friends = list
 		}
 	},
-	plugins: [vuexLocalStorage.plugin]
+	plugins:   [vuexLocalStorage.plugin]
 })

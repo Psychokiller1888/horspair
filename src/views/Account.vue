@@ -14,11 +14,11 @@
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-					<input type="text" v-model="firstName" placeholder="Prénom"/>
+					<input type="text" v-model="firstname" placeholder="Prénom"/>
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-					<input type="text" v-model="lastName" placeholder="Nom de famille"/>
+					<input type="text" v-model="lastname" placeholder="Nom de famille"/>
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'location-crosshairs']" size="2x"/></span>
@@ -26,7 +26,7 @@
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'input-numeric']" size="2x"/></span>
-					<input type="text" v-model="cityCode" placeholder="NPA"/>
+					<input type="number" v-model="zip" placeholder="NPA" min="1000"/>
 				</p>
 				<p class="inputWrapper">
 					<span><font-awesome-icon :icon="['far', 'city']" size="2x"/></span>
@@ -101,16 +101,17 @@
 
 <script>
 import commons from '@/js/commons'
+import {mapActions} from 'vuex'
 
 export default {
 	name: 'Compte',
 	data: function() {
 		return {
 			page: 'data',
-			firstName: this.$store.state.user['firstname'],
-			lastName: this.$store.state.user['lastname'],
+			firstname: this.$store.state.user['firstname'],
+			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
-			cityCode: this.$store.state.user['zip'],
+			zip: this.$store.state.user['zip'],
 			city: this.$store.state.user['city'],
 			phone: this.$store.state.user['phone'],
 			email: this.$store.state.user['email'],
@@ -137,31 +138,30 @@ export default {
 		}
 	},
 	methods: {
-		update: function() {
-			this.$store.commit('updateProfile', {
-				firstName: this.firstName,
-				lastName: this.lastName,
+		...mapActions(['updateProfile']),
+		async update() {
+			const payload = {
+				firstname: this.firstname,
+				lastname: this.lastname,
 				address: this.address,
-				cityCode: this.cityCode,
+				zip: this.zip,
 				city: this.city,
 				phone: this.phone
-			})
+			}
+			await this.updateProfile(payload)
 		},
 		cancel: function() {
-			this.firstName = this.$store.state.user['firstname']
-			this.lastName = this.$store.state.user['lastname']
+			this.firstname = this.$store.state.user['firstname']
+			this.lastname = this.$store.state.user['lastname']
 			this.address = this.$store.state.user['address']
-			this.cityCode = this.$store.state.user['zip']
+			this.zip = this.$store.state.user['zip']
 			this.city = this.$store.state.user['city']
 			this.phone = this.$store.state.user['phone']
 			this.email = this.$store.state.user['email']
 			this.$router.push({path: '/'})
 		},
 		cancelTherapist: function() {
-			this.newTherapistFirstName = ''
-			this.newTherapistLastName = ''
 			this.newTherapistEmail = ''
-			this.newTherapistPhone = ''
 		},
 		cancelFriend: function() {
 			this.newFriendEmail = ''

@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { ToggleButton } from 'vue-js-toggle-button'
 import VueCookies from 'vue-cookies'
+import Notifications from 'vue-notification'
 //import { Chart } from 'chart.js'
 //import ChartDataLabels from 'chartjs-plugin-datalabels'
 
@@ -92,6 +93,7 @@ Vue.component('tooltip', VueCustomTooltip)
 Vue.component('toggle', ToggleButton)
 
 Vue.use(VueCookies)
+Vue.use(Notifications)
 
 //Chart.plugins.register(ChartDataLabels)
 
