@@ -49,18 +49,6 @@
 				<p class="holderTitle">
 					Ajouter un thérapeute
 				</p>
-				<p class="inputWrapper">
-					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-					<input type="text" v-model="newTherapistFirstName" placeholder="Prénom"/>
-				</p>
-				<p class="inputWrapper">
-					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-					<input type="text" v-model="newTherapistLastName" placeholder="Nom de famille"/>
-				</p>
-				<p class="inputWrapper">
-					<span><font-awesome-icon :icon="['far', 'phone']" size="2x"/></span>
-					<input type="tel" v-model="newTherapistPhone" placeholder="Téléphone"/>
-				</p>
 				<p class="inputWrapper" :class="{redBorders: !emailValid('therapist')}">
 					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
 					<input type="text" v-model="newTherapistEmail" placeholder="Email"/>
@@ -85,18 +73,6 @@
 			<div class="inputsWrapper" v-if="page === 'friends'">
 				<p class="holderTitle">
 					Ajouter un ami
-				</p>
-				<p class="inputWrapper">
-					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-					<input type="text" v-model="newFriendFirstName" placeholder="Prénom"/>
-				</p>
-				<p class="inputWrapper">
-					<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-					<input type="text" v-model="newFriendLastName" placeholder="Nom de famille"/>
-				</p>
-				<p class="inputWrapper">
-					<span><font-awesome-icon :icon="['far', 'phone']" size="2x"/></span>
-					<input type="tel" v-model="newFriendPhone" placeholder="Téléphone"/>
 				</p>
 				<p class="inputWrapper" :class="{redBorders: !emailValid('friend')}">
 					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
@@ -138,13 +114,7 @@ export default {
 			city: this.$store.state.user['city'],
 			phone: this.$store.state.user['phone'],
 			email: this.$store.state.user['email'],
-			newTherapistFirstName: '',
-			newTherapistLastName: '',
-			newTherapistPhone: '',
 			newTherapistEmail: '',
-			newFriendFirstName: '',
-			newFriendLastName: '',
-			newFriendPhone: '',
 			newFriendEmail: ''
 		}
 	},
@@ -194,18 +164,12 @@ export default {
 			this.newTherapistPhone = ''
 		},
 		cancelFriend: function() {
-			this.newFriendFirstName = ''
-			this.newFriendLastName = ''
-			this.newFriendPhone = ''
 			this.newFriendEmail = ''
 		},
 		addTherapist: function() {
 			this.$store.commit('addTherapist', {
 				email: this.newTherapistEmail,
 				data: {
-					firstname: commons.capitalFirst(this.newTherapistFirstName),
-					lastname: commons.capitalFirst(this.newTherapistLastName),
-					phone: this.newTherapistPhone,
 					email: this.newTherapistEmail
 				}
 			})
@@ -218,9 +182,6 @@ export default {
 			this.$store.commit('addFriend', {
 				email: this.newFriendEmail,
 				data: {
-					firstname: commons.capitalFirst(this.newFriendFirstName),
-					lastname: commons.capitalFirst(this.newFriendLastName),
-					phone: this.newFriendPhone,
 					email: this.newFriendEmail
 				}
 			})

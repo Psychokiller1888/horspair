@@ -19,20 +19,20 @@ export default new Vuex.Store({
 		user: null,
 		therapists: {
 			'yep@notatall.ch': {
-				firstName: 'Claire',
-				lastName: 'Di Paola',
+				firstname: 'Claire',
+				lastname: 'Di Paola',
 				phone: '011 111 11 11',
 				email: 'yep@notatall.ch'
 			},
 			'thisisit@nobody.ch': {
-				firstName: 'Anaïs',
-				lastName: 'Do Carmo',
+				firstname: 'Anaïs',
+				lastname: 'Do Carmo',
 				phone: '011 111 11 11',
 				email: 'thisisit@nobody.ch'
 			},
 			'jpl@lestoises.ch': {
-				firstName: 'Jean-Philippe',
-				lastName: 'Lang',
+				firstname: 'Jean-Philippe',
+				lastname: 'Lang',
 				phone: '011 111 11 11',
 				email: 'jpl@lestoises.ch'
 			}
