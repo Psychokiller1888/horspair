@@ -75,8 +75,8 @@
 				<p class="holderTitle">
 					Mes thérapeutes
 				</p>
-				<div class="contactEntry" v-for="therapist in $store.state.therapists" :key="therapist.email">
-					<div class="contactName">{{ therapist.firstName }} {{ therapist.lastName }}</div>
+				<div class="contactEntry" v-for="therapist in $store.state.therapists" :key="therapist.id">
+					<div class="contactName">{{ therapist.firstname }} {{ therapist.lastname }}</div>
 					<div class="contactEmail"><a :href="`mailto:${therapist.email}`">{{ therapist.email }}</a></div>
 					<div class="contactPhone"><a :href="`tel:${therapist.phone}`">{{ therapist.phone }}</a></div>
 					<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteTherapist(therapist.email)"/></div>
@@ -112,8 +112,8 @@
 				<p class="holderTitle">
 					Mes amis
 				</p>
-				<div class="contactEntry" v-for="friend in $store.state.friends" :key="friend.email">
-					<div class="contactName">{{ friend.firstName }} {{ friend.lastName }}</div>
+				<div class="contactEntry" v-for="friend in $store.state.friends" :key="friend.id">
+					<div class="contactName">{{ friend.firstname }} {{ friend.lastname }}</div>
 					<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
 					<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
 					<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
@@ -178,10 +178,10 @@ export default {
 			})
 		},
 		cancel: function() {
-			this.firstName = this.$store.state.user['firstName']
-			this.lastName = this.$store.state.user['lastName']
+			this.firstName = this.$store.state.user['firstname']
+			this.lastName = this.$store.state.user['lastname']
 			this.address = this.$store.state.user['address']
-			this.cityCode = this.$store.state.user['cityCode']
+			this.cityCode = this.$store.state.user['zip']
 			this.city = this.$store.state.user['city']
 			this.phone = this.$store.state.user['phone']
 			this.email = this.$store.state.user['email']
@@ -203,8 +203,8 @@ export default {
 			this.$store.commit('addTherapist', {
 				email: this.newTherapistEmail,
 				data: {
-					firstName: commons.capitalFirst(this.newTherapistFirstName),
-					lastName: commons.capitalFirst(this.newTherapistLastName),
+					firstname: commons.capitalFirst(this.newTherapistFirstName),
+					lastname: commons.capitalFirst(this.newTherapistLastName),
 					phone: this.newTherapistPhone,
 					email: this.newTherapistEmail
 				}
@@ -218,8 +218,8 @@ export default {
 			this.$store.commit('addFriend', {
 				email: this.newFriendEmail,
 				data: {
-					firstName: commons.capitalFirst(this.newFriendFirstName),
-					lastName: commons.capitalFirst(this.newFriendLastName),
+					firstname: commons.capitalFirst(this.newFriendFirstName),
+					lastname: commons.capitalFirst(this.newFriendLastName),
 					phone: this.newFriendPhone,
 					email: this.newFriendEmail
 				}

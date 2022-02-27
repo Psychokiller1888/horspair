@@ -37,20 +37,7 @@ export default new Vuex.Store({
 				email: 'jpl@lestoises.ch'
 			}
 		},
-		friends: {
-			'tiz@ana.ch': {
-				firstName: 'Tiziana',
-				lastName: 'JeSaisPas',
-				phone: '011 111 11 11',
-				email: 'tiz@ana.ch'
-			},
-			'archer@power.com': {
-				firstName: 'Marie-Jane',
-				lastName: 'D\'arc',
-				phone: '011 111 11 11',
-				email: 'archer@power.com'
-			}
-		}
+		friends: {}
 	},
 	getters: {
 		getTherapistsEmails(state) {
@@ -75,6 +62,7 @@ export default new Vuex.Store({
 					Vue.$cookies.set('refreshToken', response.data['refreshToken'])
 					Vue.$cookies.set('refreshTokenExpiry', response.data['refreshTokenExpiry'])
 					await commit('connect', response.data['userData'])
+					await commit('setFriendList', response.data['friendList'])
 					commit('connecting', false)
 				}
 			}).catch(async (reason) => {
@@ -98,6 +86,13 @@ export default new Vuex.Store({
 		},
 		disconnect(state) {
 			state.user = null
+			state.friends = {}
+			state.therapists = {}
+			Vue.$cookies.remove('userId')
+			Vue.$cookies.remove('accessToken')
+			Vue.$cookies.remove('tokenExpiry')
+			Vue.$cookies.remove('refreshToken')
+			Vue.$cookies.remove('refreshTokenExpiry')
 		},
 		updateProfile(state, userdata){
 			state.user = Object.assign({}, state.user, userdata)
@@ -113,6 +108,9 @@ export default new Vuex.Store({
 		},
 		removeFriend(state, email) {
 			Vue.delete(state.friends, email)
+		},
+		setFriendList(state, list) {
+			state.friends = list
 		}
 	},
 	plugins: [vuexLocalStorage.plugin]
