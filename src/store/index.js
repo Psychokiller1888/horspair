@@ -2,7 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
 import VuexPersist from 'vuex-persist'
-import { useRouter } from 'vue-router'
+import router from '@/router'
 
 // Load Vuex
 Vue.use(Vuex)
@@ -43,14 +43,17 @@ axiosInstance.interceptors.response.use(response => {
 			return Promise.reject(error)
 		}
 	} else if (error.response && error.response.status === 307) {
-		useRouter().push(error.response.data['redirectTo'])
+		if (error.response.data['doLogout']) {
+			store.commit('disconnect')
+		}
+		await router.push({path: error.response.data['redirectTo']})
 		return
 	}
 	return Promise.reject(error)
 })
 
 // Create store
-export default new Vuex.Store({
+const store = new Vuex.Store({
 	state:     {
 		axios:           axiosInstance,
 		connecting:      false,
@@ -162,3 +165,5 @@ export default new Vuex.Store({
 	},
 	plugins:   [vuexLocalStorage.plugin]
 })
+
+export default store
