@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
 import VuexPersist from 'vuex-persist'
+import { useRouter } from 'vue-router'
 
 // Load Vuex
 Vue.use(Vuex)
@@ -41,6 +42,9 @@ axiosInstance.interceptors.response.use(response => {
 		} catch (error) {
 			return Promise.reject(error)
 		}
+	} else if (error.response && error.response.status === 307) {
+		useRouter().push(error.response.data['redirectTo'])
+		return
 	}
 	return Promise.reject(error)
 })
