@@ -11,9 +11,44 @@ const vuexLocalStorage = new VuexPersist({
 	storage: window.sessionStorage
 })
 
+const axiosInstance = axios.create({
+	withCredentials: true,
+	baseURL: process.env.VUE_APP_API_BASEURL
+})
+axiosInstance.interceptors.request.use(async config => {
+	config.headers = {
+		'Authorization': `Bearer ${Vue.$cookies.get('accessToken')}`,
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+	}
+	return config
+}, error => {
+	return Promise.reject(error)
+})
+
+axiosInstance.interceptors.response.use(response => {
+	return response
+}, async (error) => {
+	const originalConfig = error.config
+	if (error.response && error.response.status === 498 && !originalConfig._retry) {
+		originalConfig._retry = true
+		try {
+			const refresh = await axiosInstance.get(`/refreshToken/${Vue.$cookies.get('userId')}/${Vue.$cookies.get('refreshToken')}/`)
+			const data = refresh.data
+			Vue.$cookies.set('accessToken', data['accessToken'])
+			Vue.$cookies.set('refreshToken', data['refreshToken'])
+			return axiosInstance(originalConfig)
+		} catch (error) {
+			return Promise.reject(error)
+		}
+	}
+	return Promise.reject(error)
+})
+
 // Create store
 export default new Vuex.Store({
 	state:     {
+		axios:           axiosInstance,
 		connecting:      false,
 		connectionError: false,
 		user:            null,
@@ -32,15 +67,13 @@ export default new Vuex.Store({
 		async login({commit}, Data) {
 			commit('connecting', true)
 			commit('connectionError', false)
-			await axios.post('/login/', Data).then(async response => {
+			await axiosInstance.post('/login/', Data).then(async response => {
 				if (response.status !== 200) {
 					commit('connectionError', true)
 				} else {
 					Vue.$cookies.set('userId', response.data['userData']['id'])
 					Vue.$cookies.set('accessToken', response.data['accessToken'])
-					Vue.$cookies.set('tokenExpiry', response.data['accessTokenExpiry'])
 					Vue.$cookies.set('refreshToken', response.data['refreshToken'])
-					Vue.$cookies.set('refreshTokenExpiry', response.data['refreshTokenExpiry'])
 					let partDay = new Date().getHours()
 					Vue.notify({
 						title: 'Connexion',
@@ -64,7 +97,7 @@ export default new Vuex.Store({
 			})
 		},
 		async updateProfile({commit}, data) {
-			axios.patch(`/users/${Vue.$cookies.get('userId')}/`, data).then(response => {
+			axiosInstance.patch(`/users/${Vue.$cookies.get('userId')}/`, data).then(response => {
 				if (response.status === 200) {
 					commit('updateProfile', data)
 					Vue.notify({

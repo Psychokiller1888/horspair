@@ -57,7 +57,6 @@
 
 <script>
 import commons from '@/js/commons'
-import axios from 'axios'
 import Vue from 'vue';
 
 export default {
@@ -105,7 +104,7 @@ export default {
 			account.append('inviteCode', this.inviteCode)
 			account.append('password', this.password)
 
-			axios.post('/register/', account).then(_response => {
+			this.$store.state.axios.post('/register/', account).then(_response => {
 				self.registrationDone = true
 				self.cancel()
 			}).catch(reason => {
@@ -203,7 +202,7 @@ export default {
 						registerKey: this.$route.query.a,
 						userId: this.$route.query.b
 					}
-					axios.post('/register/confirm/', data).then(response => {
+					this.$store.state.axios.post('/register/confirm/', data).then(response => {
 						if (response.status !== 200) {
 							self.invalidLink = true
 						} else {
