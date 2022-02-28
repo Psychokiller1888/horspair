@@ -59,7 +59,7 @@
 					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelTherapist"/>
 				</p>
 			</div>
-			<div class="inputsWrapper" style="width: auto;" v-if="page === 'therapists'">
+			<div class="inputsWrapper" style="width: auto; min-width: 150px;" v-if="page === 'therapists'">
 				<p class="holderTitle">
 					Mes thérapeutes
 				</p>
@@ -84,7 +84,7 @@
 					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelFriend"/>
 				</p>
 			</div>
-			<div class="inputsWrapper" style="width: auto;" v-if="page === 'friends'">
+			<div class="inputsWrapper" style="width: auto; min-width: 150px;" v-if="page === 'friends'">
 				<p class="holderTitle">
 					Mes amis
 				</p>

@@ -58,6 +58,7 @@
 <script>
 import commons from '@/js/commons'
 import axios from 'axios'
+import Vue from 'vue';
 
 export default {
 	name: 'Enregistrement',
@@ -110,24 +111,37 @@ export default {
 			}).catch(reason => {
 				if (reason.response) {
 					const response = reason.response
-					if (response.status === 403) {
+					let message
+					if (response.status === 409) {
 						self.invalidEmail = true
 						self.emailAlreadyInUse = true
+						message = 'Cette adresse email est déjà utilisée'
 					} else if (response.status === 400) {
-						if (response.data.error.includes('first name')) {
+						if (response.data.errorDescription.includes('first name')) {
 							self.invalidFirstname = true
-						} else if (response.data.error.includes('last name')) {
+							message = "Le prénom n'est pas valide"
+						} else if (response.data.errorDescription.includes('last name')) {
 							self.invalidLastname = true
-						} else if (response.data.error.includes('email')) {
+							message = "Le nom de famille n'est pas valide"
+						} else if (response.data.errorDescription.includes('email')) {
 							self.invalidEmail = true
-						} else if (response.data.error.includes('invite code')) {
+							message = "L'adresse email n'est pas valide"
+						} else if (response.data.errorDescription.includes('invite code')) {
 							self.invalidInvite = true
-						} else if (response.data.error.includes('password')) {
+							message = "Ton code d'invitation n'est pas ou plus valide"
+						} else if (response.data.errorDescription.includes('password')) {
 							self.invalidPassword = true
+							message = "Ton mot de passe n'est pas valide"
 						}
 					} else if (response.status === 500) {
 						self.serverError = true
+						message = 'Erreur du server, désolé....'
 					}
+					Vue.notify({
+						title: 'Erreur',
+						type: 'error',
+						text: message
+					})
 				}
 			})
 		},

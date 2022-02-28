@@ -35,29 +35,36 @@ export default new Vuex.Store({
 			await axios.post('/login/', Data).then(async response => {
 				if (response.status !== 200) {
 					commit('connectionError', true)
-					throw(new Error())
 				} else {
 					Vue.$cookies.set('userId', response.data['userData']['id'])
 					Vue.$cookies.set('accessToken', response.data['accessToken'])
 					Vue.$cookies.set('tokenExpiry', response.data['accessTokenExpiry'])
 					Vue.$cookies.set('refreshToken', response.data['refreshToken'])
 					Vue.$cookies.set('refreshTokenExpiry', response.data['refreshTokenExpiry'])
+					let partDay = new Date().getHours()
+					Vue.notify({
+						title: 'Connexion',
+						type: 'success',
+						text: `${(partDay > 2 && partDay < 18) ? 'Bonjours' : 'Bonsoir'} ${response.data['userData']['firstname']}!`
+					})
 					await commit('connect', response.data['userData'])
 					await commit('setFriendList', response.data['friendList'])
 					commit('connecting', false)
 				}
-			}).catch(async (reason) => {
+			}).catch(async (_reason) => {
 				commit('connectionError', true)
-				console.warn(reason)
-				throw(new Error(reason))
+				Vue.notify({
+					title: 'Erreur',
+					type: 'error',
+					text: 'Erreur de connexion. Vérifies ton adresse email et ton mot de passe'
+				})
+				throw new Error()
 			}).finally(() => {
 				commit('connecting', false)
 			})
 		},
 		async updateProfile({commit}, data) {
-			axios.patch(`/users/${Vue.$cookies.get('userId')}/`, data, {headers: {
-				'Authorization': `Bearer ${Vue.$cookies.get('accessToken')}`
-			}}).then(response => {
+			axios.patch(`/users/${Vue.$cookies.get('userId')}/`, data).then(response => {
 				if (response.status === 200) {
 					commit('updateProfile', data)
 					Vue.notify({
