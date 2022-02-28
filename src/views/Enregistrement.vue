@@ -180,12 +180,7 @@ export default {
 			this.invalidEmail = !commons.isEmailValid(this.email)
 		},
 		validatePassword: function() {
-			const length = this.password.length >= 8
-			const uppercase = /[A-Z]/.test(this.password)
-			const lowercase = /[a-z]/.test(this.password)
-			const number = /[0-9]/.test(this.password)
-			const special = /[#?!@$%^&*-]/.test(this.password)
-			this.invalidPassword = !length || !uppercase || !lowercase || !number || !special
+			this.invalidPassword = !commons.validatePassword(this.password)
 		},
 		validatePasswordControl: function() {
 			this.invalidPasswordControl = this.invalidPassword || this.password !== this.password2

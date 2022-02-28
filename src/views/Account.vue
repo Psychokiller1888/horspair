@@ -40,6 +40,23 @@
 					<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
 					<input type="text" v-model="email" placeholder="Email" disabled/>
 				</p>
+				<p>
+					Modification du mot de passe
+				</p>
+				<p class="inputWrapper">
+					<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
+					<input type="password" v-model="password" placeholder="Mot de passe actuel"/>
+				</p>
+				<p class="inputWrapper" :class="{redBorders: invalidPassword}">
+					<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
+					<input type="password" v-model="newPassword1" placeholder="Nouveau mot de passe" @keyup="validate"/>
+				</p>
+				<div class="explanation" v-if="invalidPassword">Min. 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial</div>
+				<p class="inputWrapper" :class="{redBorders: invalidPasswordControl}">
+					<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
+					<input type="password" v-model="newPassword2" placeholder="Confirmer nouveau mot de passe" @keyup="validate"/>
+				</p>
+				<div class="explanation" v-if="invalidPasswordControl">Les mots de passe ne correspondent pas</div>
 				<p class="confirmCancelButtonsWrapper">
 					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Mettre à jour!" @click="update"/>
 					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
@@ -115,6 +132,11 @@ export default {
 			city: this.$store.state.user['city'],
 			phone: this.$store.state.user['phone'],
 			email: this.$store.state.user['email'],
+			password: '',
+			newPassword1: '',
+			newPassword2: '',
+			invalidPassword: false,
+			invalidPasswordControl: false,
 			newTherapistEmail: '',
 			newFriendEmail: ''
 		}
@@ -140,13 +162,25 @@ export default {
 	methods: {
 		...mapActions(['updateProfile']),
 		async update() {
+			if (this.newPassword1 !== this.newPassword2) {
+				this.invalidPasswordControl = true
+				return
+			}
+
 			const payload = {
 				firstname: this.firstname,
 				lastname: this.lastname,
 				address: this.address,
 				zip: this.zip,
 				city: this.city,
-				phone: this.phone
+				phone: this.phone,
+				email: this.email
+			}
+
+			if (this.newPassword1 && this.newPassword2) {
+				payload['password'] = this.password
+				payload['newPassword1'] = this.newPassword1
+				payload['newPassword2'] = this.newPassword2
 			}
 			await this.updateProfile(payload)
 		},
@@ -189,6 +223,16 @@ export default {
 		},
 		deleteFriend: function(email) {
 			this.$store.commit('removeFriend', email)
+		},
+		validate: function() {
+			this.validatePassword()
+			this.validatePasswordControl()
+		},
+		validatePassword: function() {
+			this.invalidPassword = commons.validatePassword(this.newPassword1)
+		},
+		validatePasswordControl: function() {
+			this.invalidPasswordControl = this.invalidPassword || this.newPassword1 !== this.newPassword2
 		}
 	}
 }

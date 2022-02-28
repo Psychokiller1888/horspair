@@ -119,12 +119,20 @@ const store = new Vuex.Store({
 						text: 'Malheureusement une erreur s\'est produite au moment d\'enregistrer tes données.'
 					})
 				}
-			}).catch(_reason => {
-				Vue.notify({
-					title: 'Erreur',
-					type: 'error',
-					text: 'Malheureusement une erreur s\'est produite au moment d\'enregistrer tes données.'
-				})
+			}).catch(reason => {
+				if (reason.response.status === 401) {
+					Vue.notify({
+						title: 'Erreur',
+						type: 'warn',
+						text: "Le mot de passe actuel ne correspond pas, ton mot de passe n'a pas été changé."
+					})
+				} else {
+					Vue.notify({
+						title: 'Erreur',
+						type: 'error',
+						text: 'Malheureusement une erreur s\'est produite au moment d\'enregistrer tes données.'
+					})
+				}
 			})
 		}
 	},

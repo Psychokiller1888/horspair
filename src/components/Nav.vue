@@ -52,6 +52,7 @@ export default {
 		display: flex;
 		background-color: var(--main-bg-color);
 		border-bottom: 1px solid var(--main-text-color);
+		z-index: 999;
 	}
   .logo {
 		background-image: url('../assets/logo.png');
@@ -67,7 +68,6 @@ export default {
 		align-items: center;
 		flex-grow: 1;
 	}
-
 	li {
 		font-family: var(--main-font), sans-serif;
 		font-weight: lighter;
