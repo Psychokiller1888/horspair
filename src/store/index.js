@@ -105,6 +105,7 @@ const store = new Vuex.Store({
 		},
 		async updateProfile({commit}, data) {
 			axiosInstance.patch(`/users/${Vue.$cookies.get('userId')}/`, data).then(response => {
+				console.log(response)
 				if (response.status === 200) {
 					commit('updateProfile', data)
 					Vue.notify({

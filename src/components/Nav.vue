@@ -40,8 +40,21 @@
 </template>
 
 <script>
+
+import Vue from 'vue';
+
 export default {
-	name: 'Nav'
+	name: 'Nav',
+	mounted() {
+		if (!this.$store.state.user && this.$cookies.get('accessToken')) {
+			this.$store.state.axios.post(`/relogin/${this.$cookies.get('userId')}/`).then(response => {
+				console.log('here')
+				this.$store.commit('connect', response)
+			}).catch(error => {
+				console.log(error)
+			})
+		}
+	}
 }
 </script>
 
