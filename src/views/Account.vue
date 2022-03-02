@@ -105,7 +105,13 @@
 				<p class="holderTitle">
 					Mes amis
 				</p>
-				<div class="contactEntry" v-for="friend in $store.state.friends" :key="friend.id">
+				<div class="contactEntry" v-for="friend in friendListAccepted" :key="friend.id">
+					<div class="contactName">{{ friend.firstname }} {{ friend.lastname }}</div>
+					<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
+					<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
+					<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
+				</div>
+				<div class="contactEntry" v-for="friend in friendListPending" :key="friend.id">
 					<div class="contactName">{{ friend.firstname }} {{ friend.lastname }}</div>
 					<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
 					<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
@@ -142,6 +148,12 @@ export default {
 		}
 	},
 	computed: {
+		friendListPending: function() {
+			return this.$store.getters.getFriendList['pending']
+		},
+		friendListAccepted: function() {
+			return this.$store.getters.getFriendList['accepted']
+		},
 		newTherapistExists: function() {
 			return this.$store.getters.getTherapistsEmails.includes(this.newTherapistEmail.trim())
 		},
@@ -204,7 +216,8 @@ export default {
 			this.$store.commit('addTherapist', {
 				email: this.newTherapistEmail,
 				data: {
-					email: this.newTherapistEmail
+					email: this.newTherapistEmail,
+					pendingInvite: true
 				}
 			})
 			this.cancelTherapist()

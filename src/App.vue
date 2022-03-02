@@ -16,9 +16,7 @@ export default {
   components: {
 		Nav,
 		Footer
-  },
-	created() {
-	}
+  }
 }
 </script>
 
@@ -243,5 +241,21 @@ button {
 
 .vue-notification {
 	font-size: 16px!important;
+}
+
+.inlineButton {
+	width: auto;
+	padding: 3px 8px 3px 8px;
+	border-radius: 5px;
+	border: 1px solid var(--main-text-color);
+	cursor: pointer;
+}
+
+.blueBackground {
+	background-color: rgba(20, 78, 149, 0.6);
+}
+
+.hidden {
+	display: none;
 }
 </style>

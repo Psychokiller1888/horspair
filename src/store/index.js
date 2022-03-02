@@ -68,6 +68,21 @@ const store = new Vuex.Store({
 		},
 		getFriendsEmails(state) {
 			return Object.keys(state.friends)
+		},
+		getFriendList(state) {
+			const pending = {}
+			const accepted = {}
+			Object.entries(state.friends).forEach((key, value) => {
+				if (value['pendingInvite']) {
+					pending[key] = value
+				} else {
+					accepted[key] = value
+				}
+			})
+			return {
+				pending: pending,
+				accepted: accepted
+			}
 		}
 	},
 	actions:   {
@@ -105,7 +120,6 @@ const store = new Vuex.Store({
 		},
 		async updateProfile({commit}, data) {
 			axiosInstance.patch(`/users/${Vue.$cookies.get('userId')}/`, data).then(response => {
-				console.log(response)
 				if (response.status === 200) {
 					commit('updateProfile', data)
 					Vue.notify({
@@ -157,10 +171,16 @@ const store = new Vuex.Store({
 			state.user = Object.assign({}, state.user, userdata)
 		},
 		addFriend(state, data) {
-			state.friends[data.email] = data.data
+			axiosInstance.put(`/friends/${state.user.id}/`).then(response => {
+				data.data['pendingInvite'] = true
+				state.friends[data.email] = data.data
+			})
 		},
 		addTherapist(state, data) {
-			state.therapists[data.email] = data.data
+			axiosInstance.put(`/therapists/${state.user.id}/`).then(response => {
+				data.data['pendingInvite'] = true
+				state.therapists[data.email] = data.data
+			})
 		},
 		removeTherapist(state, email) {
 			Vue.delete(state.therapists, email)
