@@ -7,10 +7,10 @@ import Emdr from '@/views/Emdr'
 import Respiration from '@/views/Respiration'
 import Carnet from '@/views/Carnet'
 import Notes from '@/views/Notes'
-import Connexion from '@/views/Connexion';
-import Enregistrement from '@/views/Enregistrement';
-import Logout from '@/views/Logout';
-import Account from '@/views/Account';
+import Connexion from '@/views/Connect'
+import Enregistrement from '@/views/Register'
+import Logout from '@/views/Logout'
+import Account from '@/views/Account'
 
 Vue.use(VueRouter)
 const routes = [

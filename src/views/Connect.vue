@@ -76,7 +76,7 @@ export default {
 		$route: {
 			immediate: true,
 			handler() {
-				if (this.$store.state.user) {
+				if (this.$store.getters.isConnected) {
 					this.$router.replace({path: '/'})
 				}
 			}

@@ -16,6 +16,6 @@ export default {
 		const lowercase = /[a-z]/.test(password)
 		const number = /[0-9]/.test(password)
 		const special = /[#?!@$%^&*-]/.test(password)
-		return !length || !uppercase || !lowercase || !number || !special
+		return length && uppercase && lowercase && number && special
 	}
 }

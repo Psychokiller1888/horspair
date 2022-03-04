@@ -63,6 +63,9 @@ const store = new Vuex.Store({
 		friends:         {}
 	},
 	getters:   {
+		isConnected(state) {
+			return state.user !== null && 'email' in state.user && state.user.email !== ''
+		},
 		getTherapistsEmails(state) {
 			return Object.keys(state.therapists)
 		},

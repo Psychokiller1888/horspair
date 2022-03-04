@@ -8,31 +8,31 @@
 			<router-link to="/temoignages">
 				<tooltip label="Témoignages" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'messages']" /></li></tooltip>
 			</router-link>
-			<router-link to="/traqueur" v-if="$store.state.user">
+			<router-link to="/traqueur" v-if="$store.getters.isConnected">
 				<tooltip label="Traqueur d'humeur" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'face-clouds']" /></li></tooltip>
 			</router-link>
-			<router-link to="/emdr" v-if="$store.state.user">
+			<router-link to="/emdr" v-if="$store.getters.isConnected">
 				<tooltip label="EMDR" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'eyes']" /></li></tooltip>
 			</router-link>
-			<router-link to="/respiration" v-if="$store.state.user">
+			<router-link to="/respiration" v-if="$store.getters.isConnected">
 				<tooltip label="Respiration accompagnée" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'face-exhaling']" /></li></tooltip>
 			</router-link>
-			<router-link to="/carnet" v-if="$store.state.user">
+			<router-link to="/carnet" v-if="$store.getters.isConnected">
 				<tooltip label="Carnet de bord" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'memo-pad']" /></li></tooltip>
 			</router-link>
-			<router-link to="/notes" v-if="$store.state.user">
+			<router-link to="/notes" v-if="$store.getters.isConnected">
 				<tooltip label="Tâches" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'notes']" /></li></tooltip>
 			</router-link>
-			<router-link to="/account" v-if="$store.state.user">
+			<router-link to="/account" v-if="$store.getters.isConnected">
 				<tooltip label="Mon compte" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'circle-user']" /></li></tooltip>
 			</router-link>
-			<router-link to="/logout" v-if="$store.state.user">
+			<router-link to="/logout" v-if="$store.getters.isConnected">
 				<tooltip label="Déconnecter" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'right-from-bracket']" /></li></tooltip>
 			</router-link>
-			<router-link to="/signin" v-if="!$store.state.user">
+			<router-link to="/signin" v-if="!$store.getters.isConnected">
 				<tooltip label="S'enregistrer" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'user-plus']" /></li></tooltip>
 			</router-link>
-			<router-link to="/login" v-if="!$store.state.user">
+			<router-link to="/login" v-if="!$store.getters.isConnected">
 				<tooltip label="Se connecter" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'right-to-bracket']" /></li></tooltip>
 			</router-link>
 		</ul>
@@ -41,12 +41,17 @@
 
 <script>
 
+import Vue from 'vue'
+
 export default {
 	name: 'Nav',
 	mounted() {
 		if (!this.$store.state.user && this.$cookies.get('accessToken')) {
 			this.$store.state.axios.post(`/relogin/${this.$cookies.get('userId')}/`).then(response => {
-				this.$store.commit('connect', response)
+				this.$store.commit('connect', response.data.userData)
+				Vue.$cookies.set('userId', response.data['userData']['id'])
+				Vue.$cookies.set('accessToken', response.data['accessToken'])
+				Vue.$cookies.set('refreshToken', response.data['refreshToken'])
 			}).catch()
 		}
 	}

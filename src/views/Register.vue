@@ -8,11 +8,11 @@
 			<div class="explanation" v-if="invalidInvite">Pour recevoir ton code d'invitation valide, parles en avec ton/ta thérapeute ou pose la question sur notre serveur Discord</div>
 			<p class="inputWrapper" :class="{redBorders: invalidFirstname}">
 				<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-				<input type="text" v-model="firstName" placeholder="Prénom" @keyup="validate"/>
+				<input type="text" v-model="firstname" placeholder="Prénom" @keyup="validate"/>
 			</p>
 			<p class="inputWrapper" :class="{redBorders: invalidLastname}">
 				<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-				<input type="text" v-model="lastName" placeholder="Nom de famille" @keyup="validate"/>
+				<input type="text" v-model="lastname" placeholder="Nom de famille" @keyup="validate"/>
 			</p>
 			<p class="inputWrapper" :class="{redBorders: invalidEmail}">
 				<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
@@ -63,8 +63,8 @@ export default {
 	name: 'Enregistrement',
 	data: function() {
 		return {
-			firstName: '',
-			lastName: '',
+			firstname: '',
+			lastname: '',
 			inviteCode: '',
 			email: '',
 			password: '',
@@ -98,8 +98,8 @@ export default {
 
 			const self = this
 			const account = new FormData()
-			account.append('firstName', this.firstName)
-			account.append('lastName', this.lastName)
+			account.append('firstname', this.firstname)
+			account.append('lastname', this.lastname)
 			account.append('email', this.email)
 			account.append('inviteCode', this.inviteCode)
 			account.append('password', this.password)
@@ -145,8 +145,8 @@ export default {
 			})
 		},
 		cancel: function() {
-			this.firstName = ''
-			this.lastName = ''
+			this.firstname = ''
+			this.lastname = ''
 			this.inviteCode = ''
 			this.email = ''
 			this.password = ''
@@ -168,10 +168,10 @@ export default {
 			this.validateInviteCode()
 		},
 		validateFirstname: function() {
-			this.invalidFirstname = this.firstName.length <= 0
+			this.invalidFirstname = this.firstname.length <= 0
 		},
 		validateLastname: function() {
-			this.invalidLastname = this.lastName.length <= 0
+			this.invalidLastname = this.lastname.length <= 0
 		},
 		validateInviteCode: function() {
 			this.invalidInvite = this.inviteCode.length !== 16
@@ -220,7 +220,7 @@ export default {
 						}
 					})
 				}
-				if (this.$store.state.user) {
+				if (this.$store.getters.isConnected) {
 					this.$router.replace({path: '/'})
 				}
 				if ('invite' in this.$route.query) {
