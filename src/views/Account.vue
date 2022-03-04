@@ -242,7 +242,7 @@ export default {
 			this.validatePasswordControl()
 		},
 		validatePassword: function() {
-			this.invalidPassword = commons.validatePassword(this.newPassword1)
+			this.invalidPassword = !commons.validatePassword(this.newPassword1)
 		},
 		validatePasswordControl: function() {
 			this.invalidPasswordControl = this.invalidPassword || this.newPassword1 !== this.newPassword2
