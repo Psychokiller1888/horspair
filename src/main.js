@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
-import Datepicker from '@sum.cumo/vue-datepicker'
 import '@sum.cumo/vue-datepicker/dist/Datepicker.css'
 import VueCustomTooltip from '@adamdehaven/vue-custom-tooltip'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -10,6 +9,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { ToggleButton } from 'vue-js-toggle-button'
 import VueCookies from 'vue-cookies'
 import Notifications from 'vue-notification'
+import VCalendar from 'v-calendar'
+
 //import { Chart } from 'chart.js'
 //import ChartDataLabels from 'chartjs-plugin-datalabels'
 
@@ -47,10 +48,17 @@ import {
 	faCity,
 	faInputNumeric,
 	faPhone,
-	faTrashCan
+	faTrashCan,
+	faTableCells
 } from '@fortawesome/pro-regular-svg-icons'
 
+import {
+	faDiscord
+} from '@fortawesome/free-brands-svg-icons'
+
 library.add(
+	faTableCells,
+	faDiscord,
 	faTrashCan,
 	faPhone,
 	faInputNumeric,
@@ -87,12 +95,12 @@ library.add(
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.component('datepicker', Datepicker)
 Vue.component('tooltip', VueCustomTooltip)
 Vue.component('toggle', ToggleButton)
 
 Vue.use(VueCookies)
 Vue.use(Notifications)
+Vue.use(VCalendar)
 
 //Chart.plugins.register(ChartDataLabels)
 

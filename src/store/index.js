@@ -3,6 +3,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VuexPersist from 'vuex-persist'
 import router from '@/router'
+import commons from '@/js/commons'
 
 // Load Vuex
 Vue.use(Vuex)
@@ -60,7 +61,8 @@ const store = new Vuex.Store({
 		connectionError: false,
 		user:            null,
 		therapists:      {},
-		friends:         {}
+		friends:         {},
+		moodTrackerData: []
 	},
 	getters:   {
 		isConnected(state) {
@@ -86,6 +88,19 @@ const store = new Vuex.Store({
 				pending: pending,
 				accepted: accepted
 			}
+		},
+		getMoodDataByMonth: (state) => (month, year) => {
+			const ret = {}
+			Object.values(state.moodTrackerData).forEach((entry) => {
+				const date = new Date(entry.dates)
+				if (date.getMonth() + 1 === month && date.getFullYear() === year) {
+					if (!(date.getDate() in ret)) {
+						ret[date.getDate()] = []
+					}
+					ret[date.getDate()].push(entry)
+				}
+			})
+			return ret
 		}
 	},
 	actions:   {
@@ -152,6 +167,32 @@ const store = new Vuex.Store({
 					})
 				}
 			})
+		},
+		addNewMoodEntry({commit}, data) {
+			let key = 0
+			for (const entry of this.state.moodTrackerData) {
+				if (entry.key > key) {
+					key = entry.key
+				}
+			}
+			let newEntry = {
+				key: key + 1,
+				customData: {
+					time: `${commons.addZeroBefore(data.date.getHours())}:${commons.addZeroBefore(data.date.getMinutes())}`,
+					icon: data.icon,
+					class: 'calendar-icon'
+				},
+				dates: data.date
+			}
+			commit('addMood', newEntry)
+		},
+		deleteMoodEntry({commit}, key) {
+			for (const [index, entry] of  Object.entries(this.state.moodTrackerData)) {
+				if (entry.key === key) {
+					commit('removeMood', index)
+					break
+				}
+			}
 		}
 	},
 	mutations: {
@@ -193,6 +234,12 @@ const store = new Vuex.Store({
 		},
 		setFriendList(state, list) {
 			state.friends = list
+		},
+		addMood(state, data) {
+			state.moodTrackerData.push(data)
+		},
+		removeMood(state, index) {
+			Vue.delete(state.moodTrackerData, index)
 		}
 	},
 	plugins:   [vuexLocalStorage.plugin]

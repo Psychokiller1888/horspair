@@ -17,5 +17,11 @@ export default {
 		const number = /[0-9]/.test(password)
 		const special = /[#?!@$%^&*-]/.test(password)
 		return length && uppercase && lowercase && number && special
+	},
+	addZeroBefore: function(n) {
+		return (n < 10 ? '0' : '') + n
+	},
+	clamp: function(num, min, max) {
+		return Math.min(Math.max(num, min), max)
 	}
 }

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
 import Temoignages from '@/views/Temoignages'
-import Traqueur from '@/views/Traqueur'
+import Tracker from '@/views/Tracker'
 import Emdr from '@/views/Emdr'
 import Respiration from '@/views/Respiration'
 import Carnet from '@/views/Carnet'
@@ -29,7 +29,7 @@ const routes = [
 	{
 		path: '/traqueur',
 		name: 'Traqueur d\'humeur',
-		component: Traqueur,
+		component: Tracker,
 		meta: {}
 	},
 	{
