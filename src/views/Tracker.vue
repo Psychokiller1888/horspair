@@ -1,22 +1,12 @@
 <template>
 	<div class="mainContainer">
+		<v-tour name="moodTrackerOnboarding" :steps="steps" :options="tourOptions" :callbacks="tourCallbacks"></v-tour>
 		<div class="recorder">
 			<p class="score">
-				score d'humeur du mois: <strong>{{ score }}</strong>
+				score d'humeur du mois: <strong id="moodTracker_tour_2">{{ score }}</strong>
 			</p>
-			<p class="inputWrapper">
-				<span><font-awesome-icon :icon="['far', 'calendar-days']" size="2x"/></span>
-				<v-date-picker v-model="date" mode="dateTime" is24hr locale="fr">
-					<template v-slot="{ inputValue, inputEvents }">
-						<input
-							class="px-2 py-1 border rounded focus:outline-none focus:border-blue-300"
-							:value="inputValue"
-							v-on="inputEvents"
-						/>
-					</template>
-				</v-date-picker>
-			</p>
-			<p class="moodSelectors">
+			<v-date-picker v-model="date" mode="dateTime" locale="fr" is24hr :minute-increment="15" id="moodTracker_tour_3"/>
+			<p class="moodSelectors" id="moodTracker_tour_4">
 				<span class="smiley" :class="{selected: selected === -3}" @click="selected = -3">
 					<font-awesome-icon :icon="['far', 'face-angry']"/>
 				</span>
@@ -39,13 +29,18 @@
 					<font-awesome-icon :icon="['far', 'face-grin-tears']"/>
 				</span>
 			</p>
+			<p class="inputWrapper textAreaWrapper" id="moodTracker_tour_5">
+				<span><font-awesome-icon :icon="['far', 'comment']" size="2x"/></span>
+				<textarea v-model="comment" placeholder="Remarque" />
+			</p>
 			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;" v-if="selected !== ''">
-				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="save" title="enregistrer"/>
+				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="save" title="enregistrer" id="moodTracker_tour_6"/>
 				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="selected = ''" title="annuler"/>
 			</p>
 		</div>
 		<div class="viewData">
 			<v-calendar
+				id="moodTracker_tour_1"
 				:masks="masks"
 				:attributes="attributes"
 				locale="fr"
@@ -63,7 +58,7 @@
 								:class="attr.customData.class"
 							>
 								<span class="calendar-smiley" @dblclick="deleteEntry(attr.key)">
-									<tooltip :label="attr.customData.time"><font-awesome-icon :icon="['far', `face-${attr.customData.icon}`]"/></tooltip>
+									<tooltip :label="getLabel(attr.customData)"><font-awesome-icon :icon="['far', `face-${attr.customData.icon}`]"/></tooltip>
 								</span>
 							</p>
 						</div>
@@ -81,20 +76,142 @@ export default {
 	name: 'Tracker',
 	data: function() {
 		return {
+			comment: '',
 			score: 100,
 			selected: '',
 			date: new Date(),
 			masks: {
 				weekdays: "WWWW"
 			},
-			attributes: this.$store.state.moodTrackerData
+			attributes: this.$store.state.moodTrackerData,
+			tourCallbacks: {
+				onFinish: this.tourFinished,
+				onStop: this.tourFinished,
+				onSkip: this.tourFinished
+			},
+			tourOptions: {
+				useKeyboardNavigation: false,
+				labels: {
+					buttonSkip: 'Passer l\'introduction',
+					buttonPrevious: 'Précédant',
+					buttonNext: 'Suivant',
+					buttonStop: 'Terminé'
+				}
+			},
+			steps: [
+				{
+					target: '#moodTracker_tour_1',
+					header: {
+						title: 'Traqueur d\'humeur'
+					},
+					content: 'Bienvenue sur ton traqueur d\'humeur! Il te servira a enregistrer tes différentes humeurs au fil des jours et te permettra d\'agir en conséquence',
+					params: {
+						highlight: true,
+						placement: 'top'
+					}
+				},
+				{
+					target: '#moodTracker_tour_2',
+					header: {
+						title: 'Ta note mensuelle'
+					},
+					content: 'Ceci est ta note mensuelle. Le score maximum est de 100 et le minimum de 0. Le score est influencé par les bonnes ou mauvaises humeurs. Il est bien entendu préférable pour toi de garder un bon score! Si ton score descend trop, rajoute du peps à ta vie, fais quelque chose pour toi, qui te fais plaisir!',
+					params: {
+						highlight: true,
+						placement: 'top'
+					}
+				},
+				{
+					target: '#moodTracker_tour_3',
+					header: {
+						title: 'Ajouter une entrée'
+					},
+					content: 'Pour ajouter une entrée d\'humeur, sélectionnes la date et l\'heure concernée',
+					params: {
+						highlight: true,
+						placement: 'top'
+					}
+				},
+				{
+					target: '#moodTracker_tour_4',
+					header: {
+						title: 'Ajouter une entrée'
+					},
+					content: 'Puis sélectionnes une emoticon correspondante à ton ressentis. Le smiley neutre donne 0 point, le fâché -3 et celui qui est heureux, +3',
+					params: {
+						highlight: true,
+						placement: 'top'
+					},
+					before: type => new Promise((resolve) => {
+						this.date = new Date()
+						this.selected = 0
+						resolve()
+					})
+				},
+				{
+					target: '#moodTracker_tour_5',
+					header: {
+						title: 'Ajouter une entrée'
+					},
+					content: 'Entre un commentaire, un mot, une note, si tu en as besoin, ça t\'aidera à te rappeler ce bon moment!',
+					params: {
+						highlight: true,
+						placement: 'top'
+					},
+					before: type => new Promise((resolve) => {
+						this.selected = 2
+						const text = 'Super journée avec mes amis'
+						const self = this
+						let time = 0
+						for (let i = 0; i <= text.length - 1; i++) {
+							time += Math.floor(Math.random() * 150)
+							setTimeout(function() {
+								self.comment += text[i]
+							}, time)
+						}
+						resolve()
+					})
+				},
+				{
+					target: '#moodTracker_tour_6',
+					header: {
+						title: 'Ajouter une entrée'
+					},
+					content: 'Puis cliques simplement sur "Enregistrer"! Une entrée sera alors crée dans le calendrier. Tu peux avoir plusieurs entrée par jour. Pour supprimer une entrée, double clic sur celle-ci!',
+					params: {
+						highlight: true,
+						placement: 'top'
+					}
+				}
+			]
+		}
+	},
+	mounted() {
+		if (!this.$cookies.get('moodTrackerTour')) {
+			this.$tours['moodTrackerOnboarding'].start()
+		}
+		if (this.$store.state.moodTrackerData.length <= 0) {
+			this.$store.dispatch('getMoods')
 		}
 	},
 	methods: {
+		tourFinished: function() {
+			this.$cookies.set('moodTrackerTour', true)
+		},
+		getLabel: function(customData) {
+			let label = customData.time
+			if (customData.comment) {
+				label += ` - ${customData.comment}`
+			}
+			return label
+		},
 		nextPage(page) {
+			this.calculateScore(page.month, page.year)
+		},
+		calculateScore(month, year) {
 			this.score = 100
-			const daysInMonth = new Date(page.year, page.month, 0).getDate()
-			const monthData = this.$store.getters.getMoodDataByMonth(page.month, page.year)
+			const daysInMonth = new Date(year, month, 0).getDate()
+			const monthData = this.$store.getters.getMoodDataByMonth(month, year)
 
 			for (let i = 1; i <= daysInMonth; i++) {
 				if (i in monthData) {
@@ -126,7 +243,6 @@ export default {
 								modifier = 0
 								return
 						}
-
 						this.score = commons.clamp(this.score + modifier, 0, 100)
 					}
 				}
@@ -161,13 +277,17 @@ export default {
 					break
 				default:
 					this.selected = ''
+					this.comment = ''
 					return
 			}
 			this.$store.dispatch('addNewMoodEntry', {
 				date: this.date,
-				icon: icon
+				icon: icon,
+				comment: this.comment
 			})
 			this.selected = ''
+			this.comment = ''
+			this.calculateScore(this.date.getMonth() + 1, this.date.getFullYear())
 		}
 	}
 }
@@ -242,6 +362,11 @@ export default {
 </style>
 
 <style>
+input {
+	width: 100% !important;
+	display: flex !important;
+	flex-grow: 1 !important;
+}
 .vc-container {
 	background-color: var(--secondary-bg-color) !important;
 	border-radius: unset !important;

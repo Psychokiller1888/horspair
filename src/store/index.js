@@ -168,7 +168,7 @@ const store = new Vuex.Store({
 				}
 			})
 		},
-		addNewMoodEntry({commit}, data) {
+		async addNewMoodEntry({commit}, data) {
 			let key = 0
 			for (const entry of this.state.moodTrackerData) {
 				if (entry.key > key) {
@@ -180,19 +180,97 @@ const store = new Vuex.Store({
 				customData: {
 					time: `${commons.addZeroBefore(data.date.getHours())}:${commons.addZeroBefore(data.date.getMinutes())}`,
 					icon: data.icon,
+					comment: data.comment,
 					class: 'calendar-icon'
 				},
 				dates: data.date
 			}
-			commit('addMood', newEntry)
-		},
-		deleteMoodEntry({commit}, key) {
-			for (const [index, entry] of  Object.entries(this.state.moodTrackerData)) {
-				if (entry.key === key) {
-					commit('removeMood', index)
-					break
+			await axiosInstance.put(`/moodTracker/${Vue.$cookies.get('userId')}/`, {
+				mood: data.icon,
+				date: data.date.toString(),
+				comment: data.comment
+			}).then(async response => {
+				if (response.status !== 200) {
+					Vue.notify({
+						title: 'Erreur',
+						type: 'error',
+						text: 'Une erreur est survenue au moment de l\'enregistrement'
+					})
+				} else {
+					Vue.notify({
+						title: 'Succès',
+						type: 'success',
+						text: 'Ton humeur a bien été enregistrée!'
+					})
+					newEntry.key = response.data.insertId
+					await commit('addMood', newEntry)
 				}
-			}
+			}).catch(async (_reason) => {
+				Vue.notify({
+					title: 'Erreur',
+					type: 'error',
+					text: 'Une erreur est survenue au moment de l\'enregistrement'
+				})
+				throw new Error()
+			})
+		},
+		async deleteMoodEntry({commit}, key) {
+			await axiosInstance.get(`/moodTracker/${Vue.$cookies.get('userId')}/${key}/`).then(async response => {
+				if (response.status !== 200) {
+					Vue.notify({
+						title: 'Erreur',
+						type: 'error',
+						text: 'Une erreur est survenue au moment de la suppression de \'entrée'
+					})
+				} else {
+					for (const [index, entry] of Object.entries(this.state.moodTrackerData)) {
+						if (entry.key === key) {
+							commit('removeMood', index)
+							break
+						}
+					}
+				}
+			}).catch(async (_reason) => {
+				Vue.notify({
+					title: 'Erreur',
+					type: 'error',
+					text: 'Une erreur est survenue au moment de la suppression de \'entrée'
+				})
+				throw new Error()
+			})
+		},
+		async getMoods({commit}) {
+			await axiosInstance.get(`/moodTracker/${Vue.$cookies.get('userId')}/`).then(async response => {
+				if (response.status !== 200) {
+					Vue.notify({
+						title: 'Erreur',
+						type: 'error',
+						text: 'Une erreur est survenue au moment de la récupération des données'
+					})
+				} else {
+					for (const mood of response.data) {
+						const date = new Date(mood['date'])
+						let newEntry = {
+							key: mood['id'],
+							customData: {
+								time: `${commons.addZeroBefore(date.getHours())}:${commons.addZeroBefore(date.getMinutes())}`,
+								icon: mood['mood'],
+								comment: mood['comment'],
+								class: 'calendar-icon'
+							},
+							dates: date
+						}
+						await commit('addMood', newEntry)
+					}
+				}
+			}).catch(async (_reason) => {
+				Vue.notify({
+					title: 'Erreur',
+					type: 'error',
+					text: 'Une erreur est survenue au moment de la récupération des données'
+				})
+				throw new Error()
+			})
 		}
 	},
 	mutations: {
@@ -215,13 +293,13 @@ const store = new Vuex.Store({
 			state.user = Object.assign({}, state.user, userdata)
 		},
 		addFriend(state, data) {
-			axiosInstance.put(`/friends/${state.user.id}/`).then(response => {
+			axiosInstance.put(`/friends/${state.user.id}/`).then(() => {
 				data.data['pendingInvite'] = true
 				state.friends[data.email] = data.data
 			})
 		},
 		addTherapist(state, data) {
-			axiosInstance.put(`/therapists/${state.user.id}/`).then(response => {
+			axiosInstance.put(`/therapists/${state.user.id}/`).then(() => {
 				data.data['pendingInvite'] = true
 				state.therapists[data.email] = data.data
 			})

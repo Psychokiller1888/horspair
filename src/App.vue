@@ -115,6 +115,14 @@ a {
 	margin-bottom: 10px;
 }
 
+.textAreaWrapper {
+	height: 200px;
+	overflow: hidden;
+	align-items: unset;
+	padding-top: 5px;
+	box-sizing: border-box;
+}
+
 .textBlock {
 	font-size: 1.1em;
 	width: 500px;
@@ -127,7 +135,8 @@ a {
 }
 
 input,
-select {
+select,
+textarea {
 	display: flex;
 	flex-grow: 1;
 	outline: none;
@@ -142,6 +151,13 @@ select {
 	width: 100%;
 	color: var(--main-text-color);
 	cursor: pointer;
+	resize: none;
+}
+
+textarea {
+	text-align: left;
+	padding: 15px;
+	box-sizing: border-box;
 }
 
 input:focus,
@@ -257,5 +273,9 @@ button {
 
 .hidden {
 	display: none;
+}
+
+.v-tour__target--highlighted {
+	box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75) !important;
 }
 </style>
