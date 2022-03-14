@@ -182,6 +182,7 @@ const store = new Vuex.Store({
 		async addNewMoodEntry({commit}, data) {
 			let key = 0
 			for (const entry of this.state.moodTrackerData) {
+				console.log(entry)
 				if (entry.key > key) {
 					key = entry.key
 				}
@@ -245,12 +246,13 @@ const store = new Vuex.Store({
 				Vue.notify({
 					title: 'Erreur',
 					type: 'error',
-					text: 'Une erreur est survenue au moment de la suppression de \'entrée'
+					text: 'Une erreur est survenue au moment de la suppression de l\'entrée'
 				})
 				throw new Error()
 			})
 		},
 		async getMoods({commit}) {
+			commit('eraseMoods')
 			await axiosInstance.get(`/moodTracker/${Vue.$cookies.get('userId')}/`).then(async response => {
 				if (response.status !== 200) {
 					Vue.notify({
@@ -329,6 +331,9 @@ const store = new Vuex.Store({
 		},
 		removeMood(state, index) {
 			Vue.delete(state.moodTrackerData, index)
+		},
+		eraseMoods(state) {
+			state.moodTrackerData = []
 		}
 	},
 	plugins:   [vuexLocalStorage.plugin]

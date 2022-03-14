@@ -40,6 +40,7 @@ export default {
 		width: 100%;
 		background-color: rgb(131, 131, 141);
 		position: fixed;
+		z-index: 99999;
 		left: 0;
 		bottom: 0;
 		height: 75px;

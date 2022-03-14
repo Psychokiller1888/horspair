@@ -159,8 +159,8 @@ export default {
 						placement: 'top'
 					},
 					before: type => new Promise((resolve) => {
-						this.selected = 2
-						const text = 'Super journée avec mes amis'
+						this.comment = ''
+						const text = 'Découverte de l\'outil de suivis d\'humeur!'
 						const self = this
 						let time = 0
 						for (let i = 0; i <= text.length - 1; i++) {
@@ -169,6 +169,7 @@ export default {
 								self.comment += text[i]
 							}, time)
 						}
+						this.selected = 0
 						resolve()
 					})
 				},
@@ -190,9 +191,8 @@ export default {
 		if (!this.$cookies.get('moodTrackerTour')) {
 			this.$tours['moodTrackerOnboarding'].start()
 		}
-		if (this.$store.state.moodTrackerData.length <= 0) {
-			this.$store.dispatch('getMoods')
-		}
+		this.$store.dispatch('getMoods')
+		console.log('mounted')
 	},
 	methods: {
 		tourFinished: function() {
@@ -252,6 +252,7 @@ export default {
 			this.$store.dispatch('deleteMoodEntry', key)
 		},
 		save() {
+			this.$tours['moodTrackerOnboarding'].stop()
 			let icon
 			switch(this.selected) {
 				case -3:
