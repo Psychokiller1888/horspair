@@ -53,25 +53,33 @@
 <script>
 
 import Vue from 'vue'
+import { mapActions } from 'vuex'
 
 export default {
 	name: 'Nav',
 	mounted() {
+		this.$store.commit('connecting', false)
+
 		if (!this.$store.state.user && this.$cookies.get('accessToken')) {
-			this.$store.state.axios.post(`/relogin/${this.$cookies.get('userId')}/`).then(response => {
-				this.$store.commit('connect', response.data.userData)
-				Vue.$cookies.set('userId', response.data['userData']['id'])
-				Vue.$cookies.set('accessToken', response.data['accessToken'])
-				Vue.$cookies.set('refreshToken', response.data['refreshToken'])
-			}).catch()
+			const User = new FormData()
+			User.append('userId', Vue.$cookies.get('userId'))
+			this.login(User)
 		}
 	},
 	methods: {
+		...mapActions(['login']),
 		openDiscord: function() {
 			window.open('https://discord.gg/F363MtabM5')
 		},
 		openSubMenu: function() {
 			this.$refs.appsSubMenu.classList.contains('extended') ? this.$refs.appsSubMenu.classList.remove('extended') : this.$refs.appsSubMenu.classList.add('extended')
+		}
+	},
+	watch: {
+		'$route' () {
+			if (this.$refs.appsSubMenu){
+				this.$refs.appsSubMenu.classList.remove('extended')
+			}
 		}
 	}
 }

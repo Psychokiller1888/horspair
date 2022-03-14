@@ -107,7 +107,7 @@ export default {
 					content: 'Bienvenue sur ton traqueur d\'humeur! Il te servira a enregistrer tes différentes humeurs au fil des jours et te permettra d\'agir en conséquence',
 					params: {
 						highlight: true,
-						placement: 'top'
+						placement: 'left'
 					}
 				},
 				{

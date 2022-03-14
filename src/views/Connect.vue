@@ -39,31 +39,26 @@ export default {
 			if (this.$store.state.connecting) {
 				return
 			}
-
 			const User = new FormData()
 			User.append('email', this.form.email)
 			User.append('password', this.form.password)
 			try {
-				try {
-					await this.login(User).then(() => {
-						this.$refs.loginContainer.classList.add('shrinkAway')
-						const self = this
-						setTimeout(function() {
-							self.$refs.loginContainer.classList.remove('shrinkAway')
-							self.$router.push('/')
-						}, 500)
-					})
-				} catch (error) {
-					this.$refs.loginContainer.classList.add('shake')
-					this.$refs.loginContainer.classList.add('redBorders')
+				await this.login(User).then(() => {
+					this.$refs.loginContainer.classList.add('shrinkAway')
 					const self = this
 					setTimeout(function() {
-						self.$refs.loginContainer.classList.remove('shake')
-						self.$refs.loginContainer.classList.remove('redBorders')
+						self.$refs.loginContainer.classList.remove('shrinkAway')
+						self.$router.push('/')
 					}, 500)
-				}
+				})
 			} catch (error) {
-				return
+				this.$refs.loginContainer.classList.add('shake')
+				this.$refs.loginContainer.classList.add('redBorders')
+				const self = this
+				setTimeout(function() {
+					self.$refs.loginContainer.classList.remove('shake')
+					self.$refs.loginContainer.classList.remove('redBorders')
+				}, 500)
 			}
 		},
 		cancel: function() {

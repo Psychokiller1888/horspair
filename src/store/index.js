@@ -19,10 +19,14 @@ const axiosInstance = axios.create({
 })
 axiosInstance.interceptors.request.use(async config => {
 	config.headers = {
-		'Authorization': `Bearer ${Vue.$cookies.get('accessToken')}`,
 		'Accept': 'application/json',
 		'Content-Type': 'application/json'
 	}
+
+	if (Vue.$cookies.get('accessToken')) {
+		config.headers['Authorization'] = `Bearer ${Vue.$cookies.get('accessToken')}`
+	}
+
 	return config
 }, error => {
 	return Promise.reject(error)
@@ -49,6 +53,8 @@ axiosInstance.interceptors.response.use(response => {
 		}
 		await router.push({path: error.response.data['redirectTo']})
 		return
+	} else {
+		store.commit('disconnect')
 	}
 	return Promise.reject(error)
 })
@@ -110,6 +116,11 @@ const store = new Vuex.Store({
 			await axiosInstance.post('/login/', Data).then(async response => {
 				if (response.status !== 200) {
 					commit('connectionError', true)
+					Vue.notify({
+						title: 'Erreur',
+						type: 'error',
+						text: 'Erreur de connexion.'
+					})
 				} else {
 					Vue.$cookies.set('userId', response.data['userData']['id'])
 					Vue.$cookies.set('accessToken', response.data['accessToken'])
@@ -129,7 +140,7 @@ const store = new Vuex.Store({
 				Vue.notify({
 					title: 'Erreur',
 					type: 'error',
-					text: 'Erreur de connexion. Vérifies ton adresse email et ton mot de passe'
+					text: 'Erreur de connexion.'
 				})
 				throw new Error()
 			}).finally(() => {
@@ -215,12 +226,12 @@ const store = new Vuex.Store({
 			})
 		},
 		async deleteMoodEntry({commit}, key) {
-			await axiosInstance.get(`/moodTracker/${Vue.$cookies.get('userId')}/${key}/`).then(async response => {
+			await axiosInstance.delete(`/moodTracker/${key}/`).then(async response => {
 				if (response.status !== 200) {
 					Vue.notify({
 						title: 'Erreur',
 						type: 'error',
-						text: 'Une erreur est survenue au moment de la suppression de \'entrée'
+						text: 'Une erreur est survenue au moment de la suppression de l\'entrée'
 					})
 				} else {
 					for (const [index, entry] of Object.entries(this.state.moodTrackerData)) {
