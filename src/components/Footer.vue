@@ -13,13 +13,13 @@ import Vue from 'vue'
 export default {
 	name: 'Nav',
 	mounted() {
-		if (Vue.$cookies.get('ackCookies')) {
+		if (Vue.$cookies.get('k_a_c')) {
 			this.$refs.ackCookies.classList.add('hidden')
 		}
 	},
 	methods: {
 		ackCookies: function() {
-			Vue.$cookies.set('ackCookies', true)
+			Vue.$cookies.set('k_a_c', true)
 			this.$refs.ackCookies.classList.add('hidden')
 		}
 	}

@@ -83,7 +83,6 @@ export default {
 			masks: {
 				weekdays: "WWWW"
 			},
-			attributes: this.$store.state.moodTrackerData,
 			tourCallbacks: {
 				onFinish: this.tourFinished,
 				onStop: this.tourFinished,
@@ -187,16 +186,20 @@ export default {
 			]
 		}
 	},
+	computed: {
+		attributes: function() {
+			return this.$store.state.moodTrackerData
+		}
+	},
 	mounted() {
-		if (!this.$cookies.get('moodTrackerTour')) {
+		if (!this.$cookies.get('k_m_t_onboarding')) {
 			this.$tours['moodTrackerOnboarding'].start()
 		}
 		this.$store.dispatch('getMoods')
-		console.log('mounted')
 	},
 	methods: {
 		tourFinished: function() {
-			this.$cookies.set('moodTrackerTour', true)
+			this.$cookies.set('k_m_t_onboarding', true)
 		},
 		getLabel: function(customData) {
 			let label = customData.time

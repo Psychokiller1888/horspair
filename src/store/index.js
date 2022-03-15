@@ -182,7 +182,6 @@ const store = new Vuex.Store({
 		async addNewMoodEntry({commit}, data) {
 			let key = 0
 			for (const entry of this.state.moodTrackerData) {
-				console.log(entry)
 				if (entry.key > key) {
 					key = entry.key
 				}
@@ -300,7 +299,11 @@ const store = new Vuex.Store({
 			state.user = null
 			state.friends = {}
 			state.therapists = {}
-			Vue.$cookies.keys().forEach(cookie => Vue.$cookies.remove(cookie))
+			Vue.$cookies.keys().forEach(cookie => {
+				if (!cookie.startsWith('k_')) {
+					Vue.$cookies.remove(cookie)
+				}
+			})
 		},
 		updateProfile(state, userdata) {
 			state.user = Object.assign({}, state.user, userdata)
