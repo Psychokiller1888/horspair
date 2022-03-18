@@ -189,9 +189,9 @@
 						</select>
 					</div>
 				</div>
-				<p class="confirmCancelButtonsWrapper">
+				<p class="confirmCancelButtonsWrapper" style="width: 250px;">
 					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addAvailability" v-if="daysToAdd.length > 0"/>
-					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelAddAvailability"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelAddAvailability" v-if="daysToAdd.length > 0"/>
 				</p>
 				<div class="weekday" v-for="day in availableDays" :key="day[0]">
 					<div class="weekdayCell">{{ day[1] }}</div>
@@ -411,7 +411,13 @@ export default {
 			this.$store.dispatch('deleteGuardianAvailability', id)
 		},
 		addAvailability: function() {
-
+			for (const weekDay of this.daysToAdd) {
+				this.$store.dispatch('addGuardianAvailability', {
+					weekDay: weekDay,
+					start: `${this.guardianAvailabilityHoursStart}:${this.guardianAvailabilityMinutesStart}`,
+					end: `${this.guardianAvailabilityHoursEnd}:${this.guardianAvailabilityMinutesEnd}`
+				})
+			}
 		},
 		cancelAddAvailability: function() {
 			this.daysToAdd = []

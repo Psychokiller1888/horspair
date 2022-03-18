@@ -70,11 +70,7 @@ const store = new Vuex.Store({
 		friends:         {},
 		moodTrackerData: [],
 		guardianAvailabilities: {
-			0: [{
-				id: 1,
-				start: '14:15',
-				end: '17:30'
-			}],
+			0: [],
 			1: [],
 			2: [],
 			3: [],
@@ -318,6 +314,9 @@ const store = new Vuex.Store({
 				throw new Error()
 			})
 		},
+		addGuardianAvailability({commit}, data) {
+			commit('addGuardianAvailability', data)
+		},
 		deleteGuardianAvailability({commit, state}, id) {
 			commit('deleteGuardianAvailability', id)
 		}
@@ -377,6 +376,14 @@ const store = new Vuex.Store({
 		},
 		setGuardian(state, isGuardian) {
 			state.user.isGuardian = isGuardian
+		},
+		addGuardianAvailability(state, data) {
+			state.guardianAvailabilities[data.weekDay].push({
+				//id: data.id,
+				id: 1,
+				start: data.start,
+				end: data.end
+			})
 		},
 		deleteGuardianAvailability(state, id) {
 			for (let i = 0; i <= 6; i++) {
