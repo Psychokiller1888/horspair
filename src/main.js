@@ -9,6 +9,7 @@ import { ToggleButton } from 'vue-js-toggle-button'
 import VueCookies from 'vue-cookies'
 import Notifications from 'vue-notification'
 import VCalendar from 'v-calendar'
+import PrettyRadio from 'pretty-checkbox-vue/radio'
 import VueTour from 'vue-tour'
 require('vue-tour/dist/vue-tour.css')
 
@@ -100,6 +101,7 @@ library.add(
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('tooltip', VueCustomTooltip)
 Vue.component('toggle', ToggleButton)
+Vue.component('p-radio', PrettyRadio)
 
 Vue.use(VueTour)
 Vue.use(VueCookies)

@@ -219,6 +219,10 @@ button {
 	color: red;
 }
 
+.textJustified {
+	text-align: justify;
+}
+
 .shake {
 	animation: shake 0.5s;
 	animation-iteration-count: infinite;

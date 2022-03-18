@@ -68,7 +68,26 @@ const store = new Vuex.Store({
 		user:            null,
 		therapists:      {},
 		friends:         {},
-		moodTrackerData: []
+		moodTrackerData: [],
+		guardianAvailabilities: {
+			0: [
+				['17:00', '18:00'],
+				['21:00', '23:00']
+			],
+			1: [
+				['14:00', '16:00'],
+				['18:00', '23:00']
+			],
+			2: [
+				['08:00', '16:00']
+			],
+			3: [
+				['08:00', '16:00']
+			],
+			4: [],
+			5: [],
+			6: []
+		}
 	},
 	getters:   {
 		isConnected(state) {
@@ -283,6 +302,27 @@ const store = new Vuex.Store({
 				})
 				throw new Error()
 			})
+		},
+		async becomeGuardian({commit, state}) {
+			await axiosInstance.put(`/guardianAngel/${Vue.$cookies.get('userId')}/`).then(response => {
+				if (response.status !== 200) {
+					throw new Error()
+				} else {
+					commit('setGuardian', true)
+					Vue.notify({
+						title: 'Succès',
+						type: 'success',
+						text: `Bienvenu dans le programme de soutient ${state.user.firstname}!`
+					})
+				}
+			}).catch(async (_reason) => {
+				Vue.notify({
+					title: 'Erreur',
+					type: 'error',
+					text: 'Tu n\'as pas pu rejoindre le programme suite à une erreur.'
+				})
+				throw new Error()
+			})
 		}
 	},
 	mutations: {
@@ -337,6 +377,9 @@ const store = new Vuex.Store({
 		},
 		eraseMoods(state) {
 			state.moodTrackerData = []
+		},
+		setGuardian(state, isGuardian) {
+			state.user.isGuardian = isGuardian
 		}
 	},
 	plugins:   [vuexLocalStorage.plugin]

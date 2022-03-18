@@ -3,6 +3,7 @@
 		<div class="subMenu">
 			<ul>
 				<li @click="page = 'data'">Mes données</li>
+				<li @click="page = 'guardian'">Ange Gardien</li>
 				<li @click="page = 'therapists'">Mes thérapeutes</li>
 				<li @click="page = 'friends'">Mes amis</li>
 			</ul>
@@ -61,6 +62,112 @@
 					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Mettre à jour!" @click="update"/>
 					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
 				</p>
+			</div>
+			<div class="inputsWrapper" v-if="page === 'guardian'">
+				<p class="holderTitle">
+					Ange gardien
+				</p>
+				<p v-if="!$store.state.user.isGuardian" class="textJustified">
+					Tu peux rejoindre le programme "Ange gardien"! C'est quoi un ange gardien? C'est une personne comme toi qui se met volontairement à disposition d'autres personnes en besoin urgent. Tu peux renseigner les jours ainsi que créneaux horaires où tu es disponible et tu seras contacté(e) par email pour te prévenir si quelqu'un cherche du soutient. Tu restes bien entendu libre d'accepter, de refuser ou d'ignorer la demande. Si personne n'est disponible pour soutenir la personne en demande, elle sera redirigée vers les institutions officielles.<br>
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Rejoindre le programme" @click="becomeGuardian"/>
+				</p>
+				<p v-if="$store.state.user.isGuardian" class="textJustified">
+					Tu fais partie des anges gardiens! Défini ici tes disponibilités et tu seras avertis, par email, si quelqu'un cherche de l'aide pendant tes créneaux horaires.
+				</p>
+			</div>
+			<div class="inputsWrapper" style="width: auto; min-width: 1000px;" v-if="page === 'guardian'">
+				<p class="holderTitle">
+					Mes disponibilités
+				</p>
+				<div class="newAvailabilityDaysSelectors">
+					<p-radio name="radio" color="info">radio</p-radio>
+				</div>
+				<div class="newAvailabilityHoursSelectors">
+					<div style="margin: 0 15px 0 0;">
+						De
+					</div>
+					<div>
+						<select name="hourStart">
+							<option>0</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+							<option>11</option>
+							<option>12</option>
+							<option>13</option>
+							<option>14</option>
+							<option>15</option>
+							<option>16</option>
+							<option>17</option>
+							<option>18</option>
+							<option>19</option>
+							<option>20</option>
+							<option>21</option>
+							<option>22</option>
+							<option>23</option>
+						</select>
+					</div>
+					<div>
+						<select name="minuteStart">
+							<option>00</option>
+							<option>15</option>
+							<option>30</option>
+							<option>45</option>
+						</select>
+					</div>
+					<div style="margin: 0 15px 0 15px;">
+						à
+					</div>
+					<div>
+						<select name="hourEnd">
+							<option>0</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+							<option>11</option>
+							<option>12</option>
+							<option>13</option>
+							<option>14</option>
+							<option>15</option>
+							<option>16</option>
+							<option>17</option>
+							<option>18</option>
+							<option>19</option>
+							<option>20</option>
+							<option>21</option>
+							<option>22</option>
+							<option>23</option>
+						</select>
+					</div>
+					<div>
+						<select name="minuteEnd">
+							<option>00</option>
+							<option>15</option>
+							<option>30</option>
+							<option>45</option>
+						</select>
+					</div>
+				</div>
+				<div class="weekday" v-for="day in availableDays" :key="day[0]">
+					<div class="weekdayCell">{{ day[1] }}</div>
+					<div class="weekdayCell dayAvailabilitiesList">
+						<div class="availableHours" v-for="(data, weekDay) in $store.state.guardianAvailabilities[day[0]]" :key="`${day[0]}_${weekDay}`"></div>
+					</div>
+				</div>
 			</div>
 			<div class="inputsWrapper" v-if="page === 'therapists'">
 				<p class="holderTitle">
@@ -125,12 +232,13 @@
 <script>
 import commons from '@/js/commons'
 import {mapActions} from 'vuex'
+import Vue from 'vue';
 
 export default {
 	name: 'Compte',
 	data: function() {
 		return {
-			page: 'data',
+			page: 'guardian',
 			firstname: this.$store.state.user['firstname'],
 			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
@@ -144,7 +252,16 @@ export default {
 			invalidPassword: false,
 			invalidPasswordControl: false,
 			newTherapistEmail: '',
-			newFriendEmail: ''
+			newFriendEmail: '',
+			availableDays: [
+				[1, 'Lundi'],
+				[2, 'Mardi'],
+				[3, 'Mercredi'],
+				[4, 'Jeudi'],
+				[5, 'Vendredi'],
+				[6, 'Samedi'],
+				[7, 'Dimanche']
+			]
 		}
 	},
 	computed: {
@@ -246,6 +363,9 @@ export default {
 		},
 		validatePasswordControl: function() {
 			this.invalidPasswordControl = this.invalidPassword || this.newPassword1 !== this.newPassword2
+		},
+		becomeGuardian: async function() {
+			await this.$store.dispatch('becomeGuardian')
 		}
 	}
 }
@@ -312,5 +432,32 @@ li:hover {
 	overflow: hidden;
 	padding: 10px;
 	box-sizing: border-box;
+}
+
+.weekday {
+	height: 75px;
+	min-height: 75px;
+	display: flex;
+	margin-bottom: 2px;
+}
+
+.weekdayCell {
+	padding: 15px;
+	box-sizing: border-box;
+	display: flex;
+	align-content: center;
+	align-items: center;
+	background-color: var(--tertiary-bg-color);
+	margin-right: 2px;
+	min-width: 120px;
+}
+
+.dayAvailabilitiesList {
+	width: 100%;
+}
+
+.newAvailabilityHoursSelectors {
+	display: flex;
+	margin-bottom: 25px;
 }
 </style>
