@@ -75,19 +75,46 @@
 					Tu fais partie des anges gardiens! Défini ici tes disponibilités et tu seras avertis, par email, si quelqu'un cherche de l'aide pendant tes créneaux horaires.
 				</p>
 			</div>
-			<div class="inputsWrapper" style="width: auto; min-width: 1000px;" v-if="page === 'guardian'">
+			<div class="inputsWrapper" style="width: auto; min-width: 1000px;" v-if="page === 'guardian' && $store.state.user.isGuardian">
 				<p class="holderTitle">
 					Mes disponibilités
 				</p>
-				<div class="newAvailabilityDaysSelectors">
-					<p-radio name="radio" color="info">radio</p-radio>
+				<div class="newAvailabilityDaysSelectors" >
+					<p class="inputWrapper">
+						<span>Lundi</span>
+						<input type="checkbox" v-model="daysToAdd" value="1"/>
+					</p>
+					<p class="inputWrapper">
+						<span>Mardi</span>
+						<input type="checkbox" v-model="daysToAdd" value="2"/>
+					</p>
+					<p class="inputWrapper">
+						<span>Mercredi</span>
+						<input type="checkbox" v-model="daysToAdd" value="3"/>
+					</p>
+					<p class="inputWrapper">
+						<span>Jeudi</span>
+						<input type="checkbox" v-model="daysToAdd" value="4"/>
+					</p>
+					<p class="inputWrapper">
+						<span>Vendredi</span>
+						<input type="checkbox" v-model="daysToAdd" value="5"/>
+					</p>
+					<p class="inputWrapper">
+						<span>Samedi</span>
+						<input type="checkbox" v-model="daysToAdd" value="6"/>
+					</p>
+					<p class="inputWrapper">
+						<span>Dimanche</span>
+						<input type="checkbox" v-model="daysToAdd" value="7"/>
+					</p>
 				</div>
 				<div class="newAvailabilityHoursSelectors">
 					<div style="margin: 0 15px 0 0;">
 						De
 					</div>
 					<div>
-						<select name="hourStart">
+						<select name="hourStart" v-model="guardianAvailabilityHoursStart">
 							<option>0</option>
 							<option>1</option>
 							<option>2</option>
@@ -115,7 +142,7 @@
 						</select>
 					</div>
 					<div>
-						<select name="minuteStart">
+						<select name="minuteStart" v-model="guardianAvailabilityMinutesStart">
 							<option>00</option>
 							<option>15</option>
 							<option>30</option>
@@ -126,7 +153,7 @@
 						à
 					</div>
 					<div>
-						<select name="hourEnd">
+						<select name="hourEnd" v-model="guardianAvailabilityHoursEnd">
 							<option>0</option>
 							<option>1</option>
 							<option>2</option>
@@ -154,7 +181,7 @@
 						</select>
 					</div>
 					<div>
-						<select name="minuteEnd">
+						<select name="minuteEnd" v-model="guardianAvailabilityMinutesEnd">
 							<option>00</option>
 							<option>15</option>
 							<option>30</option>
@@ -162,10 +189,16 @@
 						</select>
 					</div>
 				</div>
+				<p class="confirmCancelButtonsWrapper">
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addAvailability" v-if="daysToAdd.length > 0"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelAddAvailability"/>
+				</p>
 				<div class="weekday" v-for="day in availableDays" :key="day[0]">
 					<div class="weekdayCell">{{ day[1] }}</div>
 					<div class="weekdayCell dayAvailabilitiesList">
-						<div class="availableHours" v-for="(data, weekDay) in $store.state.guardianAvailabilities[day[0]]" :key="`${day[0]}_${weekDay}`"></div>
+						<div class="availableHours" v-for="data in $store.state.guardianAvailabilities[day[0]]" :key="data.id">
+							<font-awesome-icon :icon="['far', 'circle-xmark']" class="textButton" title="Supprimer" @click="deleteAvailability(data.id)"/>{{ data.start }} - {{ data.end }}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -260,9 +293,16 @@ export default {
 				[4, 'Jeudi'],
 				[5, 'Vendredi'],
 				[6, 'Samedi'],
-				[7, 'Dimanche']
-			]
+				[0, 'Dimanche']
+			],
+			daysToAdd: [],
+			guardianAvailabilityHoursStart: '0',
+			guardianAvailabilityHoursEnd: '0',
+			guardianAvailabilityMinutesStart: '00',
+			guardianAvailabilityMinutesEnd: '00'
 		}
+	},
+	mounted: function() {
 	},
 	computed: {
 		friendListPending: function() {
@@ -366,6 +406,19 @@ export default {
 		},
 		becomeGuardian: async function() {
 			await this.$store.dispatch('becomeGuardian')
+		},
+		deleteAvailability: function(id) {
+			this.$store.dispatch('deleteGuardianAvailability', id)
+		},
+		addAvailability: function() {
+
+		},
+		cancelAddAvailability: function() {
+			this.daysToAdd = []
+			this.guardianAvailabilityHoursStart = '0'
+			this.guardianAvailabilityHoursEnd = '0'
+			this.guardianAvailabilityMinutesStart = '00'
+			this.guardianAvailabilityMinutesEnd = '00'
 		}
 	}
 }
@@ -460,4 +513,21 @@ li:hover {
 	display: flex;
 	margin-bottom: 25px;
 }
+
+.newAvailabilityDaysSelectors {
+	display: flex;
+}
+
+.availableHours {
+	display: flex;
+	align-content: center;
+	align-items: center;
+	background-color: var(--secondary-text-color);
+	margin-right: 5px;
+	border: 1px solid var(--secondary-bg-color);
+	border-radius: 5px;
+	padding: 5px;
+	box-sizing: border-box;
+}
+
 </style>

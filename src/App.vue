@@ -134,9 +134,9 @@ a {
 	text-align: justify;
 }
 
-input,
-select,
-textarea {
+.inputWrapper > input,
+.inputWrapper > select,
+.inputWrapper > textarea {
 	display: flex;
 	flex-grow: 1;
 	outline: none;
@@ -154,32 +154,37 @@ textarea {
 	resize: none;
 }
 
-textarea {
+.inputWrapper > textarea {
 	text-align: left;
 	padding: 15px;
 	box-sizing: border-box;
 }
 
-input:focus,
-select:focus {
+.inputWrapper > input:focus,
+.inputWrapper > select:focus {
 	font-style: italic;
 }
 
-input:disabled,
-select:disabled {
+.inputWrapper > input:disabled,
+.inputWrapper > select:disabled {
 	color: var(--tertiary-text-color)
 }
 
 /* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+.inputWrapper > input::-webkit-outer-spin-button,
+.inputWrapper > input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+.inputWrapper > input[type=number] {
 	-moz-appearance: textfield;
+}
+
+.inputWrapper > input[type=checkbox] {
+	width: 18px;
+	min-width: 18px;
 }
 
 button {
@@ -209,6 +214,17 @@ button {
 	background-color: var(--secondary-bg-color);
 	color: var(--hover-text-color);
 	cursor: pointer;
+}
+
+.textButton {
+	color: var(--main-text-color);
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.textButton:hover {
+	cursor: pointer;
+	color: var(--hover-text-color);
 }
 
 .textCentered {

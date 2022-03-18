@@ -70,20 +70,14 @@ const store = new Vuex.Store({
 		friends:         {},
 		moodTrackerData: [],
 		guardianAvailabilities: {
-			0: [
-				['17:00', '18:00'],
-				['21:00', '23:00']
-			],
-			1: [
-				['14:00', '16:00'],
-				['18:00', '23:00']
-			],
-			2: [
-				['08:00', '16:00']
-			],
-			3: [
-				['08:00', '16:00']
-			],
+			0: [{
+				id: 1,
+				start: '14:15',
+				end: '17:30'
+			}],
+			1: [],
+			2: [],
+			3: [],
 			4: [],
 			5: [],
 			6: []
@@ -323,6 +317,9 @@ const store = new Vuex.Store({
 				})
 				throw new Error()
 			})
+		},
+		deleteGuardianAvailability({commit, state}, id) {
+			commit('deleteGuardianAvailability', id)
 		}
 	},
 	mutations: {
@@ -380,6 +377,16 @@ const store = new Vuex.Store({
 		},
 		setGuardian(state, isGuardian) {
 			state.user.isGuardian = isGuardian
+		},
+		deleteGuardianAvailability(state, id) {
+			for (let i = 0; i <= 6; i++) {
+				for (let j = 0; j <= state.guardianAvailabilities[i].length; j++) {
+					if (state.guardianAvailabilities[i][j].id === id) {
+						Vue.delete(state.guardianAvailabilities[i], j)
+						return
+					}
+				}
+			}
 		}
 	},
 	plugins:   [vuexLocalStorage.plugin]
