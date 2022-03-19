@@ -265,6 +265,7 @@
 <script>
 import commons from '@/js/commons'
 import {mapActions} from 'vuex'
+import Vue from 'vue';
 
 export default {
 	name: 'Compte',
@@ -410,12 +411,24 @@ export default {
 			this.$store.dispatch('deleteGuardianAvailability', id)
 		},
 		addAvailability: function() {
-			for (const weekDay of this.daysToAdd) {
-				this.$store.dispatch('addGuardianAvailability', {
-					'weekDay': weekDay,
-					'start': `${this.guardianAvailabilityHoursStart}${this.guardianAvailabilityMinutesStart}`,
-					'end': `${this.guardianAvailabilityHoursEnd}${this.guardianAvailabilityMinutesEnd}`
+			let start = `${this.guardianAvailabilityHoursStart}${this.guardianAvailabilityMinutesStart}`
+			let end = `${this.guardianAvailabilityHoursEnd}${this.guardianAvailabilityMinutesEnd}`
+
+			if (parseInt(end) <  parseInt(start)) {
+				Vue.notify({
+					title: 'Logique',
+					type:  'warning',
+					text:  "L'heure de fin ne peut pas être avant l'heure de début"
 				})
+			} else {
+				for (const weekDay of this.daysToAdd) {
+					this.$store.dispatch('addGuardianAvailability', {
+						'weekDay': weekDay,
+						'start': start,
+						'end': end
+					})
+				}
+				this.cancelAddAvailability()
 			}
 		},
 		cancelAddAvailability: function() {
