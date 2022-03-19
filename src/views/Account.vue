@@ -106,7 +106,7 @@
 					</p>
 					<p class="inputWrapper">
 						<span>Dimanche</span>
-						<input type="checkbox" v-model="daysToAdd" value="7"/>
+						<input type="checkbox" v-model="daysToAdd" value="0"/>
 					</p>
 				</div>
 				<div class="newAvailabilityHoursSelectors">
