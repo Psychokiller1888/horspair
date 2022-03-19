@@ -197,7 +197,7 @@
 					<div class="weekdayCell">{{ day[1] }}</div>
 					<div class="weekdayCell dayAvailabilitiesList">
 						<div class="availableHours" v-for="data in $store.state.guardianAvailabilities[day[0]]" :key="data.id">
-							<font-awesome-icon :icon="['far', 'circle-xmark']" class="textButton" title="Supprimer" @click="deleteAvailability(data.id)"/>{{ data.start }} - {{ data.end }}
+							<font-awesome-icon :icon="['far', 'circle-xmark']" class="textButton" title="Supprimer" @click="deleteAvailability(data.id)"/>{{ toFormattedTimeStr(data.start) }} - {{ toFormattedTimeStr(data.end) }}
 						</div>
 					</div>
 				</div>
@@ -265,7 +265,6 @@
 <script>
 import commons from '@/js/commons'
 import {mapActions} from 'vuex'
-import Vue from 'vue';
 
 export default {
 	name: 'Compte',
@@ -413,9 +412,9 @@ export default {
 		addAvailability: function() {
 			for (const weekDay of this.daysToAdd) {
 				this.$store.dispatch('addGuardianAvailability', {
-					weekDay: weekDay,
-					start: `${this.guardianAvailabilityHoursStart}:${this.guardianAvailabilityMinutesStart}`,
-					end: `${this.guardianAvailabilityHoursEnd}:${this.guardianAvailabilityMinutesEnd}`
+					'weekDay': weekDay,
+					'start': `${this.guardianAvailabilityHoursStart}${this.guardianAvailabilityMinutesStart}`,
+					'end': `${this.guardianAvailabilityHoursEnd}${this.guardianAvailabilityMinutesEnd}`
 				})
 			}
 		},
@@ -425,6 +424,10 @@ export default {
 			this.guardianAvailabilityHoursEnd = '0'
 			this.guardianAvailabilityMinutesStart = '00'
 			this.guardianAvailabilityMinutesEnd = '00'
+		},
+		toFormattedTimeStr: function (militaryTime) {
+			militaryTime = militaryTime.toString().padStart(4, '0')
+			return `${militaryTime.slice(0, 2)}:${militaryTime.slice(2)}`
 		}
 	}
 }

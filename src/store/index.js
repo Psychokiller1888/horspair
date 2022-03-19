@@ -70,13 +70,13 @@ const store = new Vuex.Store({
 		friends:         {},
 		moodTrackerData: [],
 		guardianAvailabilities: {
-			0: [],
 			1: [],
 			2: [],
 			3: [],
 			4: [],
 			5: [],
-			6: []
+			6: [],
+			0: []
 		}
 	},
 	getters:   {
@@ -142,6 +142,7 @@ const store = new Vuex.Store({
 					})
 					await commit('connect', response.data['userData'])
 					await commit('setFriendList', response.data['friendList'])
+					await commit('setGuardianAvailabilities', response.data['guardianAvailabilities'])
 					commit('connecting', false)
 				}
 			}).catch(async (_reason) => {
@@ -314,11 +315,48 @@ const store = new Vuex.Store({
 				throw new Error()
 			})
 		},
-		addGuardianAvailability({commit}, data) {
-			commit('addGuardianAvailability', data)
+		async addGuardianAvailability({commit}, data) {
+			await axiosInstance.post('/guardianAngel/availabilities/', data).then(response => {
+				if (response.status !== 200) {
+					throw new Error()
+				} else {
+					data.id = response.data.id
+					commit('addGuardianAvailability', data)
+					Vue.notify({
+						title: 'Succès',
+						type:  'success',
+						text:  'Disponibilités mise à jour!'
+					})
+				}
+			}).catch(error => {
+				console.log(error)
+				Vue.notify({
+					title: 'Erreur',
+					type:  'error',
+					text:  'Erreur au moment de la mise à jour'
+				})
+			})
 		},
-		deleteGuardianAvailability({commit, state}, id) {
-			commit('deleteGuardianAvailability', id)
+		async deleteGuardianAvailability({commit, state}, id) {
+			await axiosInstance.delete(`/guardianAngel/availabilities/${id}/`).then(response => {
+				if (response.status !== 200) {
+					throw new Error()
+				} else {
+					commit('deleteGuardianAvailability', id)
+					Vue.notify({
+						title: 'Succès',
+						type:  'success',
+						text:  `Disponibilité supprimée!`
+					})
+				}
+			}).catch(error => {
+				console.log(error)
+				Vue.notify({
+					title: 'Erreur',
+					type:  'error',
+					text:  'Erreur au moment de la suppression'
+				})
+			})
 		}
 	},
 	mutations: {
@@ -335,11 +373,22 @@ const store = new Vuex.Store({
 			state.user = null
 			state.friends = {}
 			state.therapists = {}
+			state.moodTrackerData = []
+			state.guardianAvailabilities = {
+				1: [],
+				2: [],
+				3: [],
+				4: [],
+				5: [],
+				6: [],
+				0: []
+			}
 			Vue.$cookies.keys().forEach(cookie => {
 				if (!cookie.startsWith('k_')) {
 					Vue.$cookies.remove(cookie)
 				}
 			})
+			window.localStorage.removeItem('vuex')
 		},
 		updateProfile(state, userdata) {
 			state.user = Object.assign({}, state.user, userdata)
@@ -365,6 +414,9 @@ const store = new Vuex.Store({
 		setFriendList(state, list) {
 			state.friends = list
 		},
+		setGuardianAvailabilities(state, list) {
+			state.guardianAvailabilities = list
+		},
 		addMood(state, data) {
 			state.moodTrackerData.push(data)
 		},
@@ -379,15 +431,14 @@ const store = new Vuex.Store({
 		},
 		addGuardianAvailability(state, data) {
 			state.guardianAvailabilities[data.weekDay].push({
-				//id: data.id,
-				id: 1,
+				id: data.id,
 				start: data.start,
 				end: data.end
 			})
 		},
 		deleteGuardianAvailability(state, id) {
 			for (let i = 0; i <= 6; i++) {
-				for (let j = 0; j <= state.guardianAvailabilities[i].length; j++) {
+				for (let j = 0; j < state.guardianAvailabilities[i].length; j++) {
 					if (state.guardianAvailabilities[i][j].id === id) {
 						Vue.delete(state.guardianAvailabilities[i], j)
 						return
