@@ -252,7 +252,9 @@ export default {
 			}
 		},
 		deleteEntry(key) {
-			this.$store.dispatch('deleteMoodEntry', key)
+			this.$store.dispatch('deleteMoodEntry', key).then(() => {
+				this.calculateScore(this.date.getMonth() + 1, this.date.getFullYear())
+			})
 		},
 		save() {
 			this.$tours['moodTrackerOnboarding'].stop()
@@ -288,10 +290,11 @@ export default {
 				date: this.date,
 				icon: icon,
 				comment: this.comment
+			}).then(() => {
+				this.selected = ''
+				this.comment = ''
+				this.calculateScore(this.date.getMonth() + 1, this.date.getFullYear())
 			})
-			this.selected = ''
-			this.comment = ''
-			this.calculateScore(this.date.getMonth() + 1, this.date.getFullYear())
 		}
 	}
 }
