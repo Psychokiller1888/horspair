@@ -247,6 +247,11 @@ const store = new Vuex.Store({
 					for (const [index, entry] of Object.entries(this.state.moodTrackerData)) {
 						if (entry.key === key) {
 							commit('removeMood', index)
+							Vue.notify({
+								title: 'Succès',
+								type: 'success',
+								text: 'Entrée supprimée'
+							})
 							break
 						}
 					}

@@ -54,7 +54,8 @@ import {
 	faPhone,
 	faTrashCan,
 	faTableCells,
-	faComment
+	faComment,
+	faCopyright
 } from '@fortawesome/pro-regular-svg-icons'
 
 import {
@@ -62,6 +63,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 
 library.add(
+	faCopyright,
 	faComment,
 	faTableCells,
 	faDiscord,
