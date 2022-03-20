@@ -399,13 +399,12 @@ const store = new Vuex.Store({
 			state.user = Object.assign({}, state.user, userdata)
 		},
 		addFriend(state, data) {
-			axiosInstance.put(`/friends/${state.user.id}/`).then(() => {
-				data.data['pendingInvite'] = true
+			axiosInstance.put(`/friends/${state.user.id}/`, data).then((response) => {
 				state.friends[data.email] = data.data
 			})
 		},
 		addTherapist(state, data) {
-			axiosInstance.put(`/therapists/${state.user.id}/`).then(() => {
+			axiosInstance.put(`/therapists/${state.user.id}/`, data).then(() => {
 				data.data['pendingInvite'] = true
 				state.therapists[data.email] = data.data
 			})

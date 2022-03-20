@@ -268,10 +268,10 @@ import {mapActions} from 'vuex'
 import Vue from 'vue';
 
 export default {
-	name: 'Compte',
+	name: 'account',
 	data: function() {
 		return {
-			page: 'guardian',
+			page: 'data',
 			firstname: this.$store.state.user['firstname'],
 			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
@@ -384,10 +384,7 @@ export default {
 		},
 		addFriend: function() {
 			this.$store.commit('addFriend', {
-				email: this.newFriendEmail,
-				data: {
-					email: this.newFriendEmail
-				}
+				email: this.newFriendEmail
 			})
 			this.cancelFriend()
 		},
