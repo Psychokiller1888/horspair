@@ -3,7 +3,7 @@
 		<div class="inputsWrapper" v-if="!serverError && !registrationDone && !confirmedAccount && !expiredLink && !invalidLink && !alreadyActive &&!wait">
 			<p class="inputWrapper" :class="{redBorders: invalidInvite}">
 				<span><font-awesome-icon :icon="['far', 'key-skeleton']" size="2x"/></span>
-				<input type="text" v-model="inviteCode" placeholder="Code d'invitation" @keyup="validate"/>
+				<input type="text" v-model="inviteCode" placeholder="Code d'invitation"/>
 			</p>
 			<div class="explanation" v-if="invalidInvite">Pour recevoir ton code d'invitation valide, parles en avec ton/ta thérapeute ou pose la question sur notre serveur Discord</div>
 			<p class="inputWrapper" :class="{redBorders: invalidFirstname}">
@@ -71,7 +71,7 @@ export default {
 			password2: '',
 			invalidFirstname: false,
 			invalidLastname: false,
-			invalidInvite: true,
+			invalidInvite: false,
 			invalidEmail: false,
 			invalidPassword: false,
 			invalidPasswordControl: false,
@@ -87,7 +87,7 @@ export default {
 	},
 	computed: {
 		allValid: function() {
-			return !this.invalidFirstname && !this.invalidLastname && !this.invalidInvite && !this.invalidEmail && !this.invalidPassword && !this.invalidPasswordControl
+			return !this.invalidFirstname && !this.invalidLastname && !this.invalidEmail && !this.invalidPassword && !this.invalidPasswordControl
 		}
 	},
 	methods: {
@@ -165,16 +165,12 @@ export default {
 			this.validateEmail()
 			this.validatePassword()
 			this.validatePasswordControl()
-			this.validateInviteCode()
 		},
 		validateFirstname: function() {
 			this.invalidFirstname = this.firstname.length <= 0
 		},
 		validateLastname: function() {
 			this.invalidLastname = this.lastname.length <= 0
-		},
-		validateInviteCode: function() {
-			this.invalidInvite = this.inviteCode.length !== 16
 		},
 		validateEmail: function() {
 			this.invalidEmail = !commons.isEmailValid(this.email)

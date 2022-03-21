@@ -362,7 +362,7 @@ const store = new Vuex.Store({
 			})
 		},
 		async addFriend({commit, state}, email) {
-			axiosInstance.put(`/friends/${state.user.id}/`, email).then((response) => {
+			axiosInstance.put(`/friends/${state.user.id}/`, {email: email}).then((response) => {
 				if (response.data.status === 'asked') {
 					Vue.notify({
 						title: 'Invité',
@@ -375,7 +375,15 @@ const store = new Vuex.Store({
 						type:  'success',
 						text:  'Nous avons envoyé ta demande d\'amitié à ton amis.'
 					})
+				} else {
+					throw new Error()
 				}
+			}).catch(() => {
+				Vue.notify({
+					title: 'Erreur',
+					type:  'error',
+					text:  'Nous n\'avons pas pu envoyer la demande à ton ami'
+				})
 			})
 		}
 	},
