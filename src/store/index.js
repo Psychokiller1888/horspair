@@ -53,8 +53,6 @@ axiosInstance.interceptors.response.use(response => {
 		}
 		await router.push({path: error.response.data['redirectTo']})
 		return
-	} else {
-		store.commit('disconnect')
 	}
 	return Promise.reject(error)
 })
@@ -362,6 +360,23 @@ const store = new Vuex.Store({
 					text:  'Erreur au moment de la suppression'
 				})
 			})
+		},
+		async addFriend({commit, state}, email) {
+			axiosInstance.put(`/friends/${state.user.id}/`, email).then((response) => {
+				if (response.data.status === 'asked') {
+					Vue.notify({
+						title: 'Invité',
+						type:  'success',
+						text:  'Ton amis n\'est pas encore membre de notre site. Nous lui avons envoyé un email pour l\'inviter à nous rejoindre.'
+					})
+				} else if (response.data.status === 'invited') {
+					Vue.notify({
+						title: 'Demande envoyée',
+						type:  'success',
+						text:  'Nous avons envoyé ta demande d\'amitié à ton amis.'
+					})
+				}
+			})
 		}
 	},
 	mutations: {
@@ -400,6 +415,13 @@ const store = new Vuex.Store({
 		},
 		addFriend(state, data) {
 			axiosInstance.put(`/friends/${state.user.id}/`, data).then((response) => {
+				if (response.data.status === 'asked') {
+					Vue.notify({
+						title: 'Succès',
+						type:  'success',
+						text:  `Disponibilité supprimée!`
+					})
+				}
 				state.friends[data.email] = data.data
 			})
 		},

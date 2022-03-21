@@ -383,9 +383,7 @@ export default {
 			this.$store.commit('removeTherapist', email)
 		},
 		addFriend: function() {
-			this.$store.commit('addFriend', {
-				email: this.newFriendEmail
-			})
+			this.$store.dispatch('addFriend', this.newFriendEmail)
 			this.cancelFriend()
 		},
 		deleteFriend: function(email) {
