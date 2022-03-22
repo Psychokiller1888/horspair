@@ -195,7 +195,10 @@ export default {
 		if (!this.$cookies.get('k_m_t_onboarding')) {
 			this.$tours['moodTrackerOnboarding'].start()
 		}
-		this.$store.dispatch('getMoods')
+		this.$store.dispatch('getMoods').then(() => {
+			const date = new Date()
+			this.calculateScore(date.getMonth() + 1, date.getFullYear())
+		})
 	},
 	methods: {
 		tourFinished: function() {
