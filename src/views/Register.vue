@@ -134,7 +134,7 @@ export default {
 						}
 					} else if (response.status === 500) {
 						self.serverError = true
-						message = 'Erreur du server, désolé....'
+						message = 'Erreur du serveur, désolé....'
 					}
 					Vue.notify({
 						title: 'Erreur',
