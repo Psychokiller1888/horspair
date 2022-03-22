@@ -114,7 +114,7 @@ export default {
 					header: {
 						title: 'Ta note mensuelle'
 					},
-					content: 'Ceci est ta note mensuelle. Le score maximum est de 100 et le minimum de 0. Le score est influencé par les bonnes ou mauvaises humeurs. Il est bien entendu préférable pour toi de garder un bon score! Si ton score descend trop, rajoute du peps à ta vie, fais quelque chose pour toi, qui te fais plaisir!',
+					content: 'Ceci est ta note mensuelle. Le score neutre est à 0. Le score est influencé par les bonnes ou mauvaises humeurs. Il est bien entendu préférable pour toi de garder un bon score positif! Si ton score descend trop, rajoute du peps à ta vie, fais quelque chose pour toi, qui te fais plaisir!',
 					params: {
 						highlight: true,
 						placement: 'top'
@@ -212,7 +212,7 @@ export default {
 			this.calculateScore(page.month, page.year)
 		},
 		calculateScore(month, year) {
-			this.score = 100
+			this.score = 0
 			const daysInMonth = new Date(year, month, 0).getDate()
 			const monthData = this.$store.getters.getMoodDataByMonth(month, year)
 
@@ -246,7 +246,7 @@ export default {
 								modifier = 0
 								return
 						}
-						this.score = commons.clamp(this.score + modifier, 0, 100)
+						this.score = commons.clamp(this.score + modifier, -100, 100)
 					}
 				}
 			}
