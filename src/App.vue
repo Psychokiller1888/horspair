@@ -25,6 +25,7 @@ export default {
 	--main-bg-color: #202124;
 	--secondary-bg-color: #303134;
 	--tertiary-bg-color: #737373;
+	--dark-bg-color: #1e1e1e;
 	--hover-bg-color: #434343;
 
 	--main-text-color: #d0d0d0;
@@ -32,8 +33,7 @@ export default {
 	--tertiary-text-color: #525252;
 	--hover-text-color: #a4a4a4;
 
-	--main-font: Montserrat, Helvetica, Arial, sans-serif;
-	--main-font-size: 1.1em;
+	--main-font: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
 html, body {
@@ -44,6 +44,10 @@ html, body {
 	padding: 0 15px 0 15px;
 	box-sizing: border-box;
 	height: 100%;
+	font-family: var(--main-font);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow: hidden;
 }
 
 #app {
@@ -58,11 +62,6 @@ a {
 
 .mainContainer {
 	margin-top: 15px;
-	font-family: var(--main-font);
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	color: var(--main-text-color);
-	font-size: var(--main-font-size);
 	line-height: 150%;
 	flex-grow: 1;
 }

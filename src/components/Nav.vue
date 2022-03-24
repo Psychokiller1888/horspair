@@ -1,52 +1,108 @@
 <template>
 	<div class="header">
-		<div class="logo" title="Par des HP pour des HP"></div>
-		<ul>
-			<router-link to="/">
-				<tooltip label="Accueil" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'house']" /></li></tooltip>
-			</router-link>
-			<router-link to="/temoignages">
-				<tooltip label="Témoignages" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'messages']" /></li></tooltip>
-			</router-link>
-
-			<tooltip label="Applications" position="is-bottom"><li class="button" v-if="$store.getters.isConnected">
-				<font-awesome-icon :icon="['far', 'table-cells']" @click="openSubMenu"/>
-				<div ref="appsSubMenu" class="navSubMenu">
-					<ul>
-						<router-link to="/traqueur" v-if="$store.getters.isConnected">
-							<tooltip label="Traqueur d'humeur" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'face-clouds']" /></li></tooltip>
+		<div class="siteMenu">
+			<span class="button" @mouseenter="openMenu('mainMenuExtended')">
+				<font-awesome-icon :icon="['far', 'bars']" class="fa-fw"/> HORSPAIR
+			</span>
+		</div>
+		<transition name="fade">
+			<div class="mainSubMenu" v-if="this.menusStates['mainMenuExtended']">
+				<div class="mainSubMenuContent">
+					<div class="mainSubMenuTitle button">
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="fa-fw" @click="closeMainMenu"/>HORSPAIR
+					</div>
+					<div class="mainSubMenuItem">
+						<router-link to="/">
+							<font-awesome-icon :icon="['far', 'house']" class="fa-fw"/> accueil
 						</router-link>
-						<router-link to="/emdr" v-if="$store.getters.isConnected">
-							<tooltip label="EMDR" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'eyes']" /></li></tooltip>
+					</div>
+					<div class="mainSubMenuItem">
+						<router-link to="/temoignages">
+							<font-awesome-icon :icon="['far', 'messages']" class="fa-fw"/> témoignages
 						</router-link>
-						<router-link to="/respiration" v-if="$store.getters.isConnected">
-							<tooltip label="Respiration accompagnée" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'face-exhaling']" /></li></tooltip>
-						</router-link>
-						<router-link to="/carnet" v-if="$store.getters.isConnected">
-							<tooltip label="Carnet de bord" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'memo-pad']" /></li></tooltip>
-						</router-link>
-						<router-link to="/notes" v-if="$store.getters.isConnected">
-							<tooltip label="Tâches" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'notes']" /></li></tooltip>
-						</router-link>
-					</ul>
+					</div>
+					<div class="mainSubMenuItem">
+						<font-awesome-icon :icon="['fab', 'discord']" class="fa-fw" @click="openDiscord"/> Discord
+					</div>
 				</div>
-			</li></tooltip>
-
-			<!--<tooltip label="Serveur Discord" position="is-bottom"><li class="button"><font-awesome-icon :icon="['fab', 'discord']" @click="openDiscord"/></li></tooltip>-->
-
-			<router-link to="/account" v-if="$store.getters.isConnected">
-				<tooltip label="Mon compte" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'circle-user']" /></li></tooltip>
-			</router-link>
-			<router-link to="/logout" v-if="$store.getters.isConnected">
-				<tooltip label="Déconnecter" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'right-from-bracket']" /></li></tooltip>
-			</router-link>
-			<router-link to="/signin" v-if="!$store.getters.isConnected">
-				<tooltip label="S'enregistrer" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'user-plus']" /></li></tooltip>
-			</router-link>
-			<router-link to="/login" v-if="!$store.getters.isConnected">
-				<tooltip label="Se connecter" position="is-bottom"><li class="button"><font-awesome-icon :icon="['far', 'right-to-bracket']" /></li></tooltip>
-			</router-link>
-		</ul>
+			</div>
+		</transition>
+		<div class="userMenu">
+			<ul>
+				<li class="button"><font-awesome-icon :icon="['far', 'bell']" v-if="$store.getters.isConnected && notifications.length <= 0" @mouseenter="openMenu('notificationsMenuExtended')"/></li>
+				<li class="button"><font-awesome-icon :icon="['far', 'bell-on']" v-if="$store.getters.isConnected && notifications.length > 0" @mouseenter="openMenu('notificationsMenuExtended')"/></li>
+				<li class="button"><font-awesome-icon :icon="['far', 'circle-user']" @mouseenter="openMenu('userMenuExtended')"/></li>
+			</ul>
+		</div>
+		<transition name="fade">
+			<div class="userSubMenu" v-if="this.menusStates['notificationsMenuExtended']">
+				<div v-if="notifications.length <= 0">
+					<div class="noNotification">
+						pas de notification
+					</div>
+				</div>
+			</div>
+		</transition>
+		<transition name="fade">
+			<div class="userSubMenu" v-if="this.menusStates['userMenuExtended']">
+				<div v-if="$store.getters.isConnected">
+					<div class="userSubMenuItem" style="margin-bottom: 2px;">
+						<div class="greetings">Salut {{ $store.state.user.firstname }}</div>
+						<div class="userEmail">{{ $store.state.user.email }}</div>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/account">
+							<font-awesome-icon :icon="['far', 'circle-user']" class="fa-fw"/> mon compte
+						</router-link>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/traqueur">
+							<font-awesome-icon :icon="['far', 'face-clouds']" class="fa-fw"/> tracker
+						</router-link>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/emdr">
+							<font-awesome-icon :icon="['far', 'eyes']" class="fa-fw"/> EMDR
+						</router-link>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/respiration">
+								<font-awesome-icon :icon="['far', 'face-exhaling']" class="fa-fw"/> Respiration
+						</router-link>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/carnet">
+							<font-awesome-icon :icon="['far', 'memo-pad']" class="fa-fw"/> Carnet de bord
+						</router-link>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/notes">
+							<font-awesome-icon :icon="['far', 'notes']" class="fa-fw"/> notes
+						</router-link>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/logout">
+							<font-awesome-icon :icon="['far', 'right-from-bracket']" class="fa-fw"/> se déconnecter
+						</router-link>
+					</div>
+				</div>
+				<div v-if="!$store.getters.isConnected">
+					<div class="userSubMenuItem" style="margin-bottom: 2px;">
+						<div class="greetings">Salut!</div>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/signin">
+							<font-awesome-icon :icon="['far', 'user-plus']" class="fa-fw"/> s'enregistrer
+						</router-link>
+					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/account">
+							<font-awesome-icon :icon="['far', 'circle-user']" class="fa-fw"/> se connecter
+						</router-link>
+					</div>
+				</div>
+			</div>
+		</transition>
 	</div>
 </template>
 
@@ -57,6 +113,16 @@ import { mapActions } from 'vuex'
 
 export default {
 	name: 'Nav',
+	data: function() {
+		return {
+			menusStates : {
+				'mainMenuExtended': false,
+				'userMenuExtended': false,
+				'notificationsMenuExtended': false
+			},
+			notifications: []
+		}
+	},
 	mounted() {
 		this.$store.commit('connecting', false)
 
@@ -65,20 +131,26 @@ export default {
 			User.append('userId', Vue.$cookies.get('userId'))
 			this.login(User)
 		}
+
+		const self = this
+		document.getRootNode().addEventListener('click', function() {
+			for (const menuItem of Object.keys(self.menusStates)) {
+				self.menusStates[menuItem] = false
+			}
+		})
 	},
 	methods: {
 		...mapActions(['login']),
 		openDiscord: function() {
 			window.open('https://discord.gg/F363MtabM5')
 		},
-		openSubMenu: function() {
-			this.$refs.appsSubMenu.classList.contains('extended') ? this.$refs.appsSubMenu.classList.remove('extended') : this.$refs.appsSubMenu.classList.add('extended')
-		}
-	},
-	watch: {
-		'$route' () {
-			if (this.$refs.appsSubMenu){
-				this.$refs.appsSubMenu.classList.remove('extended')
+		closeMainMenu: function() {
+			this.mainMenuExtended = false
+			return false
+		},
+		openMenu: function(menu) {
+			for (const menuItem of Object.keys(this.menusStates)) {
+				this.menusStates[menuItem] = menuItem === menu
 			}
 		}
 	}
@@ -93,7 +165,147 @@ export default {
 		background-color: var(--main-bg-color);
 		border-bottom: 1px solid var(--main-text-color);
 		z-index: 999;
+		box-sizing: border-box;
+		align-items: center;
+		padding: 20px 0;
 	}
+
+	.siteMenu {
+		font-size: 2em;
+		display: flex;
+		flex-grow: 1;
+	}
+
+	.userMenu {
+		font-size: 1.75em;
+		display: flex;
+	}
+
+	.button {
+		padding: 0;
+		border: unset;
+		background-color: unset;
+		text-decoration: none;
+		text-transform: uppercase;
+		transition-duration: 0.3s;
+	}
+
+	.button:hover {
+		background-color: unset;
+	}
+
+	svg {
+		margin-right: 20px;
+	}
+
+	ul {
+		padding: 0;
+		display: flex;
+		margin: 0;
+	}
+
+	li {
+		display: inline-block;
+		text-transform: uppercase;
+		margin: 0 0 0 10px;
+	}
+
+	.userSubMenu {
+		position: fixed;
+		top: 100px;
+		right: 25px;
+		min-width: 300px;
+		min-height: 150px;
+		background-color: var(--secondary-bg-color);
+		-webkit-box-shadow: 4px 4px 15px 1px rgba(0,0,0,0.82);
+		box-shadow: 4px 4px 15px 1px rgba(0,0,0,0.82);
+	}
+
+	.userSubMenuItem {
+		width: 100%;
+		padding: 15px 35px;
+		box-sizing: border-box;
+		background-color: var(--dark-bg-color);
+		font-size: 1.25em;
+		cursor: pointer;
+		transition-duration: 0.3s;
+	}
+
+	.userSubMenuItem:hover {
+		background-color: var(--secondary-bg-color);
+	}
+
+	a {
+		text-decoration: none;
+		text-transform: capitalize;
+	}
+
+	.greetings {
+		font-variant: small-caps;
+		font-size: 1.25em;
+		font-weight: bold;
+	}
+
+	.userEmail {
+		font-size: 0.75em;
+	}
+
+	.mainSubMenu {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+
+	.mainSubMenuContent {
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: 350px;
+		background-color: var(--dark-bg-color);
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	.mainSubMenuTitle {
+		font-size: 2em;
+		width: 350px;
+		background-color: var(--dark-bg-color);
+		padding: 25px;
+		box-sizing: border-box;
+		font-weight: bold;
+	}
+
+	.mainSubMenuItem {
+		font-size: 1.5em;
+		font-weight: bold;
+		height: 50px;
+		padding: 30px 30px;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		transition-duration: 0.3s;
+	}
+
+	.mainSubMenuItem:hover {
+		cursor: pointer;
+		background-color: var(--secondary-bg-color);
+	}
+
+	.noNotification {
+		display: flex;
+		flex-grow: 1;
+		align-items: center;
+		justify-content: center;
+		align-content: center;
+		height: 150px;
+		font-style: italic;
+		opacity: 0.5;
+	}
+
   .logo {
 		background-image: url('../assets/logo.png');
 		background-repeat: no-repeat;
@@ -101,57 +313,12 @@ export default {
 		width: 100px;
 		margin-top: 10px;
 	}
-	ul {
-		padding: 0;
-		display: flex;
-		justify-content: end;
-		align-items: center;
-		flex-grow: 1;
+
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .25s;
 	}
-	li {
-		font-family: var(--main-font), sans-serif;
-		font-weight: lighter;
-		font-size: 2em;
-		display: inline-block;
-		margin: 10px;
-		text-transform: uppercase;
-	}
-	.button {
-		padding: 0;
-		border: unset;
-		background-color: unset;
-	}
-	.button:hover {
-		background-color: unset;
-	}
-	.navSubMenu {
-		position: absolute;
-		background-color: var(--main-bg-color);
-		right: 0;
-		top: 75px;
-		overflow: hidden;
-		max-height: 0;
-		transition: max-height 1.5s, ease-in-out;
-		-webkit-transition: max-height 1.5s, ease-in-out;
-		-moz-transition: max-height 1.5s, ease-in-out;
-	}
-	.navSubMenu ul {
-		width: auto;
-	}
-	.navSubMenu li {
-		display: block;
-		width: 100%;
-		height: 50px;
-		font-size: 1em;
-	}
-	.navSubMenu .button {
-		display: block;
-		width: 100%;
-	}
-	.extended {
-		max-height: 250px;
-		transition: max-height 1.5s, ease-in-out;
-		-webkit-transition: max-height 1.5s, ease-in-out;
-		-moz-transition: max-height 1.5s, ease-in-out;
+
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
 	}
 </style>
