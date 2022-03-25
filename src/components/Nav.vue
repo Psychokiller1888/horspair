@@ -141,6 +141,7 @@ export default {
 				self.menusStates[menuItem] = false
 			}
 		})
+		document.oncontextmenu = new Function('return false')
 	},
 	methods: {
 		...mapActions(['login']),
