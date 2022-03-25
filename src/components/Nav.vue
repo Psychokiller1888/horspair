@@ -1,7 +1,7 @@
 <template>
 	<div class="header">
 		<div class="siteMenu">
-			<span class="button" @click.stop="openMenu('mainMenuExtended')">
+			<span class="button" @click.stop="toggleMenu('mainMenuExtended')">
 				<font-awesome-icon :icon="['far', 'bars']" class="fa-fw"/> HORSPAIR
 			</span>
 		</div>
@@ -9,7 +9,7 @@
 			<div class="mainSubMenu" v-if="this.menusStates['mainMenuExtended']">
 				<div class="mainSubMenuContent">
 					<div class="mainSubMenuTitle button">
-						<font-awesome-icon :icon="['far', 'circle-xmark']" class="fa-fw" @click="closeMainMenu"/>HORSPAIR
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="fa-fw" @click.stop="toggleMenu('mainMenuExtended')"/>HORSPAIR
 					</div>
 					<div class="mainSubMenuItem">
 						<router-link to="/">
@@ -32,9 +32,9 @@
 		</transition>
 		<div class="userMenu">
 			<ul>
-				<li class="button"><font-awesome-icon :icon="['far', 'bell']" v-if="$store.getters.isConnected && notifications.length <= 0" @click.stop="openMenu('notificationsMenuExtended')"/></li>
-				<li class="button"><font-awesome-icon :icon="['far', 'bell-on']" v-if="$store.getters.isConnected && notifications.length > 0" @click.stop="openMenu('notificationsMenuExtended')"/></li>
-				<li class="button"><font-awesome-icon :icon="['far', 'circle-user']" @click.stop="openMenu('userMenuExtended')"/></li>
+				<li class="button"><font-awesome-icon :icon="['far', 'bell']" v-if="$store.getters.isConnected && notifications.length <= 0" @click.stop="toggleMenu('notificationsMenuExtended')"/></li>
+				<li class="button"><font-awesome-icon :icon="['far', 'bell-on']" v-if="$store.getters.isConnected && notifications.length > 0" @click.stop="toggleMenu('notificationsMenuExtended')"/></li>
+				<li class="button"><font-awesome-icon :icon="['far', 'circle-user']" @click.stop="toggleMenu('userMenuExtended')"/></li>
 			</ul>
 		</div>
 		<transition name="fade">
@@ -147,13 +147,13 @@ export default {
 		openDiscord: function() {
 			window.open('https://discord.gg/F363MtabM5')
 		},
-		closeMainMenu: function() {
-			this.mainMenuExtended = false
-			return false
-		},
-		openMenu: function(menu) {
+		toggleMenu: function(menu) {
 			for (const menuItem of Object.keys(this.menusStates)) {
-				this.menusStates[menuItem] = menuItem === menu
+				if (menuItem === menu) {
+					this.menusStates[menuItem] = !this.menusStates[menuItem]
+				} else {
+					this.menusStates[menuItem] = false
+				}
 			}
 		}
 	}
