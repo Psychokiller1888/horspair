@@ -138,6 +138,7 @@ button:hover,
 	flex-wrap: wrap;
 	justify-content: space-around;
 	height: auto;
+	flex-grow: 1
 }
 
 .inputWrapper {

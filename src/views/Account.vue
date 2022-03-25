@@ -8,7 +8,7 @@
 				<li @click="page = 'friends'" :class="{'activeElement': page === 'friends'}">Mes amis</li>
 			</ul>
 			<div class="content">
-				<div v-if="page === 'data'" class="inputsWrapper">
+				<div class="inputsWrapper" v-if="page === 'data'">
 					<p class="inputWrapper">
 						<label for="firstname">
 							<font-awesome-icon :icon="['far', 'id-card']"/> Prénom
@@ -199,47 +199,22 @@
 						</div>
 					</div>
 				</div>
-				<div class="inputsWrapper" v-if="page === 'therapists'">
-					<p class="holderTitle">
-						Ajouter un thérapeute
-					</p>
-					<p class="inputWrapper" :class="{redBorders: !emailValid('therapist')}">
-						<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
-						<input type="text" v-model="newTherapistEmail" placeholder="Email"/>
-					</p>
-					<div class="explanation" v-if="newTherapistExists">Ce thérapeute existe déjà</div>
-					<p class="confirmCancelButtonsWrapper">
-						<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addTherapist" v-if="emailValid('therapist')"/>
-						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelTherapist"/>
-					</p>
-				</div>
-				<div class="inputsWrapper" style="width: auto; min-width: 150px;" v-if="page === 'therapists'">
-					<p class="holderTitle">
-						Mes thérapeutes
-					</p>
-					<div class="contactEntry" v-for="therapist in $store.state.therapists" :key="therapist.id">
-						<div class="contactName">{{ therapist.firstname }} {{ therapist.lastname }}</div>
-						<div class="contactEmail"><a :href="`mailto:${therapist.email}`">{{ therapist.email }}</a></div>
-						<div class="contactPhone"><a :href="`tel:${therapist.phone}`">{{ therapist.phone }}</a></div>
-						<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteTherapist(therapist.email)"/></div>
-					</div>
-				</div>
 				<div class="inputsWrapper" v-if="page === 'friends'">
-					<p class="holderTitle">
+					<p class="break">
 						Ajouter un ami
 					</p>
 					<p class="inputWrapper" :class="{redBorders: !emailValid('friend')}">
-						<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
-						<input type="text" v-model="newFriendEmail" placeholder="Email"/>
+						<label for="friendEmail">
+							<font-awesome-icon :icon="['far', 'at']"/> Email
+						</label>
+						<input id="friendEmail" type="text" v-model="newFriendEmail"/>
 					</p>
-					<div class="explanation" v-if="newFriendExists">Ce contact existe déjà</div>
-					<p class="confirmCancelButtonsWrapper">
+					<p class="break explanation" v-if="newFriendExists">Ce contact existe déjà</p>
+					<p class="buttonsWrapper">
 						<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addFriend" v-if="emailValid('friend')"/>
 						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelFriend"/>
 					</p>
-				</div>
-				<div class="inputsWrapper" style="width: auto; min-width: 150px;" v-if="page === 'friends'">
-					<p class="holderTitle">
+					<p class="break" v-if="friendListAccepted.length > 0 || friendListPending.length > 0">
 						Mes amis
 					</p>
 					<div class="contactEntry" v-for="friend in friendListAccepted" :key="friend.id">
@@ -253,6 +228,31 @@
 						<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
 						<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
 						<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
+					</div>
+				</div>
+				<div class="inputsWrapper" v-if="page === 'therapists'">
+					<p class="break">
+						Ajouter un thérapeute
+					</p>
+					<p class="inputWrapper" :class="{redBorders: !emailValid('therapist')}">
+						<label for="therapistEmail">
+							<font-awesome-icon :icon="['far', 'at']"/> Email
+						</label>
+						<input id="therapistEmail" type="text" v-model="newTherapistEmail"/>
+					</p>
+					<p class="break explanation" v-if="newTherapistExists">Ce thérapeute existe déjà</p>
+					<p class="buttonsWrapper">
+						<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addTherapist" v-if="emailValid('therapist')"/>
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelTherapist"/>
+					</p>
+					<p class="break" v-if="$store.state.therapists.length > 0">
+						Mes thérapeutes
+					</p>
+					<div class="contactEntry" v-for="therapist in $store.state.therapists" :key="therapist.id">
+						<div class="contactName">{{ therapist.firstname }} {{ therapist.lastname }}</div>
+						<div class="contactEmail"><a :href="`mailto:${therapist.email}`">{{ therapist.email }}</a></div>
+						<div class="contactPhone"><a :href="`tel:${therapist.phone}`">{{ therapist.phone }}</a></div>
+						<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteTherapist(therapist.email)"/></div>
 					</div>
 				</div>
 			</div>
@@ -269,7 +269,7 @@ export default {
 	name: 'account',
 	data: function() {
 		return {
-			page: 'guardian',
+			page: 'therapists',
 			firstname: this.$store.state.user['firstname'],
 			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
