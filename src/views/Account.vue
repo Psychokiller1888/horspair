@@ -269,7 +269,7 @@ export default {
 	name: 'account',
 	data: function() {
 		return {
-			page: 'therapists',
+			page: 'data',
 			firstname: this.$store.state.user['firstname'],
 			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
