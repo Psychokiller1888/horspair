@@ -9,7 +9,7 @@
 			<div class="mainSubMenu" v-if="this.menusStates['mainMenuExtended']">
 				<div class="mainSubMenuContent">
 					<div class="mainSubMenuTitle button">
-						<font-awesome-icon :icon="['far', 'circle-xmark']" class="fa-fw" @click.stop="toggleMenu('mainMenuExtended')"/>HORSPAIR
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="fa-fw" @click.stop="toggleMenu('mainMenuExtended')"/> HORSPAIR
 					</div>
 					<div class="mainSubMenuItem">
 						<router-link to="/">
@@ -277,9 +277,9 @@ export default {
 		font-size: 2em;
 		width: 350px;
 		background-color: var(--dark-bg-color);
-		padding: 25px;
+		padding: 20px 0 0 30px;
 		box-sizing: border-box;
-		font-weight: bold;
+		margin-bottom: 50px;
 	}
 
 	.mainSubMenuItem {
@@ -330,7 +330,7 @@ export default {
 	}
 
 	.fade-enter-active, .fade-leave-active {
-		transition: opacity .25s;
+		transition-duration: 0.3s;
 	}
 
 	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
