@@ -49,7 +49,7 @@ html, body {
 	font-family: var(--main-font);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 #app {
@@ -172,7 +172,8 @@ button:hover,
 }
 
 .inputWrapper > input,
-.inputWrapper > select {
+.inputWrapper > select,
+.inputWrapper > div > select {
 	display: flex;
 	flex-grow: 1;
 	outline: none;
@@ -213,8 +214,8 @@ button:hover,
 }
 
 .inputWrappers > input[type=checkbox] {
-	width: 18px;
-	min-width: 18px;
+	width: 12px;
+	min-width: 12px;
 }
 
 .inputWrapperTextBlock {
@@ -240,9 +241,6 @@ button:hover,
 .fullWidth {
 	flex-basis: 100%;
 }
-
-
-
 
 .calendar {
 	background: var(--main-bg-color) !important;

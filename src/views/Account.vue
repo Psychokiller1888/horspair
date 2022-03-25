@@ -80,140 +80,121 @@
 					</p>
 				</div>
 				<div class="inputsWrapper" v-if="page === 'guardian'">
-					<p class="holderTitle">
-						Ange gardien
-					</p>
-					<p v-if="!$store.state.user.isGuardian" class="textJustified">
-						Tu peux rejoindre le programme "Ange gardien"! C'est quoi un ange gardien? C'est une personne comme toi qui se met volontairement à disposition d'autres personnes en besoin urgent. Tu peux renseigner les jours ainsi que créneaux horaires où tu es disponible et tu seras contacté(e) par email pour te prévenir si quelqu'un cherche du soutient. Tu restes bien entendu libre d'accepter, de refuser ou d'ignorer la demande. Si personne n'est disponible pour soutenir la personne en demande, elle sera redirigée vers les institutions officielles.<br>
-						<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Rejoindre le programme" @click="becomeGuardian"/>
-					</p>
-					<p v-if="$store.state.user.isGuardian" class="textJustified">
-						Tu fais partie des anges gardiens! Défini ici tes disponibilités et tu seras avertis, par email, si quelqu'un cherche de l'aide pendant tes créneaux horaires.
-					</p>
-				</div>
-				<div class="inputsWrapper" style="width: auto; min-width: 1000px;" v-if="page === 'guardian' && $store.state.user.isGuardian">
-					<p class="holderTitle">
-						Mes disponibilités
-					</p>
-					<div class="newAvailabilityDaysSelectors" >
-						<p class="inputWrapper">
-							<span>Lundi</span>
-							<input type="checkbox" v-model="daysToAdd" value="1"/>
+					<div v-if="!$store.state.user.isGuardian" class="textJustified">
+						<p>
+							Tu peux rejoindre le programme "Ange gardien"!
 						</p>
-						<p class="inputWrapper">
-							<span>Mardi</span>
-							<input type="checkbox" v-model="daysToAdd" value="2"/>
+						<p>
+							C'est quoi un ange gardien? C'est une personne comme toi qui se met volontairement à disposition d'autres personnes en besoin urgent. Tu peux renseigner les jours ainsi que créneaux horaires où tu es disponible et tu seras contacté(e) par email pour te prévenir si quelqu'un cherche du soutient.
 						</p>
-						<p class="inputWrapper">
-							<span>Mercredi</span>
-							<input type="checkbox" v-model="daysToAdd" value="3"/>
-						</p>
-						<p class="inputWrapper">
-							<span>Jeudi</span>
-							<input type="checkbox" v-model="daysToAdd" value="4"/>
-						</p>
-						<p class="inputWrapper">
-							<span>Vendredi</span>
-							<input type="checkbox" v-model="daysToAdd" value="5"/>
-						</p>
-						<p class="inputWrapper">
-							<span>Samedi</span>
-							<input type="checkbox" v-model="daysToAdd" value="6"/>
-						</p>
-						<p class="inputWrapper">
-							<span>Dimanche</span>
-							<input type="checkbox" v-model="daysToAdd" value="0"/>
+						<p>
+							Tu restes bien entendu libre d'accepter, de refuser ou d'ignorer la demande. Si personne n'est disponible pour soutenir la personne en demande, elle sera redirigée vers les institutions officielles.<br>
+							<span class="buttonsWrapper" @click="becomeGuardian">
+								<span class="button">
+									Rejoindre le programme
+								</span>
+							</span>
 						</p>
 					</div>
-					<div class="newAvailabilityHoursSelectors">
-						<div style="margin: 0 15px 0 0;">
-							De
+					<div v-if="$store.state.user.isGuardian" class="textJustified">
+						<p>
+							Tu fais partie des anges gardiens! Défini ici tes disponibilités et tu seras avertis, par email, si quelqu'un cherche de l'aide pendant tes créneaux horaires.
+						</p>
+						<div class="newAvailabilityDaysSelectors">
+							<div id="monday" data-day="1" class="daySelector button" @click="toggleDay($event)">Lundi</div>
+							<div id="tuesday" data-day="2" class="daySelector button" @click="toggleDay($event)">Mardi</div>
+							<div id="wednesday" data-day="3" class="daySelector button" @click="toggleDay($event)">Mercredi</div>
+							<div id="thursday" data-day="4" class="daySelector button" @click="toggleDay($event)">Jeudi</div>
+							<div id="friday" data-day="5" class="daySelector button" @click="toggleDay($event)">Vendredi</div>
+							<div id="saturday" data-day="6" class="daySelector button" @click="toggleDay($event)">Samedi</div>
+							<div id="sunday" data-day="0" class="daySelector button" @click="toggleDay($event)">Dimanche</div>
 						</div>
-						<div>
-							<select name="hourStart" v-model="guardianAvailabilityHoursStart">
-								<option>0</option>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-								<option>6</option>
-								<option>7</option>
-								<option>8</option>
-								<option>9</option>
-								<option>10</option>
-								<option>11</option>
-								<option>12</option>
-								<option>13</option>
-								<option>14</option>
-								<option>15</option>
-								<option>16</option>
-								<option>17</option>
-								<option>18</option>
-								<option>19</option>
-								<option>20</option>
-								<option>21</option>
-								<option>22</option>
-								<option>23</option>
-							</select>
+						<div class="newAvailabilityHoursSelectors">
+							<div class="inputWrapper">
+								<span>De</span>
+								<div>
+									<select name="hourStart" v-model="guardianAvailabilityHoursStart">
+										<option>0</option>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+										<option>6</option>
+										<option>7</option>
+										<option>8</option>
+										<option>9</option>
+										<option>10</option>
+										<option>11</option>
+										<option>12</option>
+										<option>13</option>
+										<option>14</option>
+										<option>15</option>
+										<option>16</option>
+										<option>17</option>
+										<option>18</option>
+										<option>19</option>
+										<option>20</option>
+										<option>21</option>
+										<option>22</option>
+										<option>23</option>
+									</select>
+									<select name="minuteStart" v-model="guardianAvailabilityMinutesStart">
+										<option>00</option>
+										<option>15</option>
+										<option>30</option>
+										<option>45</option>
+									</select>
+								</div>
+							</div>
+							<div class="inputWrapper">
+								<span>à</span>
+								<div>
+									<select name="hourEnd" v-model="guardianAvailabilityHoursEnd">
+										<option>0</option>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+										<option>6</option>
+										<option>7</option>
+										<option>8</option>
+										<option>9</option>
+										<option>10</option>
+										<option>11</option>
+										<option>12</option>
+										<option>13</option>
+										<option>14</option>
+										<option>15</option>
+										<option>16</option>
+										<option>17</option>
+										<option>18</option>
+										<option>19</option>
+										<option>20</option>
+										<option>21</option>
+										<option>22</option>
+										<option>23</option>
+									</select>
+									<select name="minuteEnd" v-model="guardianAvailabilityMinutesEnd">
+										<option>00</option>
+										<option>15</option>
+										<option>30</option>
+										<option>45</option>
+									</select>
+								</div>
+							</div>
 						</div>
-						<div>
-							<select name="minuteStart" v-model="guardianAvailabilityMinutesStart">
-								<option>00</option>
-								<option>15</option>
-								<option>30</option>
-								<option>45</option>
-							</select>
+						<div class="buttonsWrapper" v-if="daysToAdd.length > 0">
+							<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addAvailability"/>
+							<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelAddAvailability"/>
 						</div>
-						<div style="margin: 0 15px 0 15px;">
-							à
-						</div>
-						<div>
-							<select name="hourEnd" v-model="guardianAvailabilityHoursEnd">
-								<option>0</option>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-								<option>6</option>
-								<option>7</option>
-								<option>8</option>
-								<option>9</option>
-								<option>10</option>
-								<option>11</option>
-								<option>12</option>
-								<option>13</option>
-								<option>14</option>
-								<option>15</option>
-								<option>16</option>
-								<option>17</option>
-								<option>18</option>
-								<option>19</option>
-								<option>20</option>
-								<option>21</option>
-								<option>22</option>
-								<option>23</option>
-							</select>
-						</div>
-						<div>
-							<select name="minuteEnd" v-model="guardianAvailabilityMinutesEnd">
-								<option>00</option>
-								<option>15</option>
-								<option>30</option>
-								<option>45</option>
-							</select>
-						</div>
-					</div>
-					<p class="confirmCancelButtonsWrapper" style="width: 250px;">
-						<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addAvailability" v-if="daysToAdd.length > 0"/>
-						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelAddAvailability" v-if="daysToAdd.length > 0"/>
-					</p>
-					<div class="weekday" v-for="day in availableDays" :key="day[0]">
-						<div class="weekdayCell">{{ day[1] }}</div>
-						<div class="weekdayCell dayAvailabilitiesList">
-							<div class="availableHours" v-for="data in $store.state.guardianAvailabilities[day[0]]" :key="data.id">
-								<font-awesome-icon :icon="['far', 'circle-xmark']" class="textButton" title="Supprimer" @click="deleteAvailability(data.id)"/>{{ toFormattedTimeStr(data.start) }} - {{ toFormattedTimeStr(data.end) }}
+						<div class="weekday" v-for="day in availableDays" :key="day[0]">
+							<div class="weekdayCell">{{ day[1] }}</div>
+							<div class="weekdayCell dayAvailabilitiesList">
+								<div class="availableHours" v-for="data in $store.state.guardianAvailabilities[day[0]]" :key="data.id">
+									<font-awesome-icon :icon="['far', 'circle-xmark']" class="textButton" title="Supprimer" @click="deleteAvailability(data.id)"/>{{ toFormattedTimeStr(data.start) }} - {{ toFormattedTimeStr(data.end) }}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -288,7 +269,7 @@ export default {
 	name: 'account',
 	data: function() {
 		return {
-			page: 'data',
+			page: 'guardian',
 			firstname: this.$store.state.user['firstname'],
 			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
@@ -453,6 +434,16 @@ export default {
 		toFormattedTimeStr: function (militaryTime) {
 			militaryTime = militaryTime.toString().padStart(4, '0')
 			return `${militaryTime.slice(0, 2)}:${militaryTime.slice(2)}`
+		},
+		toggleDay: function(event) {
+			const el = event.target
+			if (el.classList.contains('daySelected')) {
+				el.classList.remove('daySelected')
+				this.daysToAdd = this.daysToAdd.filter(e => { return e !== el.getAttribute('data-day') })
+			} else {
+				el.classList.add('daySelected')
+				this.daysToAdd.push(el.getAttribute('data-day'))
+			}
 		}
 	}
 }
@@ -548,11 +539,26 @@ li:hover {
 
 .newAvailabilityHoursSelectors {
 	display: flex;
-	margin-bottom: 25px;
+	justify-content: center;
 }
 
 .newAvailabilityDaysSelectors {
 	display: flex;
+	justify-items: center;
+	margin-bottom: 15px;
+}
+
+.daySelector {
+	font-variant: small-caps;
+	margin: 15px;
+	font-size: 1.5em;
+	border-bottom: 2px solid rgba(0, 0, 0, 0);
+	transition-duration: 0.3s;
+}
+
+.daySelected {
+	border-bottom: 2px solid var(--secondary-text-color);
+	color: var(--secondary-text-color);
 }
 
 .availableHours {
@@ -565,6 +571,19 @@ li:hover {
 	border-radius: 5px;
 	padding: 5px;
 	box-sizing: border-box;
+}
+
+.inputWrapper > div {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+}
+
+.inputWrapper > div > select {
+	background-color: var(--secondary-bg-color);
+	color: var(--main-text-color);
+	margin: 5px;
 }
 
 </style>
