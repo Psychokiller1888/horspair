@@ -29,7 +29,7 @@ export default {
   .footer {
 		display: flex;
 		background-color: var(--main-bg-color);
-		border-top: 1px solid var(--main-text-color);
+		border-top: 1px solid var(--hover-text-color);
 		height: 50px;
 		min-height: 50px;
 		padding-top: 10px;

@@ -167,7 +167,7 @@ export default {
 		top: 0;
 		display: flex;
 		background-color: var(--main-bg-color);
-		border-bottom: 1px solid var(--main-text-color);
+		border-bottom: 1px solid var(--hover-text-color);
 		z-index: 999;
 		box-sizing: border-box;
 		align-items: center;
