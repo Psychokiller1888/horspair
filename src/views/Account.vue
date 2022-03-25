@@ -101,13 +101,13 @@
 							Tu fais partie des anges gardiens! Défini ici tes disponibilités et tu seras avertis, par email, si quelqu'un cherche de l'aide pendant tes créneaux horaires.
 						</p>
 						<div class="newAvailabilityDaysSelectors">
-							<div id="monday" data-day="1" class="daySelector button" @click="toggleDay($event)">Lundi</div>
-							<div id="tuesday" data-day="2" class="daySelector button" @click="toggleDay($event)">Mardi</div>
-							<div id="wednesday" data-day="3" class="daySelector button" @click="toggleDay($event)">Mercredi</div>
-							<div id="thursday" data-day="4" class="daySelector button" @click="toggleDay($event)">Jeudi</div>
-							<div id="friday" data-day="5" class="daySelector button" @click="toggleDay($event)">Vendredi</div>
-							<div id="saturday" data-day="6" class="daySelector button" @click="toggleDay($event)">Samedi</div>
-							<div id="sunday" data-day="0" class="daySelector button" @click="toggleDay($event)">Dimanche</div>
+							<div data-day="1" class="daySelector button" :class="{'daySelected': daysToAdd.includes('1')}" @click="toggleDay($event)">Lundi</div>
+							<div data-day="2" class="daySelector button" :class="{'daySelected': daysToAdd.includes('2')}" @click="toggleDay($event)">Mardi</div>
+							<div data-day="3" class="daySelector button" :class="{'daySelected': daysToAdd.includes('3')}" @click="toggleDay($event)">Mercredi</div>
+							<div data-day="4" class="daySelector button" :class="{'daySelected': daysToAdd.includes('4')}" @click="toggleDay($event)">Jeudi</div>
+							<div data-day="5" class="daySelector button" :class="{'daySelected': daysToAdd.includes('5')}" @click="toggleDay($event)">Vendredi</div>
+							<div data-day="6" class="daySelector button" :class="{'daySelected': daysToAdd.includes('6')}" @click="toggleDay($event)">Samedi</div>
+							<div data-day="0" class="daySelector button" :class="{'daySelected': daysToAdd.includes('0')}" @click="toggleDay($event)">Dimanche</div>
 						</div>
 						<div class="newAvailabilityHoursSelectors">
 							<div class="inputWrapper">
@@ -437,11 +437,9 @@ export default {
 		},
 		toggleDay: function(event) {
 			const el = event.target
-			if (el.classList.contains('daySelected')) {
-				el.classList.remove('daySelected')
+			if (this.daysToAdd.includes(el.getAttribute('data-day'))) {
 				this.daysToAdd = this.daysToAdd.filter(e => { return e !== el.getAttribute('data-day') })
 			} else {
-				el.classList.add('daySelected')
 				this.daysToAdd.push(el.getAttribute('data-day'))
 			}
 		}
