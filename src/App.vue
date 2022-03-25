@@ -212,19 +212,19 @@ button:hover,
 }
 
 /* Chrome, Safari, Edge, Opera */
-.inputWrappers > input::-webkit-outer-spin-button,
-.inputWrappers > input::-webkit-inner-spin-button {
+.inputWrapper > input::-webkit-outer-spin-button,
+.inputWrapper > input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
 
 /* Firefox */
-.inputWrappers > input[type=number] {
+.inputWrapper > input[type=number] {
 	appearance: textfield;
 	-moz-appearance: textfield;
 }
 
-.inputWrappers > input[type=checkbox] {
+.inputWrapper > input[type=checkbox] {
 	width: 12px;
 	min-width: 12px;
 }
