@@ -29,11 +29,11 @@
 					<font-awesome-icon :icon="['far', 'face-grin-tears']"/>
 				</span>
 			</p>
-			<p class="inputWrapper textAreaWrapper" id="moodTracker_tour_5">
-				<span><font-awesome-icon :icon="['far', 'comment']" size="2x"/></span>
-				<textarea v-model="comment" placeholder="Remarque" />
-			</p>
-			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;" v-if="selected !== ''">
+			<div class="textAreaWrapper" id="moodTracker_tour_5">
+				<label for="comment"><font-awesome-icon :icon="['far', 'comment']"/> Commentaire</label>
+				<textarea id="comment" v-model="comment"/>
+			</div>
+			<p class="buttonsWrapper" style="margin: 0 auto;" v-if="selected !== ''">
 				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="save" title="enregistrer" id="moodTracker_tour_6"/>
 				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="selected = ''" title="annuler"/>
 			</p>

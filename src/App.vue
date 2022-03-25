@@ -95,17 +95,6 @@ a {
 	flex-grow: 1 !important;
 }
 
-.textAreaWrappers {
-	height: 200px;
-	overflow: hidden;
-	align-items: unset;
-	padding-top: 5px;
-	box-sizing: border-box;
-}
-
-
-
-
 .buttonsWrapper {
 	display: flex;
 	flex-basis: 100%;
@@ -148,7 +137,7 @@ button:hover,
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
-	height: auto;;
+	height: auto;
 }
 
 .inputWrapper {
@@ -161,10 +150,16 @@ button:hover,
 	box-sizing: border-box;
 	color: var(--hover-text-color);
 	margin: 15px 25px;
+	font-size: 1em;
 }
 
-.inputWrapper {
-	font-size: 1em;
+.textAreaWrapper {
+	display: flex;
+	height: 250px;
+	flex-direction: column;
+	border: 1px solid var(--tertiary-bg-color);
+	box-sizing: border-box;
+	color: var(--hover-text-color);
 }
 
 .inputWrapper > label {
@@ -177,8 +172,7 @@ button:hover,
 }
 
 .inputWrapper > input,
-.inputWrapper > select,
-.inputWrapper > textarea {
+.inputWrapper > select {
 	display: flex;
 	flex-grow: 1;
 	outline: none;
