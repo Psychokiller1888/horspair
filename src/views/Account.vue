@@ -480,13 +480,6 @@ li:hover {
 	margin-bottom: 15px;
 }
 
-.holderTitle {
-	font-size: 25px;
-	text-transform: uppercase;
-	position: relative;
-	top: -53px;
-}
-
 .contactEntry {
 	width: 100%;
 	display: flex;

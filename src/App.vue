@@ -79,8 +79,7 @@ a {
 	flex-direction: column;
 	padding-top: 15px;
 	box-sizing: border-box;
-	min-width: 750px;
-	max-width: 750px;
+	max-width: 800px;
 	margin: 25px auto;
 	background-color: var(--dark-bg-color);
 	-webkit-box-shadow:  var(--boxShadow);

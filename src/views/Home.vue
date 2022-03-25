@@ -86,7 +86,9 @@ export default {
 }
 
 .box {
-	width: 750px;
+	margin-top: 50px;
+	max-width: 750px;
+	min-width: 250px;
 	background-color: var(--dark-bg-color);
 	padding: 25px;
 	box-sizing: border-box;
@@ -96,17 +98,14 @@ export default {
 
 .firstBox {
 	margin-top: 50px;
-	margin-left: -250px;
 }
 
 .secondBox {
 	margin-top: 50px;
-	margin-left: 750px;
 }
 
 .thirdBox {
 	margin-top: 50px;
-	margin-left: -300px;
 }
 
 .boxTitle {
