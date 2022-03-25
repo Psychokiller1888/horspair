@@ -34,6 +34,8 @@ export default {
 	--hover-text-color: #a4a4a4;
 
 	--main-font: 'Open Sans', Helvetica, Arial, sans-serif;
+
+	--boxShadow: 5px 5px 28px -8px #000000;
 }
 
 html, body {
@@ -66,6 +68,19 @@ a {
 	flex-grow: 1;
 }
 
+.pageContent {
+	display: flex;
+	flex-direction: column;
+	padding-top: 15px;
+	box-sizing: border-box;
+	min-width: 750px;
+	max-width: 750px;
+	margin: 25px auto;
+	background-color: var(--dark-bg-color);
+	-webkit-box-shadow:  var(--boxShadow);
+	box-shadow:  var(--boxShadow);
+}
+
 .clickable:hover {
 	color: var(--hover-text-color);
 	cursor: pointer;
@@ -80,41 +95,7 @@ a {
 	flex-grow: 1 !important;
 }
 
-.confirmCancelButtonsWrapper {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	box-sizing: border-box;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-radius: 5px;
-	font-size: 2em;
-}
-
-.inputsWrapper {
-	width: 500px;
-	background-color: var(--secondary-bg-color);
-	padding: 15px;
-	box-sizing: border-box;
-	border-radius: 10px;
-	border: 1px solid var(--tertiary-bg-color);
-}
-
-.inputWrapper {
-	display: flex;
-	height: 50px;
-	background-color: var(--main-bg-color);
-	justify-content: right;
-	align-items: center;
-	box-sizing: border-box;
-	padding-left: 10px;
-	padding-right: 5px;
-	border-radius: 5px;
-	border: 1px solid var(--tertiary-bg-color);
-	margin-bottom: 10px;
-}
-
-.textAreaWrapper {
+.textAreaWrappers {
 	height: 200px;
 	overflow: hidden;
 	align-items: unset;
@@ -122,15 +103,77 @@ a {
 	box-sizing: border-box;
 }
 
-.textBlock {
-	font-size: 1.1em;
-	width: 500px;
-	background-color: var(--secondary-bg-color);
-	padding: 35px;
+
+
+
+.buttonsWrapper {
+	display: flex;
+	flex-basis: 100%;
+	justify-content: center;
+	align-items: center;
+	padding: 15px;
 	box-sizing: border-box;
-	border-radius: 10px;
+}
+
+button,
+.button {
+	cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+	color: var(--hover-text-color);
+}
+
+.buttonsWrapper > button,
+.buttonsWrapper > .button {
+	background-color: var(--main-bg-color);
+	padding: 10px 25px 10px 25px;
+	border-radius: 5px;
 	border: 1px solid var(--tertiary-bg-color);
-	text-align: justify;
+	color: var(--main-text-color);
+	margin: 0 5px;
+	font-size: 1.5em;
+}
+
+.buttonsWrapper > button:hover,
+.buttonsWrapper > .button:hover {
+	background-color: var(--secondary-bg-color);
+}
+
+.inputsWrapper {
+	padding: 15px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	height: auto;;
+}
+
+.inputWrapper {
+	display: flex;
+	width: 250px;
+	flex-direction: column;
+	height: 75px;
+	border: 1px solid var(--tertiary-bg-color);
+	padding: 5px;
+	box-sizing: border-box;
+	color: var(--hover-text-color);
+	margin: 15px 25px;
+}
+
+.inputWrapper {
+	font-size: 1em;
+}
+
+.inputWrapper > label {
+	cursor: pointer;
+	font-variant: small-caps;
+}
+
+.inputWrapper > label > svg {
+	margin-right: 10px;
 }
 
 .inputWrapper > input,
@@ -140,28 +183,21 @@ a {
 	flex-grow: 1;
 	outline: none;
 	border: none;
-	background-color: var(--main-bg-color);
-	text-align: right;
-	margin-right: 5px;
+	background-color: unset;
+	text-align: left;
 	box-sizing: border-box;
-	padding-right: 10px;
-	font-size: 1.25em;
-	height: 100%;
-	width: 100%;
+	padding: 5px;
+	font-size: 1em;
 	color: var(--main-text-color);
 	cursor: pointer;
 	resize: none;
+	margin: 0;
 }
 
-.inputWrapper > textarea {
+.inputWrappers > textarea {
 	text-align: left;
 	padding: 15px;
 	box-sizing: border-box;
-}
-
-.inputWrapper > input:focus,
-.inputWrapper > select:focus {
-	font-style: italic;
 }
 
 .inputWrapper > input:disabled,
@@ -170,49 +206,53 @@ a {
 }
 
 /* Chrome, Safari, Edge, Opera */
-.inputWrapper > input::-webkit-outer-spin-button,
-.inputWrapper > input::-webkit-inner-spin-button {
+.inputWrappers > input::-webkit-outer-spin-button,
+.inputWrappers > input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
 
 /* Firefox */
-.inputWrapper > input[type=number] {
+.inputWrappers > input[type=number] {
+	appearance: textfield;
 	-moz-appearance: textfield;
 }
 
-.inputWrapper > input[type=checkbox] {
+.inputWrappers > input[type=checkbox] {
 	width: 18px;
 	min-width: 18px;
 }
 
-button {
-	margin: 0 auto;
-	background-color: var(--main-bg-color);
-	border-radius: 5px;
-	font-size: 1.2em;
-	padding: 5px;
-	cursor: pointer;
+.inputWrapperTextBlock {
+	font-size: 1.25em;
+	padding: 15px;
+	box-sizing: border-box;
+	border: 1px solid var(--tertiary-bg-color);
+	text-align: center;
+	margin: 15px;
 }
+
+.explanation {
+	font-style: italic;
+}
+
+.break {
+	flex-basis: 100%;
+	text-align: center;
+	font-variant: small-caps;
+	font-size: 1.25em;
+}
+
+.fullWidth {
+	flex-basis: 100%;
+}
+
+
+
 
 .calendar {
 	background: var(--main-bg-color) !important;
 	color: var(--main-text-color) !important;
-}
-
-.button {
-	background-color: var(--main-bg-color);
-	cursor: pointer;
-	padding: 10px 25px 10px 25px;
-	border-radius: 5px;
-	border: 1px solid var(--tertiary-bg-color);
-	color: var(--main-text-color);
-}
-
-.button:hover {
-	background-color: var(--secondary-bg-color);
-	color: var(--hover-text-color);
-	cursor: pointer;
 }
 
 .textButton {

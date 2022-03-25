@@ -3,7 +3,6 @@
 		<div class="cookies" ref="ackCookies">
 			Nous utilisons des cookies pour rendre ta navigation plus fluide. Tu peux en apprendre plus ici. <span class="inlineButton blueBackground" @click="ackCookies">OK</span>
 		</div>
-		<font-awesome-icon :icon="['far', 'copyright']"/> Hors-Pairs
 	</div>
 </template>
 

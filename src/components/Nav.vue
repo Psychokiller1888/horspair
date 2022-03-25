@@ -24,6 +24,9 @@
 					<div class="mainSubMenuItem">
 						<font-awesome-icon :icon="['fab', 'discord']" class="fa-fw" @click="openDiscord"/> Discord
 					</div>
+					<div class="mainSubMenuItem copyright">
+						<font-awesome-icon :icon="['far', 'copyright']" class="fa-fw"/> 2022 Hors-Pairs
+					</div>
 				</div>
 			</div>
 		</transition>
@@ -217,8 +220,8 @@ export default {
 		min-width: 300px;
 		min-height: 150px;
 		background-color: var(--secondary-bg-color);
-		-webkit-box-shadow: 4px 4px 15px 1px rgba(0,0,0,0.82);
-		box-shadow: 4px 4px 15px 1px rgba(0,0,0,0.82);
+		-webkit-box-shadow:  var(--boxShadow);
+		box-shadow:  var(--boxShadow);
 	}
 
 	.userSubMenuItem {
@@ -293,6 +296,18 @@ export default {
 	.mainSubMenuItem:hover {
 		cursor: pointer;
 		background-color: var(--secondary-bg-color);
+	}
+
+	.copyright {
+		position: absolute;
+		bottom: 0;
+		font-size: 1em;
+		font-style: italic;
+	}
+
+	.copyright:hover {
+		cursor: unset;
+		background-color: unset;
 	}
 
 	.noNotification {

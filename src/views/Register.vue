@@ -1,56 +1,78 @@
 <template>
 	<div class="mainContainer">
-		<div class="inputsWrapper" v-if="!serverError && !registrationDone && !confirmedAccount && !expiredLink && !invalidLink && !alreadyActive &&!wait">
-			<p class="inputWrapper" :class="{redBorders: invalidInvite}">
-				<span><font-awesome-icon :icon="['far', 'key-skeleton']" size="2x"/></span>
-				<input type="text" v-model="inviteCode" placeholder="Code d'invitation"/>
-			</p>
-			<div class="explanation" v-if="invalidInvite">Pour recevoir ton code d'invitation valide, parles en avec ton/ta thérapeute ou pose la question sur notre serveur Discord</div>
-			<p class="inputWrapper" :class="{redBorders: invalidFirstname}">
-				<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-				<input type="text" v-model="firstname" placeholder="Prénom" @keyup="validate"/>
-			</p>
-			<p class="inputWrapper" :class="{redBorders: invalidLastname}">
-				<span><font-awesome-icon :icon="['far', 'id-card']" size="2x"/></span>
-				<input type="text" v-model="lastname" placeholder="Nom de famille" @keyup="validate"/>
-			</p>
-			<p class="inputWrapper" :class="{redBorders: invalidEmail}">
-				<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
-				<input type="text" v-model="email" placeholder="Email" @keyup="validate"/>
-			</p>
-			<div class="explanation" v-if="emailAlreadyInUse">Cette adresse email est déjà utilisée</div>
-			<p class="inputWrapper" :class="{redBorders: invalidPassword}">
-				<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
-				<input type="password" v-model="password" placeholder="Mot de passe" @keyup="validate"/>
-			</p>
-			<div class="explanation" v-if="invalidPassword">Min. 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial</div>
-			<p class="inputWrapper" :class="{redBorders: invalidPasswordControl}">
-				<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
-				<input type="password" v-model="password2" placeholder="Vérification mot de passe" @keyup="validate"/>
-			</p>
-			<div class="explanation" v-if="invalidPasswordControl">Les mots de passe ne correspondent pas</div>
-			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;">
-				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="register" title="Créer!" v-if="allValid"/>
-				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="cancel" title="Annuler"/>
-			</p>
-		</div>
-		<div class="textBlock redBorders" v-if="serverError">
-			Désolé, mais ta demande d'enregistrement a rencontré un problème technique.
-		</div>
-		<div class="textBlock" v-if="registrationDone">
-			Merci de t'être enregistré! Nous venons de t'envoyer un email à ton adresse email pour confirmer celle-ci. Le lien inclus est valide pendant 15 minutes, ouvres-le vite pour pouvoir commencer à utiliser notre site!
-		</div>
-		<div class="textBlock" v-if="confirmedAccount">
-			Super, merci d'avoir confirmé ton email. Tu peux maintenant utiliser toutes les fonctions du site, en te <a href="/login">connectant ici</a>.
-		</div>
-		<div class="textBlock redBorders" v-if="expiredLink">
-			Le lien que tu as utilisé n'est plus valable, merci de t'enregistrer à nouveau.
-		</div>
-		<div class="textBlock redBorders" v-if="invalidLink">
-			Le lien que tu as utilisé n'est pas valide.
-		</div>
-		<div class="textBlock redBorders" v-if="alreadyActive">
-			Ton compte est déjà actif! Tu peux te <a href="/login">connecter ici</a>.
+		<div class="pageContent">
+			<div class="inputsWrapper" v-if="!serverError && !registrationDone && !confirmedAccount && !expiredLink && !invalidLink && !alreadyActive &&!wait">
+				<div class="inputWrapper fullWidth" :class="{redBorders: invalidInvite}">
+					<label for="inviteCode">
+						<font-awesome-icon :icon="['far', 'key-skeleton']"/> Code d'invitation
+					</label>
+					<input id="inviteCode" type="text" v-model="inviteCode"/>
+				</div>
+				<div class="inputWrapper" :class="{redBorders: invalidFirstname}">
+					<label for="firstname">
+						<font-awesome-icon :icon="['far', 'id-card']"/> Prénom
+					</label>
+					<input id="firstname" type="text" v-model="firstname" @keyup="validate"/>
+				</div>
+				<div class="inputWrapper" :class="{redBorders: invalidLastname}">
+					<label for="lastname">
+						<font-awesome-icon :icon="['far', 'id-card']"/> Nom de famille
+					</label>
+					<input id="lastname" type="text" v-model="lastname" @keyup="validate"/>
+				</div>
+				<div class="inputWrapper" :class="{redBorders: invalidEmail}">
+					<label for="email">
+						<font-awesome-icon :icon="['far', 'at']"/> Email
+					</label>
+					<input id="email" type="text" v-model="email" @keyup="validate"/>
+				</div>
+				<div class="inputWrapper" :class="{redBorders: invalidPassword}">
+					<label for="password">
+						<font-awesome-icon :icon="['far', 'key']"/> Mot de passe
+					</label>
+					<input id="password" type="password" v-model="password" @keyup="validate"/>
+				</div>
+				<div class="inputWrapper" :class="{redBorders: invalidPasswordControl}">
+					<label for="controlPassword">
+						<font-awesome-icon :icon="['far', 'key']"/> Vérification mot de passe
+					</label>
+					<input id="controlPassword" type="password" v-model="password2" @keyup="validate"/>
+				</div>
+				<div class="buttonsWrapper" style="margin: 0 auto;">
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="register" title="Créer!" v-if="allValid"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="cancel" title="Annuler"/>
+				</div>
+			</div>
+			<div class="inputWrapperTextBlock explanation" v-if="emailAlreadyInUse">
+				Cette adresse email est déjà utilisée
+			</div>
+			<div class="inputWrapperTextBlock explanation" v-if="invalidPasswordControl">
+				Les mots de passe ne correspondent pas
+			</div>
+			<div class="inputWrapperTextBlock explanation" v-if="invalidPassword">
+				Mot de passe: Min. 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
+			</div>
+			<div class="inputWrapperTextBlock explanation" v-if="invalidInvite">
+				Pour recevoir ton code d'invitation valide, parles en avec ton/ta thérapeute ou pose la question sur notre serveur Discord
+			</div>
+			<div class="inputWrapperTextBlock redBorders" v-if="serverError">
+				Désolé, mais ta demande d'enregistrement a rencontré un problème technique.
+			</div>
+			<div class="textBlock" v-if="registrationDone">
+				Merci de t'être enregistré! Nous venons de t'envoyer un email à ton adresse email pour confirmer celle-ci. Le lien inclus est valide pendant 15 minutes, ouvres-le vite pour pouvoir commencer à utiliser notre site!
+			</div>
+			<div class="textBlock" v-if="confirmedAccount">
+				Super, merci d'avoir confirmé ton email. Tu peux maintenant utiliser toutes les fonctions du site, en te <a href="/login">connectant ici</a>.
+			</div>
+			<div class="textBlock redBorders" v-if="expiredLink">
+				Le lien que tu as utilisé n'est plus valable, merci de t'enregistrer à nouveau.
+			</div>
+			<div class="textBlock redBorders" v-if="invalidLink">
+				Le lien que tu as utilisé n'est pas valide.
+			</div>
+			<div class="textBlock redBorders" v-if="alreadyActive">
+				Ton compte est déjà actif! Tu peux te <a href="/login">connecter ici</a>.
+			</div>
 		</div>
 	</div>
 </template>
@@ -234,11 +256,5 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-	.explanation {
-		text-align: center;
-		font-style: italic;
-		font-size: 0.75em;
-		display: block;
 	}
 </style>

@@ -1,21 +1,25 @@
 <template>
 	<div class="mainContainer">
-		<div class="inputsWrapper" ref="loginContainer">
-			<p class="inputWrapper">
-				<span><font-awesome-icon :icon="['far', 'at']" size="2x"/></span>
-				<input type="email" name="login" v-model="form.email" placeholder="Email"/>
-			</p>
-			<p class="inputWrapper">
-				<span><font-awesome-icon :icon="['far', 'key']" size="2x"/></span>
-				<input type="password" name="password" v-model="form.password" placeholder="Mot de passe" @keydown.enter="connect"/>
-			</p>
-			<p class="inputWrapper">
-				<toggle :labels="{checked: 'Retenir', unchecked: 'Ne pas retenir'}" :width="120" :height="40" :color="{checked: 'var(--secondary-bg-color)', unchecked: 'var(--tertiary-bg-color)'}"></toggle>
-			</p>
-			<p class="confirmCancelButtonsWrapper" style="margin: 0 auto;">
-				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="connect" title="Connecter" v-if="form.email && form.email"/>
-				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
-			</p>
+		<div ref="loginContainer" class="pageContent">
+			<div class="inputsWrapper">
+				<p class="inputWrapper">
+					<label for="email">
+						<font-awesome-icon :icon="['far', 'at']"/> Email
+					</label>
+					<input id="email" type="email" name="login" v-model="form.email"/>
+				</p>
+				<p class="inputWrapper">
+					<label for="password">
+						<font-awesome-icon :icon="['far', 'key']"/> Mot de passe
+					</label>
+					<input id="password" type="password" name="password" v-model="form.password" @keydown.enter="connect"/>
+				</p>
+				<!--<toggle :labels="{checked: 'Retenir', unchecked: 'Ne pas retenir'}" :width="120" :height="40" :color="{checked: 'var(--secondary-bg-color)', unchecked: 'var(--tertiary-bg-color)'}"></toggle>-->
+				<p class="buttonsWrapper" style="margin: 0 auto;">
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="connect" title="Connecter" v-if="form.email && form.email"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
+				</p>
+			</div>
 		</div>
 	</div>
 </template>
