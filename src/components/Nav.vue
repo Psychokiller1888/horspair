@@ -1,7 +1,7 @@
 <template>
 	<div class="header">
 		<div class="siteMenu">
-			<span class="button" @mouseenter="openMenu('mainMenuExtended')">
+			<span class="button" @click.stop="openMenu('mainMenuExtended')">
 				<font-awesome-icon :icon="['far', 'bars']" class="fa-fw"/> HORSPAIR
 			</span>
 		</div>
@@ -32,9 +32,9 @@
 		</transition>
 		<div class="userMenu">
 			<ul>
-				<li class="button"><font-awesome-icon :icon="['far', 'bell']" v-if="$store.getters.isConnected && notifications.length <= 0" @mouseenter="openMenu('notificationsMenuExtended')"/></li>
-				<li class="button"><font-awesome-icon :icon="['far', 'bell-on']" v-if="$store.getters.isConnected && notifications.length > 0" @mouseenter="openMenu('notificationsMenuExtended')"/></li>
-				<li class="button"><font-awesome-icon :icon="['far', 'circle-user']" @mouseenter="openMenu('userMenuExtended')"/></li>
+				<li class="button"><font-awesome-icon :icon="['far', 'bell']" v-if="$store.getters.isConnected && notifications.length <= 0" @click.stop="openMenu('notificationsMenuExtended')"/></li>
+				<li class="button"><font-awesome-icon :icon="['far', 'bell-on']" v-if="$store.getters.isConnected && notifications.length > 0" @click.stop="openMenu('notificationsMenuExtended')"/></li>
+				<li class="button"><font-awesome-icon :icon="['far', 'circle-user']" @click.stop="openMenu('userMenuExtended')"/></li>
 			</ul>
 		</div>
 		<transition name="fade">
