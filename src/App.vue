@@ -155,12 +155,9 @@ button:hover,
 }
 
 .textAreaWrapper {
-	display: flex;
 	height: 250px;
-	flex-direction: column;
-	border: 1px solid var(--tertiary-bg-color);
-	box-sizing: border-box;
-	color: var(--hover-text-color);
+	margin: 0;
+	width: 100%;
 }
 
 .inputWrapper > label {
@@ -190,13 +187,26 @@ button:hover,
 	margin: 0;
 }
 
-.inputWrappers > textarea {
+.textAreaWrapper > textarea {
 	text-align: left;
 	padding: 15px;
 	box-sizing: border-box;
+	resize: none;
+	height: 100%;
+	width: 100%;
+	margin-top: 15px;
+	background-color: var(--secondary-bg-color);
+	border: 0;
+	color: var(--main-text-color);
+	font-size: 1.25em;
+}
+
+.textAreaWrapper > textarea:focus {
+	outline: none !important;
 }
 
 .inputWrapper > input:disabled,
+.textAreaWrapper > textarea:disabled,
 .inputWrapper > select:disabled {
 	color: var(--tertiary-text-color)
 }

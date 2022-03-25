@@ -29,7 +29,7 @@
 					<font-awesome-icon :icon="['far', 'face-grin-tears']"/>
 				</span>
 			</p>
-			<div class="textAreaWrapper" id="moodTracker_tour_5">
+			<div class="inputWrapper textAreaWrapper" id="moodTracker_tour_5">
 				<label for="comment"><font-awesome-icon :icon="['far', 'comment']"/> Commentaire</label>
 				<textarea id="comment" v-model="comment"/>
 			</div>
