@@ -2,30 +2,30 @@
 	<div class="header">
 		<div class="siteMenu">
 			<span class="button" @click.stop="toggleMenu('mainMenuExtended')">
-				<font-awesome-icon :icon="['far', 'bars']" class="fa-fw"/> HORSPAIR
+				<font-awesome-icon :icon="['far', 'bars']" fixed-width/> HORSPAIR
 			</span>
 		</div>
 		<transition name="fade">
 			<div class="mainSubMenu" v-if="this.menusStates['mainMenuExtended']">
 				<div class="mainSubMenuContent">
 					<div class="mainSubMenuTitle button">
-						<font-awesome-icon :icon="['far', 'circle-xmark']" class="fa-fw" @click.stop="toggleMenu('mainMenuExtended')"/> HORSPAIR
+						<font-awesome-icon :icon="['far', 'circle-xmark']" fixed-width @click.stop="toggleMenu('mainMenuExtended')"/> HORSPAIR
 					</div>
 					<div class="mainSubMenuItem">
 						<router-link to="/">
-							<font-awesome-icon :icon="['far', 'house']" class="fa-fw"/> accueil
+							<font-awesome-icon :icon="['far', 'house']" fixed-width/> accueil
 						</router-link>
 					</div>
 					<div class="mainSubMenuItem">
 						<router-link to="/temoignages">
-							<font-awesome-icon :icon="['far', 'messages']" class="fa-fw"/> témoignages
+							<font-awesome-icon :icon="['far', 'messages']" fixed-width/> témoignages
 						</router-link>
 					</div>
 					<div class="mainSubMenuItem">
-						<font-awesome-icon :icon="['fab', 'discord']" class="fa-fw" @click="openDiscord"/> Discord
+						<font-awesome-icon :icon="['fab', 'discord']" fixed-width @click="openDiscord"/> Discord
 					</div>
 					<div class="mainSubMenuItem copyright">
-						<font-awesome-icon :icon="['far', 'copyright']" class="fa-fw"/> 2022 Hors-Pairs
+						<font-awesome-icon :icon="['far', 'copyright']" fixed-width/> 2022 Hors-Pairs
 					</div>
 				</div>
 			</div>
@@ -55,37 +55,37 @@
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/account">
-							<font-awesome-icon :icon="['far', 'circle-user']" class="fa-fw"/> mon compte
+							<font-awesome-icon :icon="['far', 'circle-user']" fixed-width/> mon compte
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/traqueur">
-							<font-awesome-icon :icon="['far', 'face-clouds']" class="fa-fw"/> tracker
+							<font-awesome-icon :icon="['far', 'face-clouds']" fixed-width/> tracker
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/emdr">
-							<font-awesome-icon :icon="['far', 'eyes']" class="fa-fw"/> EMDR
+							<font-awesome-icon :icon="['far', 'eyes']" fixed-width/> EMDR
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/respiration">
-								<font-awesome-icon :icon="['far', 'face-exhaling']" class="fa-fw"/> Respiration
+								<font-awesome-icon :icon="['far', 'face-exhaling']" fixed-width/> Respiration
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/carnet">
-							<font-awesome-icon :icon="['far', 'memo-pad']" class="fa-fw"/> Carnet de bord
+							<font-awesome-icon :icon="['far', 'memo-pad']" fixed-width/> Carnet de bord
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/notes">
-							<font-awesome-icon :icon="['far', 'notes']" class="fa-fw"/> notes
+							<font-awesome-icon :icon="['far', 'notes']" fixed-width/> notes
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/logout">
-							<font-awesome-icon :icon="['far', 'right-from-bracket']" class="fa-fw"/> se déconnecter
+							<font-awesome-icon :icon="['far', 'right-from-bracket']" fixed-width/> se déconnecter
 						</router-link>
 					</div>
 				</div>
@@ -95,12 +95,12 @@
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/signin">
-							<font-awesome-icon :icon="['far', 'user-plus']" class="fa-fw"/> s'enregistrer
+							<font-awesome-icon :icon="['far', 'user-plus']" fixed-width/> s'enregistrer
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
 						<router-link to="/account">
-							<font-awesome-icon :icon="['far', 'circle-user']" class="fa-fw"/> se connecter
+							<font-awesome-icon :icon="['far', 'circle-user']" fixed-width/> se connecter
 						</router-link>
 					</div>
 				</div>

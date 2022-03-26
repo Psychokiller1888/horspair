@@ -59,7 +59,9 @@ import {
 	faFaceExplode,
 	faBars,
 	faBell,
-	faBellOn
+	faBellOn,
+	faQuoteLeft,
+	faQuoteRight
 } from '@fortawesome/pro-regular-svg-icons'
 
 import {
@@ -67,6 +69,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 
 library.add(
+	faQuoteLeft,
+	faQuoteRight,
 	faBellOn,
 	faBell,
 	faBars,

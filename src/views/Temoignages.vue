@@ -19,7 +19,7 @@
 				</div>
 			</div>
 			<div class="readMore">
-				<font-awesome-icon :icon="['far', 'book-open-reader']" v-if="readingArticle !== 1" class="clickable fa-2x" @click="readingArticle = 1"/>
+				<font-awesome-icon :icon="['far', 'book-open-reader']" v-if="readingArticle !== 1" size="2x" class="clickable" @click="readingArticle = 1"/>
 			</div>
 		</article>
 		<article>
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 			<div class="readMore">
-				<font-awesome-icon :icon="['far', 'book-open-reader']" v-if="readingArticle !== 2" class="clickable fa-2x" @click="readingArticle = 2"/>
+				<font-awesome-icon :icon="['far', 'book-open-reader']" v-if="readingArticle !== 2" size="2x" class="clickable" @click="readingArticle = 2"/>
 			</div>
 		</article>
 		<article>
@@ -73,7 +73,7 @@
 				</div>
 			</div>
 			<div class="readMore">
-				<font-awesome-icon :icon="['far', 'book-open-reader']" v-if="readingArticle !== 3" class="clickable fa-2x" @click="readingArticle = 3"/>
+				<font-awesome-icon :icon="['far', 'book-open-reader']" v-if="readingArticle !== 3" size="2x" class="clickable" @click="readingArticle = 3"/>
 			</div>
 		</article>
 	</div>

@@ -20,6 +20,13 @@
 					</p>
 				</div>
 			</div>
+			<div class="citation right">
+				<p>
+					<font-awesome-icon :icon="['far', 'quote-left']" size="xs" transform="up-10"/>
+					Ajouter de la tempête à la tempête et bien ça donne... Du vent...
+					<font-awesome-icon :icon="['far', 'quote-right']" size="xs" transform="down-10"/>
+				</p>
+			</div>
 			<div class="box right">
 				<div class="boxTitle">
 					croyances élite peurs honte média
@@ -30,7 +37,7 @@
 					</p>
 				</div>
 			</div>
-			<div class="box left">
+			<div class="box center">
 				<div class="boxTitle">
 					guérir apprendre contrôler gérer changer
 				</div>
@@ -96,6 +103,13 @@ export default {
 	box-shadow: var(--boxShadow);
 }
 
+.citation {
+	font-style: italic;
+	color: var(--hover-text-color);
+	font-variant: small-caps;
+	font-size: 1.25em;
+}
+
 .boxTitle {
 	font-weight: bold;
 	text-transform: uppercase;
@@ -109,6 +123,10 @@ export default {
 
 .right {
 	align-self: flex-end;
+}
+
+.center {
+	align-self: center;
 }
 
 .boxContent {
