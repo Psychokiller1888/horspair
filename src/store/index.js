@@ -90,13 +90,14 @@ const store = new Vuex.Store({
 		getFriendList(state) {
 			const pending = {}
 			const accepted = {}
-			Object.entries(state.friends).forEach((key, value) => {
-				if (value['pendingInvite']) {
-					pending[key] = value
+
+			for (const [key, Friend] of Object.entries(state.friends)) {
+				if (Friend['pendingInvite'] === 1) {
+					pending[key] = Friend
 				} else {
-					accepted[key] = value
+					accepted[key] = Friend
 				}
-			})
+			}
 			return {
 				pending: pending,
 				accepted: accepted

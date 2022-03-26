@@ -212,22 +212,21 @@
 					<p class="break explanation" v-if="newFriendExists">Ce contact existe déjà</p>
 					<p class="buttonsWrapper">
 						<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addFriend" v-if="emailValid('friend')"/>
-						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelFriend"/>
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelFriend" v-if="newFriendEmail"/>
 					</p>
-					<p class="break" v-if="friendListAccepted.length > 0 || friendListPending.length > 0">
-						Mes amis
-					</p>
-					<div class="contactEntry" v-for="friend in friendListAccepted" :key="friend.id">
-						<div class="contactName">{{ friend.firstname }} {{ friend.lastname }}</div>
-						<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
-						<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
-						<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
-					</div>
-					<div class="contactEntry" v-for="friend in friendListPending" :key="friend.id">
-						<div class="contactName">{{ friend.firstname }} {{ friend.lastname }}</div>
-						<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
-						<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
-						<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
+					<div class="contactContainer" v-if="Object.keys(friendListAccepted).length > 0 || Object.keys(friendListPending).length > 0">
+						<p class="break" v-if="Object.keys(friendListPending).length > 0">En attente</p>
+						<div class="contactEntry" v-for="friend in friendListPending" :key="friend.id">
+							<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
+							<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
+						</div>
+						<p class="break" v-if="Object.keys(friendListAccepted).length > 0">Mes amis</p>
+						<div class="contactEntry" v-for="friend in friendListAccepted" :key="friend.id">
+							<div class="contactName">{{ friend.firstname }} {{ friend.lastname }}</div>
+							<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
+							<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
+							<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
+						</div>
 					</div>
 				</div>
 				<div class="inputsWrapper" v-if="page === 'therapists'">
@@ -243,7 +242,7 @@
 					<p class="break explanation" v-if="newTherapistExists">Ce thérapeute existe déjà</p>
 					<p class="buttonsWrapper">
 						<font-awesome-icon :icon="['far', 'circle-check']" class="button" title="Ajouter" @click="addTherapist" v-if="emailValid('therapist')"/>
-						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelTherapist"/>
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancelTherapist" v-if="newTherapistEmail"/>
 					</p>
 					<p class="break" v-if="$store.state.therapists.length > 0">
 						Mes thérapeutes
@@ -269,7 +268,7 @@ export default {
 	name: 'account',
 	data: function() {
 		return {
-			page: 'data',
+			page: 'friends',
 			firstname: this.$store.state.user['firstname'],
 			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
@@ -300,8 +299,7 @@ export default {
 			guardianAvailabilityMinutesEnd: '00'
 		}
 	},
-	mounted: function() {
-	},
+	mounted: function() {},
 	computed: {
 		friendListPending: function() {
 			return this.$store.getters.getFriendList['pending']
@@ -480,9 +478,20 @@ li:hover {
 	margin-bottom: 15px;
 }
 
+.contactContainer {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+}
+
 .contactEntry {
 	width: 100%;
 	display: flex;
+	background-color: var(--secondary-bg-color);
+	margin-bottom: 15px;
+	color: var(--main-text-color);
+	padding: 15px;
+	box-sizing: border-box;
 }
 
 .contactName {
@@ -504,6 +513,14 @@ li:hover {
 	overflow: hidden;
 	padding: 10px;
 	box-sizing: border-box;
+}
+
+.deleteContact {
+	display: flex;
+	font-size: 1.25em;
+	flex-grow: 1;
+	justify-content: right;
+	align-items: center;
 }
 
 .weekday {
