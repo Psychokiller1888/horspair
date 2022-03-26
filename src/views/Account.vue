@@ -203,7 +203,7 @@
 					<p class="break">
 						Ajouter un ami
 					</p>
-					<p class="inputWrapper" :class="{redBorders: !emailValid('friend')}">
+					<p class="inputWrapper" :class="{redBorders: !emailValid('friend') && newFriendEmail.length > 0}">
 						<label for="friendEmail">
 							<font-awesome-icon :icon="['far', 'at']"/> Email
 						</label>
@@ -268,7 +268,7 @@ export default {
 	name: 'account',
 	data: function() {
 		return {
-			page: 'friends',
+			page: 'data',
 			firstname: this.$store.state.user['firstname'],
 			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
@@ -480,7 +480,7 @@ li:hover {
 
 .contactContainer {
 	display: flex;
-	width: 100%;
+	max-width: 100%;
 	flex-direction: column;
 }
 
@@ -495,21 +495,18 @@ li:hover {
 }
 
 .contactName {
-	width: 250px;
 	overflow: hidden;
 	padding: 10px;
 	box-sizing: border-box;
 }
 
 .contactEmail {
-	width: 250px;
 	overflow: hidden;
 	padding: 10px;
 	box-sizing: border-box;
 }
 
 .contactPhone {
-	width: 250px;
 	overflow: hidden;
 	padding: 10px;
 	box-sizing: border-box;
