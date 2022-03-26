@@ -1,7 +1,7 @@
 <template>
 	<div class="mainContainer">
 		<div class="homepage">
-			<div class="box firstBox">
+			<div class="box left">
 				<div class="boxTitle">
 					Surdoué haut potentiel zèbre intello HP HPI HPE sur-efficient
 				</div>
@@ -20,7 +20,7 @@
 					</p>
 				</div>
 			</div>
-			<div class="box secondBox">
+			<div class="box right">
 				<div class="boxTitle">
 					croyances élite peurs honte média
 				</div>
@@ -30,7 +30,7 @@
 					</p>
 				</div>
 			</div>
-			<div class="box thirdBox">
+			<div class="box left">
 				<div class="boxTitle">
 					guérir apprendre contrôler gérer changer
 				</div>
@@ -96,23 +96,19 @@ export default {
 	box-shadow: var(--boxShadow);
 }
 
-.firstBox {
-	margin-top: 50px;
-}
-
-.secondBox {
-	margin-top: 50px;
-}
-
-.thirdBox {
-	margin-top: 50px;
-}
-
 .boxTitle {
 	font-weight: bold;
 	text-transform: uppercase;
 	font-size: 0.75em;
 	margin-bottom: 2em;
+}
+
+.left {
+	align-self: flex-start;
+}
+
+.right {
+	align-self: flex-end;
 }
 
 .boxContent {
@@ -125,6 +121,14 @@ export default {
 	margin: 0 auto;
 	text-align: center;
 	font-weight: bold;
+	padding: 10px;
+	box-sizing: border-box;
+	border: 2px solid var(--secondary-bg-color);
+	border-radius: 5px;
+}
+
+.button:hover {
+	background-color: var(--main-bg-color);
 }
 
 .modal {
