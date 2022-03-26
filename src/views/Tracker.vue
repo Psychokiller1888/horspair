@@ -81,7 +81,7 @@ export default {
 			selected: '',
 			date: new Date(),
 			masks: {
-				weekdays: "WWWW"
+				weekdays: "WW"
 			},
 			tourCallbacks: {
 				onFinish: this.tourFinished,
@@ -306,7 +306,7 @@ export default {
 <style scoped>
 
 .recorder {
-	width: 500px;
+	width: 450px;
 	margin: 0 25px;
 }
 
@@ -321,10 +321,10 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 60px;
+	font-size: 45px;
 	color: black;
-	width: 58px;
-	height: 58px;
+	width: 43px;
+	height: 43px;
 	background-color: #ffff48;
 	border-radius: 50%;
 }
@@ -342,10 +342,12 @@ export default {
 .mainContainer {
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 .viewData {
-	width: 100%;
+	margin-top: 25px;
+	flex-grow: 1;
 }
 
 .calendar-smiley-list {
@@ -417,12 +419,11 @@ input {
 }
 
 .bigCalendar .vc-day {
+	display: flex;
+	flex-wrap: wrap;
 	padding: 0 5px 3px 5px !important;
 	text-align: left !important;
-	height: 150px !important;
-	min-height: 150px !important;
-	max-height: 150px !important;
-	min-width: 150px !important;
+	min-height: 120px !important;
 	background-color: var(--secondary-bg-color) !important;
 	border: 1px solid var(--main-bg-color) !important;
 	font-size: 0.8em;
