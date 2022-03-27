@@ -88,6 +88,11 @@
 							<font-awesome-icon :icon="['far', 'right-from-bracket']" fixed-width/> se déconnecter
 						</router-link>
 					</div>
+					<div class="userSubMenuItem">
+						<router-link to="/urgences">
+							<span class="textRed"><font-awesome-icon :icon="['far', 'face-explode']" fixed-width/> urgences</span>
+						</router-link>
+					</div>
 				</div>
 				<div v-if="!$store.getters.isConnected">
 					<div class="userSubMenuItem" style="margin-bottom: 2px;">

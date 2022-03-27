@@ -12,6 +12,7 @@ import Connexion from '@/views/Connect'
 import Enregistrement from '@/views/Register'
 import Logout from '@/views/Logout'
 import Account from '@/views/Account'
+import Urgency from '@/views/Urgency'
 
 Vue.use(VueRouter)
 const routes = [
@@ -83,6 +84,14 @@ const routes = [
 		path: '/logout',
 		name: 'Logout',
 		component: Logout,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/urgences',
+		name: 'Urgences',
+		component: Urgency,
 		meta: {
 			requiresAuth: true
 		}

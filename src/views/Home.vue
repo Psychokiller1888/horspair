@@ -105,7 +105,7 @@ export default {
 
 .citation {
 	font-style: italic;
-	color: var(--hover-text-color);
+	color: #3b3b41;
 	font-variant: small-caps;
 	font-size: 1.25em;
 }
