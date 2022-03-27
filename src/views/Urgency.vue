@@ -87,11 +87,11 @@ export default {
 }
 
 .countdown {
+	font-family: monaco, Consolas, Lucida Console, monospace;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-size: 2.5em;
-	font-weight: bold;
 	text-transform: uppercase;
 	transition-duration: .3s;
 }
