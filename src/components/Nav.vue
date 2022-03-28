@@ -84,13 +84,13 @@
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
-						<router-link to="/logout">
-							<font-awesome-icon :icon="['far', 'right-from-bracket']" fixed-width/> se déconnecter
+						<router-link to="/urgences">
+							<span class="textRed"><font-awesome-icon :icon="['far', 'face-explode']" fixed-width/> urgences</span>
 						</router-link>
 					</div>
 					<div class="userSubMenuItem">
-						<router-link to="/urgences">
-							<span class="textRed"><font-awesome-icon :icon="['far', 'face-explode']" fixed-width/> urgences</span>
+						<router-link to="/logout">
+							<font-awesome-icon :icon="['far', 'right-from-bracket']" fixed-width/> se déconnecter
 						</router-link>
 					</div>
 				</div>

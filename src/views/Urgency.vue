@@ -2,22 +2,25 @@
 	<div class="mainContainer">
 		<div class="pageContent">
 			<p class="title">urgences</p>
-			<div v-if="timer <= 0">
+			<div v-if="getTimer <= 0">
 				<p class="explanations">
-					Tu as besoin d'aide? Besoin de parler, besoin d'écoute? Besoin de te changer les idées, de soutient ou simplement d'une main tendue? Les gens qui te répondront ici ne sont pas des professionnels, mais des gens comme toi, inscris à notre programme "Anges Gardien", offrant de leur personne en cas de besoin.
+					Tu as besoin d'aide? Besoin de parler, besoin d'écoute? Besoin de te changer les idées, de soutient ou simplement d'une main tendue? Les gens qui te répondront ici ne sont pas des professionnels, mais des gens comme toi, inscris à notre programme "Anges Gardiens", offrant de leur personne en cas de besoin.
 				</p>
 				<p class="explanations explanation">
 					En utilisant ce service, les anges gardiens seront avertis et le premier à répondre recevra ton numéro de téléphone pour pouvoir te contacter. Il se peut que personne ne soit disponible au moment où tu en as besoin, auquel cas nous te conseillons, si ça ne va vraiment pas, de contacter les instances officielles.
 				</p>
-				<div class="helpButton" v-if="timer <= 0" @click="askForHelp">
+				<div class="helpButton" v-if="getTimer <= 0" @click="askForHelp">
 					<div class="helpButtonInner">
 						help
 					</div>
 				</div>
 			</div>
 			<div v-else>
-				<p class="explanations">
-					Ta demande a été transmise et les anges gardien disponible maintenant ont été alerté
+				<p class="explanations" v-if="!noAvailable">
+					Ta demande a été transmise et les anges gardiens disponibles maintenant ont été alertés. Le premier a répondre recevra ton numéro de téléphone et devrait te contacter sous peu.
+				</p>
+				<p class="explanations" v-else>
+					Il n'y a malheureusement personne de disponible maintenant. Tu peux renvoyer une nouvelle demande dans 5 minutes. Si entre temps tu ne te sens pas bien, essaie la respiration accompagnée, ou contact une instance officielle
 				</p>
 				<p class="countdown">
 					{{ remainingMinutes }}:{{ remainingSeconds }}
@@ -35,29 +38,46 @@ export default {
 	name: 'Urgency',
 	data: function() {
 		return {
-			timer: 0,
 			remainingMinutes: '00',
-			remainingSeconds: '00'
+			remainingSeconds: '00',
+			noAvailable: false
+		}
+	},
+	mounted() {
+		if (this.getTimer > 0) {
+			this.countdown()
+		}
+	},
+	computed: {
+		getTimer: function() {
+			const timer = window.localStorage.getItem('guardianAngelTimer')
+			if (timer) {
+				return parseInt(timer)
+			} else {
+				return 0
+			}
 		}
 	},
 	methods: {
 		askForHelp: function() {
-			this.$store.state.axios.get('/guardianAngel/urgency/').then(response => {
-				this.timer = 300
+			this.$store.state.axios.get('/guardianAngel/urgency/').then(() => {
+				window.localStorage.setItem('guardianAngelTimer', '900')
 				this.countdown()
 			}).catch(() => {
-				this.timer = 300
+				this.noAvailable = true
+				window.localStorage.setItem('guardianAngelTimer', '300')
 				this.countdown()
 			})
 		},
 		countdown: function() {
-			if (this.timer <= 0) {
+			let timer = this.getTimer
+			if (timer <= 0) {
 				return
 			}
 
-			this.remainingMinutes = commons.addZeroBefore(Math.floor(this.timer / 60 ).toString())
-			this.remainingSeconds = commons.addZeroBefore(Math.floor(this.timer % 60 ).toString())
-			this.timer--
+			this.remainingMinutes = commons.addZeroBefore(Math.floor(timer / 60 ).toString())
+			this.remainingSeconds = commons.addZeroBefore(Math.floor(timer % 60 ).toString())
+			window.localStorage.setItem('guardianAngelTimer', (timer--).toString())
 			setTimeout(this.countdown, 1000)
 		}
 	}
