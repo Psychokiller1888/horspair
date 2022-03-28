@@ -2,14 +2,14 @@
 	<div class="mainContainer">
 		<div class="pageContent">
 			<p class="title">urgences</p>
-			<div v-if="getTimer <= 0">
+			<div v-if="timer <= 0">
 				<p class="explanations">
 					Tu as besoin d'aide? Besoin de parler, besoin d'écoute? Besoin de te changer les idées, de soutient ou simplement d'une main tendue? Les gens qui te répondront ici ne sont pas des professionnels, mais des gens comme toi, inscris à notre programme "Anges Gardiens", offrant de leur personne en cas de besoin.
 				</p>
 				<p class="explanations explanation">
 					En utilisant ce service, les anges gardiens seront avertis et le premier à répondre recevra ton numéro de téléphone pour pouvoir te contacter. Il se peut que personne ne soit disponible au moment où tu en as besoin, auquel cas nous te conseillons, si ça ne va vraiment pas, de contacter les instances officielles.
 				</p>
-				<div class="helpButton" v-if="getTimer <= 0" @click="askForHelp">
+				<div class="helpButton" v-if="timer <= 0" @click="askForHelp">
 					<div class="helpButtonInner">
 						help
 					</div>
@@ -19,8 +19,8 @@
 				<p class="explanations" v-if="!noAvailable">
 					Ta demande a été transmise et les anges gardiens disponibles maintenant ont été alertés. Le premier a répondre recevra ton numéro de téléphone et devrait te contacter sous peu.
 				</p>
-				<p class="explanations" v-else>
-					Il n'y a malheureusement personne de disponible maintenant. Tu peux renvoyer une nouvelle demande dans 5 minutes. Si entre temps tu ne te sens pas bien, essaie la respiration accompagnée, ou contact une instance officielle
+				<p class="explanations" v-if="noAvailable">
+					Il n'y a malheureusement personne de disponible maintenant. Tu peux renvoyer une nouvelle demande dès le prochain créneau de 15 minutes. Si entre temps tu ne te sens pas bien, essaie la respiration accompagnée, ou contact une instance officielle
 				</p>
 				<p class="countdown">
 					{{ remainingMinutes }}:{{ remainingSeconds }}
@@ -32,7 +32,7 @@
 
 <script>
 
-import commons from '@/js/commons';
+import commons from '@/js/commons'
 
 export default {
 	name: 'Urgency',
@@ -40,44 +40,62 @@ export default {
 		return {
 			remainingMinutes: '00',
 			remainingSeconds: '00',
-			noAvailable: false
+			noAvailable: false,
+			timer: 0
 		}
 	},
 	mounted() {
-		if (this.getTimer > 0) {
+		this.timer = this.getSavedTimer()
+		if (this.timer > 0) {
 			this.countdown()
 		}
 	},
-	computed: {
-		getTimer: function() {
-			const timer = window.localStorage.getItem('guardianAngelTimer')
-			if (timer) {
-				return parseInt(timer)
-			} else {
-				return 0
-			}
-		}
-	},
+	computed: {},
 	methods: {
+		getSavedTimer: function() {
+			const now = new Date().getTime()
+			const timerEnd = window.localStorage.getItem('guardianAngelTimer')
+
+			if (!timerEnd || now > parseInt(timerEnd)) {
+				return 0
+			} else {
+				const reason = window.localStorage.getItem('guardianAngelNoAvailable')
+
+				if (reason && reason === '1') {
+					this.noAvailable = 1
+				}
+
+				return (parseInt(timerEnd) - now) / 1000
+			}
+		},
 		askForHelp: function() {
 			this.$store.state.axios.get('/guardianAngel/urgency/').then(() => {
-				window.localStorage.setItem('guardianAngelTimer', '900')
+				window.localStorage.setItem('guardianAngelNoAvailable', '0')
+				this.timer = 900
 				this.countdown()
 			}).catch(() => {
+				window.localStorage.setItem('guardianAngelNoAvailable', '1')
 				this.noAvailable = true
-				window.localStorage.setItem('guardianAngelTimer', '300')
+
+				const minutes = new Date().getMinutes()
+				this.timer = ((15 - (minutes % 15)) * 60) + 10
 				this.countdown()
+			}).finally(() => {
+				this.saveTimer(this.timer)
 			})
 		},
+		saveTimer: function(delta) {
+			const timerEnd = new Date().getTime() + (delta * 1000)
+			window.localStorage.setItem('guardianAngelTimer', timerEnd.toString())
+		},
 		countdown: function() {
-			let timer = this.getTimer
-			if (timer <= 0) {
+			if (this.timer <= 0) {
 				return
 			}
 
-			this.remainingMinutes = commons.addZeroBefore(Math.floor(timer / 60 ).toString())
-			this.remainingSeconds = commons.addZeroBefore(Math.floor(timer % 60 ).toString())
-			window.localStorage.setItem('guardianAngelTimer', (timer--).toString())
+			this.remainingMinutes = commons.addZeroBefore(Math.floor(this.timer / 60 ).toString())
+			this.remainingSeconds = commons.addZeroBefore(Math.floor(this.timer % 60 ).toString())
+			this.timer -= 1
 			setTimeout(this.countdown, 1000)
 		}
 	}
