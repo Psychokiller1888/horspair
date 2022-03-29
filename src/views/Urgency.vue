@@ -98,6 +98,16 @@ export default {
 			this.timer -= 1
 			setTimeout(this.countdown, 1000)
 		}
+	},
+	watch:       {
+		$route: {
+			immediate: true,
+			handler() {
+				if ('a' in this.$route.query && 'b' in this.$route.query) {
+					return true
+				}
+			}
+		}
 	}
 }
 </script>
