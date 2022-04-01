@@ -54,7 +54,7 @@ export default {
 	methods: {
 		getSavedTimer: function() {
 			const now = new Date().getTime()
-			const timerEnd = window.localStorage.getItem('guardianAngelTimer')
+			const timerEnd = this.$store.state.guardianAngelTimer
 
 			if (!timerEnd || now > parseInt(timerEnd)) {
 				return 0
@@ -86,7 +86,7 @@ export default {
 		},
 		saveTimer: function(delta) {
 			const timerEnd = new Date().getTime() + (delta * 1000)
-			window.localStorage.setItem('guardianAngelTimer', timerEnd.toString())
+			this.$store.commit('setGuardianWaitTimer', timerEnd)
 		},
 		countdown: function() {
 			if (this.timer <= 0) {
