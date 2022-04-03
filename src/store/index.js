@@ -224,7 +224,7 @@ const store = new Vuex.Store({
 						type: 'success',
 						text: 'Ton humeur a bien été enregistrée!'
 					})
-					newEntry.key = response.data.insertId
+					newEntry.key = response.data.payload['insertId']
 					await commit('addMood', newEntry)
 				}
 			}).catch(async (_reason) => {
