@@ -68,6 +68,7 @@ const store = new Vuex.Store({
 		friends:         {},
 		moodTrackerData: [],
 		guardianAngelTimer: 0,
+		guardianAngelNoAvailable: false,
 		guardianAvailabilities: {
 			1: [],
 			2: [],
@@ -144,6 +145,7 @@ const store = new Vuex.Store({
 					await commit('setFriendList', response.data['friendList'])
 					await commit('setGuardianAvailabilities', response.data['guardianAvailabilities'])
 					await commit('setGuardianWaitTimer', response.data['guardianWaitTime'])
+					await commit('setGuardianNoAvailable', response.data['guardianNoAvailable'])
 					commit('connecting', false)
 				}
 			}).catch(async (_reason) => {
@@ -405,6 +407,8 @@ const store = new Vuex.Store({
 			state.friends = {}
 			state.therapists = {}
 			state.moodTrackerData = []
+			state.guardianAngelNoAvailable = false
+			state.guardianAngelTimer = 0
 			state.guardianAvailabilities = {
 				1: [],
 				2: [],
@@ -485,6 +489,9 @@ const store = new Vuex.Store({
 		},
 		setGuardianWaitTimer(state, endTime) {
 			state.guardianAngelTimer = endTime
+		},
+		setGuardianNoAvailable(state, data) {
+			state.guardianAngelNoAvailable = data
 		}
 	},
 	plugins: [

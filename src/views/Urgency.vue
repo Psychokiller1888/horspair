@@ -59,10 +59,10 @@ export default {
 			if (!timerEnd || now > parseInt(timerEnd)) {
 				return 0
 			} else {
-				const reason = window.localStorage.getItem('guardianAngelNoAvailable')
+				const reason = this.$store.state.guardianAngelNoAvailable
 
-				if (reason && reason === '1') {
-					this.noAvailable = 1
+				if (reason && reason === true) {
+					this.noAvailable = true
 				}
 
 				return (parseInt(timerEnd) - now) / 1000
@@ -70,11 +70,11 @@ export default {
 		},
 		askForHelp: function() {
 			this.$store.state.axios.get('/guardianAngel/urgency/').then(() => {
-				window.localStorage.setItem('guardianAngelNoAvailable', '0')
+				this.$store.commit('setGuardianNoAvailable', false)
 				this.timer = 900
 				this.countdown()
 			}).catch(() => {
-				window.localStorage.setItem('guardianAngelNoAvailable', '1')
+				this.$store.commit('setGuardianNoAvailable', true)
 				this.noAvailable = true
 
 				const minutes = new Date().getMinutes()
