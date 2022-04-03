@@ -222,7 +222,7 @@ export default {
 	.userSubMenu {
 		position: fixed;
 		top: 100px;
-		right: 25px;
+		right: 50px;
 		min-width: 300px;
 		min-height: 150px;
 		background-color: var(--secondary-bg-color);
