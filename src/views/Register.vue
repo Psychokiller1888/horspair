@@ -137,20 +137,21 @@ export default {
 						self.invalidEmail = true
 						self.emailAlreadyInUse = true
 						message = 'Cette adresse email est déjà utilisée'
-					} else if (response.status === 400) {
-						if (response.data.errorDescription.includes('first name')) {
+					} else if (response.status === 400 || response.status === 404) {
+						const offending = response.data.payload['offending']
+						if (offending === 'firstname') {
 							self.invalidFirstname = true
 							message = "Le prénom n'est pas valide"
-						} else if (response.data.errorDescription.includes('last name')) {
+						} else if (offending === 'lastname') {
 							self.invalidLastname = true
 							message = "Le nom de famille n'est pas valide"
-						} else if (response.data.errorDescription.includes('email')) {
+						} else if (offending.includes('email')) {
 							self.invalidEmail = true
 							message = "L'adresse email n'est pas valide"
-						} else if (response.data.errorDescription.includes('invite code')) {
+						} else if (offending.includes('invite')) {
 							self.invalidInvite = true
 							message = "Ton code d'invitation n'est pas ou plus valide"
-						} else if (response.data.errorDescription.includes('password')) {
+						} else if (offending === 'password') {
 							self.invalidPassword = true
 							message = "Ton mot de passe n'est pas valide"
 						}
