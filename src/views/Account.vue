@@ -151,7 +151,6 @@
 								<span>à</span>
 								<div>
 									<select name="hourEnd" v-model="guardianAvailabilityHoursEnd">
-										<option>0</option>
 										<option>1</option>
 										<option>2</option>
 										<option>3</option>
@@ -268,7 +267,7 @@ export default {
 	name: 'account',
 	data: function() {
 		return {
-			page: 'data',
+			page: 'guardian',
 			firstname: this.$store.state.user['firstname'],
 			lastname: this.$store.state.user['lastname'],
 			address: this.$store.state.user['address'],
@@ -539,7 +538,8 @@ li:hover {
 }
 
 .dayAvailabilitiesList {
-	width: 100%;
+	display: flex;
+	flex-grow: 1;
 }
 
 .newAvailabilityHoursSelectors {
@@ -549,13 +549,12 @@ li:hover {
 
 .newAvailabilityDaysSelectors {
 	display: flex;
-	justify-items: center;
+	justify-content: space-between;
 	margin-bottom: 15px;
 }
 
 .daySelector {
 	font-variant: small-caps;
-	margin: 15px;
 	font-size: 1.5em;
 	border-bottom: 2px solid rgba(0, 0, 0, 0);
 	transition-duration: 0.3s;

@@ -38,6 +38,8 @@ export default {
 	name: 'Urgency',
 	data: function() {
 		return {
+			answeringToRequest: false,
+			requestUid: '',
 			remainingMinutes: '00',
 			remainingSeconds: '00',
 			noAvailable: false,
@@ -103,8 +105,9 @@ export default {
 		$route: {
 			immediate: true,
 			handler() {
-				if ('a' in this.$route.query && 'b' in this.$route.query) {
-					return true
+				if ('a' in this.$route.query) {
+					this.answeringToRequest = true
+					this.requestUid = this.$route.query['a']
 				}
 			}
 		}
