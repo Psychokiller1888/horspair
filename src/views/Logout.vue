@@ -3,18 +3,24 @@
 </template>
 
 <script>
+import Vue from 'vue';
+
 export default {
-	name: 'Déconnection',
+	name: 'Déconnexion',
 	data: function() {
 		return {
 		}
 	},
-	methods: {
-	},
+	methods: {},
 	watch:       {
 		$route: {
 			immediate: true,
 			handler() {
+				Vue.notify({
+					title: 'Déconnexion',
+					type:  'success',
+					text:  `A bientôt ${this.$store.state.user.firstname}!`
+				})
 				this.$store.commit('disconnect')
 				this.$router.replace({path: '/'})
 			}
