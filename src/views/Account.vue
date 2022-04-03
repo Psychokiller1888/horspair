@@ -151,6 +151,7 @@
 								<span>à</span>
 								<div>
 									<select name="hourEnd" v-model="guardianAvailabilityHoursEnd">
+										<option>0</option>
 										<option>1</option>
 										<option>2</option>
 										<option>3</option>
@@ -404,20 +405,22 @@ export default {
 			let start = `${this.guardianAvailabilityHoursStart}${this.guardianAvailabilityMinutesStart}`
 			let end = `${this.guardianAvailabilityHoursEnd}${this.guardianAvailabilityMinutesEnd}`
 
-			if (parseInt(end) <  parseInt(start)) {
+			if (parseInt(end) <=  parseInt(start)) {
 				Vue.notify({
 					title: 'Logique',
 					type:  'warning',
-					text:  "L'heure de fin ne peut pas être avant l'heure de début"
+					text:  "L'heure de fin ne peut pas être avant ou égale à l'heure de début"
 				})
 			} else {
+				const newAvailabilities = []
 				for (const weekDay of this.daysToAdd) {
-					this.$store.dispatch('addGuardianAvailability', {
+					newAvailabilities.push({
 						'weekDay': weekDay,
 						'start': start,
 						'end': end
 					})
 				}
+				this.$store.dispatch('addGuardianAvailabilities', newAvailabilities)
 				this.cancelAddAvailability()
 			}
 		},

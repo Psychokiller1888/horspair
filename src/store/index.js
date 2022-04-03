@@ -48,10 +48,11 @@ axiosInstance.interceptors.response.use(response => {
 			return Promise.reject(error)
 		}
 	} else if (error.response && error.response.status === 307) {
-		if (error.response.data['doLogout']) {
+		console.log(error.response.data)
+		if (error.response.data.payload['logout']) {
 			store.commit('disconnect')
 		}
-		await router.push({path: error.response.data['redirectTo']})
+		await router.push({path: error.response.data.payload['redirect']})
 		return
 	}
 	return Promise.reject(error)
@@ -70,13 +71,13 @@ const store = new Vuex.Store({
 		guardianAngelTimer: 0,
 		guardianAngelNoAvailable: false,
 		guardianAvailabilities: {
+			0: [],
 			1: [],
 			2: [],
 			3: [],
 			4: [],
 			5: [],
-			6: [],
-			0: []
+			6: []
 		}
 	},
 	getters:   {
@@ -323,21 +324,22 @@ const store = new Vuex.Store({
 				throw new Error()
 			})
 		},
-		async addGuardianAvailability({commit}, data) {
+		async addGuardianAvailabilities({commit}, data) {
 			await axiosInstance.post('/guardianAngel/availabilities/', data).then(response => {
 				if (response.status !== 200) {
 					throw new Error()
 				} else {
 					data.id = response.data.id
-					commit('addGuardianAvailability', data)
+					for (const availability of data) {
+						commit('addGuardianAvailability', availability)
+					}
 					Vue.notify({
 						title: 'Succès',
 						type:  'success',
 						text:  'Disponibilités mise à jour!'
 					})
 				}
-			}).catch(error => {
-				console.log(error)
+			}).catch(() => {
 				Vue.notify({
 					title: 'Erreur',
 					type:  'error',
