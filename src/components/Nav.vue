@@ -11,18 +11,18 @@
 					<div class="mainSubMenuTitle button">
 						<font-awesome-icon :icon="['far', 'circle-xmark']" fixed-width @click.stop="toggleMenu('mainMenuExtended')"/> HORSPAIR
 					</div>
-					<div class="mainSubMenuItem">
-						<router-link to="/">
+					<router-link to="/">
+						<div class="mainSubMenuItem">
 							<font-awesome-icon :icon="['far', 'house']" fixed-width/> accueil
-						</router-link>
-					</div>
+						</div>
+					</router-link>
+					<router-link to="/temoignages">
 					<div class="mainSubMenuItem">
-						<router-link to="/temoignages">
 							<font-awesome-icon :icon="['far', 'messages']" fixed-width/> témoignages
-						</router-link>
 					</div>
-					<div class="mainSubMenuItem">
-						<font-awesome-icon :icon="['fab', 'discord']" fixed-width @click="openDiscord"/> Discord
+					</router-link>
+					<div class="mainSubMenuItem" @click="openDiscord">
+						<font-awesome-icon :icon="['fab', 'discord']" fixed-width/> Discord
 					</div>
 					<div class="mainSubMenuItem copyright">
 						<font-awesome-icon :icon="['far', 'copyright']" fixed-width/> 2022 Hors-Pairs
@@ -53,46 +53,46 @@
 						<div class="greetings">Salut {{ $store.state.user.firstname }}</div>
 						<div class="userEmail">{{ $store.state.user.email }}</div>
 					</div>
-					<div class="userSubMenuItem">
-						<router-link to="/account">
+					<router-link to="/account">
+						<div class="userSubMenuItem">
 							<font-awesome-icon :icon="['far', 'circle-user']" fixed-width/> mon compte
-						</router-link>
-					</div>
-					<div class="userSubMenuItem">
-						<router-link to="/traqueur">
+						</div>
+					</router-link>
+					<router-link to="/traqueur">
+						<div class="userSubMenuItem">
 							<font-awesome-icon :icon="['far', 'face-clouds']" fixed-width/> tracker
-						</router-link>
-					</div>
-					<div class="userSubMenuItem">
-						<router-link to="/emdr">
+						</div>
+					</router-link>
+					<router-link to="/emdr">
+						<div class="userSubMenuItem">
 							<font-awesome-icon :icon="['far', 'eyes']" fixed-width/> EMDR
-						</router-link>
-					</div>
-					<div class="userSubMenuItem">
-						<router-link to="/respiration">
-								<font-awesome-icon :icon="['far', 'face-exhaling']" fixed-width/> Respiration
-						</router-link>
-					</div>
-					<div class="userSubMenuItem">
-						<router-link to="/carnet">
+						</div>
+					</router-link>
+					<router-link to="/respiration">
+						<div class="userSubMenuItem">
+							<font-awesome-icon :icon="['far', 'face-exhaling']" fixed-width/> Respiration
+						</div>
+					</router-link>
+					<router-link to="/carnet">
+						<div class="userSubMenuItem">
 							<font-awesome-icon :icon="['far', 'memo-pad']" fixed-width/> Carnet de bord
-						</router-link>
-					</div>
-					<div class="userSubMenuItem">
-						<router-link to="/notes">
-							<font-awesome-icon :icon="['far', 'notes']" fixed-width/> notes
-						</router-link>
-					</div>
-					<div class="userSubMenuItem">
-						<router-link to="/urgences">
+						</div>
+					</router-link>
+					<router-link to="/notes">
+						<div class="userSubMenuItem">
+								<font-awesome-icon :icon="['far', 'notes']" fixed-width/> notes
+						</div>
+					</router-link>
+					<router-link to="/urgences">
+						<div class="userSubMenuItem">
 							<span class="textRed"><font-awesome-icon :icon="['far', 'face-explode']" fixed-width/> urgences</span>
-						</router-link>
-					</div>
-					<div class="userSubMenuItem">
-						<router-link to="/logout">
+						</div>
+					</router-link>
+					<router-link to="/logout">
+						<div class="userSubMenuItem">
 							<font-awesome-icon :icon="['far', 'right-from-bracket']" fixed-width/> se déconnecter
-						</router-link>
-					</div>
+						</div>
+					</router-link>
 				</div>
 				<div v-if="!$store.getters.isConnected">
 					<div class="userSubMenuItem" style="margin-bottom: 2px;">
