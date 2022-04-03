@@ -115,9 +115,7 @@
 </template>
 
 <script>
-
 import Vue from 'vue'
-import { mapActions } from 'vuex'
 
 export default {
 	name: 'Nav',
@@ -137,7 +135,7 @@ export default {
 		if (!this.$store.state.user && this.$cookies.get('accessToken')) {
 			const User = new FormData()
 			User.append('userId', Vue.$cookies.get('userId'))
-			this.login(User)
+			this.$store.dispatch('login', User)
 		}
 
 		const self = this
@@ -149,7 +147,6 @@ export default {
 		document.oncontextmenu = new Function('return false')
 	},
 	methods: {
-		...mapActions(['login']),
 		openDiscord: function() {
 			window.open('https://discord.gg/F363MtabM5')
 		},
