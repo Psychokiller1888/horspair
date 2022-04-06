@@ -48,7 +48,6 @@ axiosInstance.interceptors.response.use(response => {
 			return Promise.reject(error)
 		}
 	} else if (error.response && error.response.status === 307) {
-		console.log(error.response.data)
 		if (error.response.data.payload['logout']) {
 			store.commit('disconnect')
 		}

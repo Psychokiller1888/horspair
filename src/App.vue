@@ -68,6 +68,17 @@ a {
 	color: var(--main-text-color);
 }
 
+.link {
+	color: var(--secondary-text-color);
+	font-style: italic;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.link:hover {
+	text-decoration: underline;
+}
+
 .mainContainer {
 	margin-top: 15px;
 	line-height: 150%;
@@ -344,5 +355,34 @@ button:hover,
 
 .v-tour__target--highlighted {
 	box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75) !important;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 9999999;
+}
+
+.modalContent {
+	width: 25%;
+	margin: 0 auto;
+	background-color: var(--secondary-bg-color);
+	padding: 25px;
+	text-align: justify;
+}
+
+.fade-enter-active, .fade-leave-active {
+	transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
 }
 </style>
