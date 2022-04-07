@@ -43,7 +43,7 @@ html, body {
 	color: var(--main-text-color);
 	width: 100%;
 	margin: 0 auto;
-	padding: 0 15px 0 15px;
+	padding: 0;
 	box-sizing: border-box;
 	height: 100%;
 	font-family: var(--main-font);
@@ -58,10 +58,24 @@ html, body {
 	user-select: none;
 }
 
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--dark-bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--secondary-bg-color);
+}
+
 #app {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	padding: 0 15px 0 15px;
+	box-sizing: border-box;
 }
 
 a {
