@@ -88,7 +88,7 @@ a {
 .pageContent {
 	display: flex;
 	flex-direction: column;
-	padding-top: 15px;
+	padding: 15px;
 	box-sizing: border-box;
 	max-width: 800px;
 	margin: 25px auto;
@@ -353,8 +353,20 @@ button:hover,
 	display: none;
 }
 
+.textCentered {
+	text-align: center;
+}
+
 .v-tour__target--highlighted {
 	box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75) !important;
+}
+
+h1 {
+	font-size: 1.75em;
+}
+
+h2 {
+	font-size: 1.5em;
 }
 
 .modal {
