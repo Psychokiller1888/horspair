@@ -118,6 +118,8 @@ export default {
 				return
 			}
 
+			this.invalidInvite = false
+
 			const self = this
 			const account = new FormData()
 			account.append('firstname', this.firstname)
