@@ -218,14 +218,14 @@
 						<p class="break" v-if="Object.keys(friendListPending).length > 0">En attente</p>
 						<div class="contactEntry" v-for="friend in friendListPending" :key="friend.id">
 							<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
-							<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
+							<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.id)"/></div>
 						</div>
 						<p class="break" v-if="Object.keys(friendListAccepted).length > 0">Mes amis</p>
 						<div class="contactEntry" v-for="friend in friendListAccepted" :key="friend.id">
 							<div class="contactName">{{ friend.firstname }} {{ friend.lastname }}</div>
 							<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
 							<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
-							<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.email)"/></div>
+							<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.id)"/></div>
 						</div>
 					</div>
 				</div>
@@ -251,7 +251,7 @@
 						<div class="contactName">{{ therapist.firstname }} {{ therapist.lastname }}</div>
 						<div class="contactEmail"><a :href="`mailto:${therapist.email}`">{{ therapist.email }}</a></div>
 						<div class="contactPhone"><a :href="`tel:${therapist.phone}`">{{ therapist.phone }}</a></div>
-						<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteTherapist(therapist.email)"/></div>
+						<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteTherapist(therapist.id)"/></div>
 					</div>
 				</div>
 			</div>
@@ -382,8 +382,8 @@ export default {
 			this.$store.dispatch('addFriend', this.newFriendEmail)
 			this.cancelFriend()
 		},
-		deleteFriend: function(email) {
-			this.$store.commit('removeFriend', email)
+		deleteFriend: function(friendId) {
+			this.$store.dispatch('removeFriendship', friendId)
 		},
 		validate: function() {
 			this.validatePassword()

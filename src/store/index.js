@@ -391,6 +391,16 @@ const store = new Vuex.Store({
 					text:  'Nous n\'avons pas pu envoyer la demande à ton ami'
 				})
 			})
+		},
+		async removeFriendship({commit, state}, friendId) {
+			axiosInstance.delete(`/friends/${friendId}/`).then((response) => {
+			}).catch(() => {
+				Vue.notify({
+					title: 'Erreur',
+					type:  'error',
+					text:  'Nous n\'avons pas pu supprimer la relation'
+				})
+			})
 		}
 	},
 	mutations: {
@@ -435,7 +445,7 @@ const store = new Vuex.Store({
 					Vue.notify({
 						title: 'Succès',
 						type:  'success',
-						text:  `Disponibilité supprimée!`
+						text:  'Demande envoyée!'
 					})
 				}
 				state.friends[data.email] = data.data
