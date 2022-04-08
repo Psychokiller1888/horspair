@@ -11,7 +11,7 @@
 				</div>
 			</div>
 		</transition>
-		<div ref="loginContainer" class="pageContent">
+		<div ref="loginContainer" class="pageContent" v-if="!passwordResetToken">
 			<div class="inputsWrapper">
 				<p class="inputWrapper">
 					<label for="email">
@@ -30,8 +30,25 @@
 				</p>
 				<!--<toggle :labels="{checked: 'Retenir', unchecked: 'Ne pas retenir'}" :width="120" :height="40" :color="{checked: 'var(--secondary-bg-color)', unchecked: 'var(--tertiary-bg-color)'}"></toggle>-->
 				<p class="buttonsWrapper" style="margin: 0 auto;">
-					<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="connect" title="Connecter" v-if="form.email && form.email"/>
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="connect" title="Connecter" v-if="form.email && form.password"/>
 					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
+				</p>
+			</div>
+		</div>
+		<div class="pageContent" v-else>
+			<div class="inputsWrapper">
+				<p class="inputWrapper">
+					<label for="password">
+						<font-awesome-icon :icon="['far', 'key']"/> Nouveau mot de passe
+					</label>
+					<input id="newPassword" type="password" name="newPassword" v-model="form.password" @keydown.enter="doReset" @keyup="validatePassword"/>
+				</p>
+				<p class="buttonsWrapper" style="margin: 0 auto;">
+					<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="doReset" title="Sauvegarder" v-if="form.password && !invalidPassword"/>
+					<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" title="Annuler" @click="cancel"/>
+				</p>
+				<p class="inputWrapperTextBlock explanation" v-if="invalidPassword">
+					Mot de passe: Min. 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
 				</p>
 			</div>
 		</div>
@@ -41,6 +58,7 @@
 <script>
 import {mapActions} from 'vuex'
 import Vue from 'vue'
+import commons from '@/js/commons'
 
 export default {
 	name: 'Connection',
@@ -50,7 +68,9 @@ export default {
 				email: '',
 				password: ''
 			},
-			resetPasswordModal: false
+			resetPasswordModal: false,
+			passwordResetToken: '',
+			invalidPassword: false
 		}
 	},
 	methods: {
@@ -81,6 +101,9 @@ export default {
 				}, 500)
 			}
 		},
+		validatePassword: function() {
+			this.invalidPassword = !commons.validatePassword(this.form.password)
+		},
 		cancel: function() {
 			this.form.email = ''
 			this.form.password = ''
@@ -95,14 +118,40 @@ export default {
 					text: 'Erreur de demande de mot de passe.'
 				})
 			})
+		},
+		doReset: function() {
+			const Data = new FormData()
+			Data.append('password', this.form.password)
+
+			this.$store.state.axios.post(`/password_reset/${this.passwordResetToken}/`, Data).then(() => {
+				this.invalidPassword = false
+				this.passwordResetToken = ''
+				this.form.password = ''
+				Vue.notify({
+					title: 'Récupération mot de passe',
+					type: 'success',
+					text: 'Ton mot de passe a été changé, tu peux te connecter avec celui-ci'
+				})
+			}).catch(() => {
+				Vue.notify({
+					title: 'Erreur',
+					type: 'error',
+					text: 'Erreur réinitialisation du mot de passe.'
+				})
+			})
 		}
 	},
 	watch:       {
 		$route: {
 			immediate: true,
 			handler() {
-				if (this.$store.getters.isConnected) {
+				if ('a' in this.$route.query) {
+					this.$store.commit('disconnect')
+					this.passwordResetToken = this.$route.query.a
+				} else if (this.$store.getters.isConnected) {
 					this.$router.replace({path: '/'})
+				} else {
+					this.passwordResetToken = ''
 				}
 			}
 		}
