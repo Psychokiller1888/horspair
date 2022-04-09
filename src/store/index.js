@@ -328,8 +328,7 @@ const store = new Vuex.Store({
 				if (response.status !== 200) {
 					throw new Error()
 				} else {
-					data.id = response.data.id
-					for (const availability of data) {
+					for (const availability of response.data) {
 						commit('addGuardianAvailability', availability)
 					}
 					Vue.notify({
