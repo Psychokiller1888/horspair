@@ -373,13 +373,13 @@ const store = new Vuex.Store({
 					Vue.notify({
 						title: 'Invité',
 						type:  'success',
-						text:  'Ton amis n\'est pas encore membre de notre site. Nous lui avons envoyé un email pour l\'inviter à nous rejoindre.'
+						text:  'Ton ami n\'est pas encore membre de notre site. Nous lui avons envoyé un email pour l\'inviter à nous rejoindre.'
 					})
 				} else if (response.data.status === 'invited') {
 					Vue.notify({
 						title: 'Demande envoyée',
 						type:  'success',
-						text:  'Nous avons envoyé ta demande d\'amitié à ton amis.'
+						text:  'Nous avons envoyé ta demande d\'amitié à ton ami.'
 					})
 				} else {
 					throw new Error()
@@ -394,6 +394,7 @@ const store = new Vuex.Store({
 		},
 		async removeFriendship({commit, state}, friendId) {
 			axiosInstance.delete(`/friends/${friendId}/`).then((response) => {
+				Vue.delete(state.friends, friendId)
 			}).catch(() => {
 				Vue.notify({
 					title: 'Erreur',
