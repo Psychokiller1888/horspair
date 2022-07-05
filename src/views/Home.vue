@@ -45,7 +45,7 @@
 					<p>
 						La seule chose qui est différente chez toi comme chez nous, c'est que tu n'utilises pas ton cerveaux comme la majorité de la population et, crois-nous, ça te donnes un certain avantage, même si tu penses que c'est un problème. Et nous sommes ici pour t'accueillir, t'accompagner et t'aider, sans jugement mais aussi pour apprendre de toi, tout simplement.
 					</p>
-					<div class="button" @click="joinModal = true">Rejoindre la communauté</div>
+					<div class="button" @click="joinModal = true" v-if="!$store.state.user">Rejoindre la communauté</div>
 				</div>
 			</div>
 		</div>
