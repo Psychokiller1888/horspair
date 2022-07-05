@@ -43,7 +43,7 @@ html, body {
 	color: var(--main-text-color);
 	width: 100%;
 	margin: 0 auto;
-	padding: 0 15px 0 15px;
+	padding: 0;
 	box-sizing: border-box;
 	height: 100%;
 	font-family: var(--main-font);
@@ -58,14 +58,39 @@ html, body {
 	user-select: none;
 }
 
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--dark-bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--secondary-bg-color);
+}
+
 #app {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	padding: 0 15px 0 15px;
+	box-sizing: border-box;
 }
 
 a {
 	color: var(--main-text-color);
+}
+
+.link {
+	color: var(--secondary-text-color);
+	font-style: italic;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.link:hover {
+	text-decoration: underline;
 }
 
 .mainContainer {
@@ -77,7 +102,7 @@ a {
 .pageContent {
 	display: flex;
 	flex-direction: column;
-	padding-top: 15px;
+	padding: 15px;
 	box-sizing: border-box;
 	max-width: 800px;
 	margin: 25px auto;
@@ -342,7 +367,48 @@ button:hover,
 	display: none;
 }
 
+.textCentered {
+	text-align: center;
+}
+
 .v-tour__target--highlighted {
 	box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75) !important;
+}
+
+h1 {
+	font-size: 1.75em;
+}
+
+h2 {
+	font-size: 1.5em;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 9999999;
+}
+
+.modalContent {
+	width: 25%;
+	margin: 0 auto;
+	background-color: var(--secondary-bg-color);
+	padding: 25px;
+	text-align: justify;
+}
+
+.fade-enter-active, .fade-leave-active {
+	transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
 }
 </style>

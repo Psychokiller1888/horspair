@@ -48,7 +48,6 @@ axiosInstance.interceptors.response.use(response => {
 			return Promise.reject(error)
 		}
 	} else if (error.response && error.response.status === 307) {
-		console.log(error.response.data)
 		if (error.response.data.payload['logout']) {
 			store.commit('disconnect')
 		}
@@ -329,8 +328,7 @@ const store = new Vuex.Store({
 				if (response.status !== 200) {
 					throw new Error()
 				} else {
-					data.id = response.data.id
-					for (const availability of data) {
+					for (const availability of response.data) {
 						commit('addGuardianAvailability', availability)
 					}
 					Vue.notify({
@@ -374,13 +372,13 @@ const store = new Vuex.Store({
 					Vue.notify({
 						title: 'Invité',
 						type:  'success',
-						text:  'Ton amis n\'est pas encore membre de notre site. Nous lui avons envoyé un email pour l\'inviter à nous rejoindre.'
+						text:  'Ton ami n\'est pas encore membre de notre site. Nous lui avons envoyé un email pour l\'inviter à nous rejoindre.'
 					})
 				} else if (response.data.status === 'invited') {
 					Vue.notify({
 						title: 'Demande envoyée',
 						type:  'success',
-						text:  'Nous avons envoyé ta demande d\'amitié à ton amis.'
+						text:  'Nous avons envoyé ta demande d\'amitié à ton ami.'
 					})
 				} else {
 					throw new Error()
@@ -390,6 +388,17 @@ const store = new Vuex.Store({
 					title: 'Erreur',
 					type:  'error',
 					text:  'Nous n\'avons pas pu envoyer la demande à ton ami'
+				})
+			})
+		},
+		async removeFriendship({commit, state}, friendId) {
+			axiosInstance.delete(`/friends/${friendId}/`).then((response) => {
+				Vue.delete(state.friends, friendId)
+			}).catch(() => {
+				Vue.notify({
+					title: 'Erreur',
+					type:  'error',
+					text:  'Nous n\'avons pas pu supprimer la relation'
 				})
 			})
 		}
@@ -436,7 +445,7 @@ const store = new Vuex.Store({
 					Vue.notify({
 						title: 'Succès',
 						type:  'success',
-						text:  `Disponibilité supprimée!`
+						text:  'Demande envoyée!'
 					})
 				}
 				state.friends[data.email] = data.data
