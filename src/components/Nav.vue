@@ -148,7 +148,7 @@ export default {
 	},
 	methods: {
 		openDiscord: function() {
-			window.open('https://discord.gg/F363MtabM5')
+			window.open('https://discord.gg/uTdRrTtxB3')
 		},
 		toggleMenu: function(menu) {
 			for (const menuItem of Object.keys(this.menusStates)) {
