@@ -110,8 +110,9 @@ export default {
 			this.$router.replace({path: '/'})
 		},
 		resetPassword: function() {
-			this.resetPasswordModal = true
-			this.$store.state.axios.get(`/password_reset/${this.form.email}/`).catch(() => {
+			this.$store.state.axios.get(`/password_reset/${this.form.email}/`).then((result) => {
+				this.resetPasswordModal = true
+			}).catch(() => {
 				Vue.notify({
 					title: 'Erreur',
 					type: 'error',
@@ -120,10 +121,11 @@ export default {
 			})
 		},
 		doReset: function() {
-			const Data = new FormData()
-			Data.append('password', this.form.password)
+			const payload = {
+				'password': this.form.password
+			}
 
-			this.$store.state.axios.post(`/password_reset/${this.passwordResetToken}/`, Data).then(() => {
+			this.$store.state.axios.patch(`/password_reset/${this.passwordResetToken}/`, payload).then((response) => {
 				this.invalidPassword = false
 				this.passwordResetToken = ''
 				this.form.password = ''
