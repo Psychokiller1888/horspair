@@ -14,8 +14,8 @@ export default {
 		const length = password.length >= 8
 		const uppercase = /[A-Z]/.test(password)
 		const lowercase = /[a-z]/.test(password)
-		const number = /[0-9]/.test(password)
-		const special = /[#?!@$%^&*-]/.test(password)
+		const number = /\d/.test(password)
+		const special = /[#\\?!.,;=()"'`\][{}_@$%^&*-/~°§+<:>|¬¢£¦€´]/.test(password)
 		return length && uppercase && lowercase && number && special
 	},
 	addZeroBefore: function(n) {
