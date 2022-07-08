@@ -222,9 +222,9 @@
 						</div>
 						<p class="break" v-if="Object.keys(friendListAccepted).length > 0">Mes amis</p>
 						<div class="contactEntry" v-for="friend in friendListAccepted" :key="friend.id">
-							<div class="contactName">{{ friend.firstname }} {{ friend.lastname }}</div>
-							<div class="contactEmail"><a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
-							<div class="contactPhone"><a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
+							<div class="contactName"><font-awesome-icon :icon="['far', 'id-card']"/> {{ friend.firstname }} {{ friend.lastname }}</div>
+							<div class="contactEmail"><font-awesome-icon :icon="['far', 'at']"/> <a :href="`mailto:${friend.email}`">{{ friend.email }}</a></div>
+							<div class="contactPhone"><font-awesome-icon :icon="['far', 'phone']"/> <a :href="`tel:${friend.phone}`">{{ friend.phone }}</a></div>
 							<div class="deleteContact"><font-awesome-icon :icon="['far', 'trash-can']" class="button" title="Supprimer" @click="deleteFriend(friend.id)"/></div>
 						</div>
 					</div>
@@ -498,18 +498,21 @@ li:hover {
 
 .contactName {
 	overflow: hidden;
+	width: 35%;
 	padding: 10px;
 	box-sizing: border-box;
 }
 
 .contactEmail {
 	overflow: hidden;
+	width: 35%;
 	padding: 10px;
 	box-sizing: border-box;
 }
 
 .contactPhone {
 	overflow: hidden;
+	width: 25%;
 	padding: 10px;
 	box-sizing: border-box;
 }

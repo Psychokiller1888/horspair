@@ -392,7 +392,7 @@ const store = new Vuex.Store({
 			})
 		},
 		async removeFriendship({commit, state}, friendId) {
-			axiosInstance.delete(`/friends/${friendId}/`).then((response) => {
+			axiosInstance.delete(`/friends/${friendId}/`).then(() => {
 				Vue.delete(state.friends, friendId)
 			}).catch(() => {
 				Vue.notify({
