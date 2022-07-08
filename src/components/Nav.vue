@@ -144,7 +144,9 @@ export default {
 				self.menusStates[menuItem] = false
 			}
 		})
-		document.oncontextmenu = new Function('return false')
+		if (process.env.VUE_APP_NODE_ENV !== 'dev') {
+			document.oncontextmenu = new Function('return false')
+		}
 	},
 	methods: {
 		openDiscord: function() {

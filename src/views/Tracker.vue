@@ -1,63 +1,75 @@
 <template>
 	<div class="mainContainer">
 		<v-tour name="moodTrackerOnboarding" :steps="steps" :options="tourOptions" :callbacks="tourCallbacks"></v-tour>
-		<div class="recorder">
+		<transition name="fade">
+			<div ref="addModal" v-if="addingMood">
+				<div class="modal">
+					<div class="modalContent">
+						<h1 class="textCentered">
+							Enregistre ton humeur
+						</h1>
+						<p class="textCentered">
+							<v-date-picker v-model="date" mode="time" locale="fr" is24hr :minute-increment="15"/>
+						</p>
+						<p class="moodSelectors" id="moodTracker_tour_4">
+							<span class="smiley" :class="{selected: selected === -3}" @click="selected = -3">
+								<font-awesome-icon :icon="['far', 'face-angry']"/>
+							</span>
+							<span class="smiley" :class="{selected: selected === -2}" @click="selected = -2">
+								<font-awesome-icon :icon="['far', 'face-sad-tear']"/>
+							</span>
+							<span class="smiley" :class="{selected: selected === -1}" @click="selected = -1">
+								<font-awesome-icon :icon="['far', 'face-frown-open']"/>
+							</span>
+							<span class="smiley" :class="{selected: selected === 0}" @click="selected = 0">
+								<font-awesome-icon :icon="['far', 'face-meh']"/>
+							</span>
+							<span class="smiley" :class="{selected: selected === 1}" @click="selected = 1">
+								<font-awesome-icon :icon="['far', 'face-grin']"/>
+							</span>
+							<span class="smiley" :class="{selected: selected === 2}" @click="selected = 2">
+								<font-awesome-icon :icon="['far', 'face-grin-beam']"/>
+							</span>
+							<span class="smiley" :class="{selected: selected === 3}" @click="selected = 3">
+								<font-awesome-icon :icon="['far', 'face-grin-tears']"/>
+							</span>
+						</p>
+						<div class="inputWrapper textAreaWrapper" id="moodTracker_tour_5">
+							<label for="comment"><font-awesome-icon :icon="['far', 'comment']"/> Commentaire</label>
+							<textarea id="comment" v-model="comment"/>
+						</div>
+						<p class="buttonsWrapper" style="margin: 0 auto;">
+							<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="save" title="enregistrer" id="moodTracker_tour_6" v-if="selected !== ''"/>
+							<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="closeMoodAddingModal" title="annuler"/>
+						</p>
+					</div>
+				</div>
+			</div>
+		</transition>
+		<div class="viewData">
 			<p class="score">
 				score d'humeur du mois: <strong id="moodTracker_tour_2">{{ score }}</strong>
 			</p>
-			<v-date-picker v-model="date" mode="dateTime" locale="fr" is24hr :minute-increment="15" id="moodTracker_tour_3"/>
-			<p class="moodSelectors" id="moodTracker_tour_4">
-				<span class="smiley" :class="{selected: selected === -3}" @click="selected = -3">
-					<font-awesome-icon :icon="['far', 'face-angry']"/>
-				</span>
-				<span class="smiley" :class="{selected: selected === -2}" @click="selected = -2">
-					<font-awesome-icon :icon="['far', 'face-sad-tear']"/>
-				</span>
-				<span class="smiley" :class="{selected: selected === -1}" @click="selected = -1">
-					<font-awesome-icon :icon="['far', 'face-frown-open']"/>
-				</span>
-				<span class="smiley" :class="{selected: selected === 0}" @click="selected = 0">
-					<font-awesome-icon :icon="['far', 'face-meh']"/>
-				</span>
-				<span class="smiley" :class="{selected: selected === 1}" @click="selected = 1">
-					<font-awesome-icon :icon="['far', 'face-grin']"/>
-				</span>
-				<span class="smiley" :class="{selected: selected === 2}" @click="selected = 2">
-					<font-awesome-icon :icon="['far', 'face-grin-beam']"/>
-				</span>
-				<span class="smiley" :class="{selected: selected === 3}" @click="selected = 3">
-					<font-awesome-icon :icon="['far', 'face-grin-tears']"/>
-				</span>
-			</p>
-			<div class="inputWrapper textAreaWrapper" id="moodTracker_tour_5">
-				<label for="comment"><font-awesome-icon :icon="['far', 'comment']"/> Commentaire</label>
-				<textarea id="comment" v-model="comment"/>
-			</div>
-			<p class="buttonsWrapper" style="margin: 0 auto;" v-if="selected !== ''">
-				<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="save" title="enregistrer" id="moodTracker_tour_6"/>
-				<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="selected = ''" title="annuler"/>
-			</p>
-		</div>
-		<div class="viewData">
 			<v-calendar
 				id="moodTracker_tour_1"
 				:masks="masks"
 				:attributes="attributes"
+				:show-weeknumbers="true"
 				locale="fr"
 				is-expanded
 				class="bigCalendar"
 				@update:to-page="nextPage"
 			>
 				<template v-slot:day-content="{ day, attributes }">
-					<div class="">
-						<span class="">{{ day.day }}</span>
-						<div class="calendar-smiley-list">
+					<div @click="openModal(day)">
+						<span class="day">{{ day.day }}</span>
+						<div class="calendar-smiley-list" @click.stop>
 							<p
 								v-for="attr in attributes"
 								:key="attr.key"
 								:class="attr.customData.class"
 							>
-								<span class="calendar-smiley" @dblclick="deleteEntry(attr.key)">
+								<span class="calendar-smiley" @dblclick="deleteEntry(attr.key, $event)">
 									<tooltip :label="getLabel(attr.customData)"><font-awesome-icon :icon="['far', `face-${attr.customData.icon}`]"/></tooltip>
 								</span>
 							</p>
@@ -76,12 +88,13 @@ export default {
 	name: 'Tracker',
 	data: function() {
 		return {
+			addingMood: false,
 			comment: '',
 			score: 100,
 			selected: '',
 			date: new Date(),
 			masks: {
-				weekdays: "WW"
+				weekdays: "WWWW"
 			},
 			tourCallbacks: {
 				onFinish: this.tourFinished,
@@ -106,7 +119,7 @@ export default {
 					content: 'Bienvenue sur ton traqueur d\'humeur! Il te servira a enregistrer tes différentes humeurs au fil des jours et te permettra d\'agir en conséquence',
 					params: {
 						highlight: true,
-						placement: 'left'
+						placement: 'top'
 					}
 				},
 				{
@@ -121,11 +134,11 @@ export default {
 					}
 				},
 				{
-					target: '#moodTracker_tour_3',
+					target: '#moodTracker_tour_1',
 					header: {
 						title: 'Ajouter une entrée'
 					},
-					content: 'Pour ajouter une entrée d\'humeur, sélectionnes la date et l\'heure concernée',
+					content: 'Pour ajouter une entrée d\'humeur, clique sur une case du calendrier',
 					params: {
 						highlight: true,
 						placement: 'top'
@@ -144,6 +157,7 @@ export default {
 					before: type => new Promise((resolve) => {
 						this.date = new Date()
 						this.selected = 0
+						this.addingMood = true
 						resolve()
 					})
 				},
@@ -201,6 +215,20 @@ export default {
 		})
 	},
 	methods: {
+		openModal: function(day) {
+			if (this.$tours['moodTrackerOnboarding'].isRunning) {
+					return
+			}
+			const now = new Date()
+			this.date = day.date
+			this.date.setHours(now.getHours())
+			this.date.setMinutes(now.getMinutes())
+			this.addingMood = true
+		},
+		closeMoodAddingModal: function() {
+			this.selected = ''
+			this.addingMood = false
+		},
 		tourFinished: function() {
 			this.$cookies.set('k_m_t_onboarding', true)
 		},
@@ -254,7 +282,8 @@ export default {
 				}
 			}
 		},
-		deleteEntry(key) {
+		deleteEntry(key, event) {
+			event.stopPropagation()
 			this.$store.dispatch('deleteMoodEntry', key).then(() => {
 				this.calculateScore(this.date.getMonth() + 1, this.date.getFullYear())
 			})
@@ -294,6 +323,7 @@ export default {
 				icon: icon,
 				comment: this.comment
 			}).then(() => {
+				this.addingMood = false
 				this.selected = ''
 				this.comment = ''
 				this.calculateScore(this.date.getMonth() + 1, this.date.getFullYear())
@@ -343,6 +373,7 @@ export default {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	margin: 0 50px 0 50px;
 }
 
 .viewData {
@@ -350,8 +381,22 @@ export default {
 	flex-grow: 1;
 }
 
+.day {
+	width: 100%;
+	height: 100%;
+	min-height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding-left: 5px;
+	box-sizing: border-box;
+	font-weight: bold;
+}
+
 .calendar-smiley-list {
 	display: flex;
+	margin-top: 20px;
+	width: 100%;
 }
 
 .calendar-smiley {
@@ -427,6 +472,12 @@ input {
 	background-color: var(--secondary-bg-color) !important;
 	border: 1px solid var(--main-bg-color) !important;
 	font-size: 0.8em;
+	cursor: pointer !important;
+	transition: background-color 0.25s;
+}
+
+.bigCalendar .vc-day:hover {
+	background-color: var(--tertiary-bg-color) !important;
 }
 
 .bigCalendar .vc-day-dots {
