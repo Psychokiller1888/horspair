@@ -2,11 +2,14 @@
 	<div class="mainContainer">
 		<v-tour name="moodTrackerOnboarding" :steps="steps" :options="tourOptions" :callbacks="tourCallbacks"></v-tour>
 		<transition name="fade">
-			<div ref="addModal" v-if="addingMood">
+			<div ref="addModal" v-if="addingMood || editingMood > -1">
 				<div class="modal">
 					<div class="modalContent">
-						<h1 class="textCentered">
+						<h1 class="textCentered" v-if="addingMood">
 							Enregistre ton humeur
+						</h1>
+						<h1 class="textCentered" v-else>
+							Edite cette entrée
 						</h1>
 						<p class="textCentered">
 							<v-date-picker v-model="date" mode="time" locale="fr" is24hr :minute-increment="15"/>
@@ -40,7 +43,8 @@
 						</div>
 						<p class="buttonsWrapper" style="margin: 0 auto;">
 							<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="save" title="enregistrer" id="moodTracker_tour_6" v-if="selected !== ''"/>
-							<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="closeMoodAddingModal" title="annuler"/>
+							<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="closeMoodModal" title="annuler"/>
+							<font-awesome-icon :icon="['far', 'trash-can']" class="button" @click="deleteEntry" title="supprimer"/>
 						</p>
 					</div>
 				</div>
@@ -69,7 +73,7 @@
 								:key="attr.key"
 								:class="attr.customData.class"
 							>
-								<span class="calendar-smiley" @dblclick="deleteEntry(attr.key, $event)">
+								<span class="calendar-smiley" @click="editEntry(attr)">
 									<tooltip :label="getLabel(attr.customData)"><font-awesome-icon :icon="['far', `face-${attr.customData.icon}`]"/></tooltip>
 								</span>
 							</p>
@@ -89,6 +93,7 @@ export default {
 	data: function() {
 		return {
 			addingMood: false,
+			editingMood: -1,
 			comment: '',
 			score: 100,
 			selected: '',
@@ -225,9 +230,13 @@ export default {
 			this.date.setMinutes(now.getMinutes())
 			this.addingMood = true
 		},
-		closeMoodAddingModal: function() {
+		closeMoodModal: function() {
+			if (this.$tours['moodTrackerOnboarding'].isRunning) {
+				this.$tours['moodTrackerOnboarding'].stop()
+			}
 			this.selected = ''
 			this.addingMood = false
+			this.editingMood = -1
 		},
 		tourFinished: function() {
 			this.$cookies.set('k_m_t_onboarding', true)
@@ -282,14 +291,48 @@ export default {
 				}
 			}
 		},
-		deleteEntry(key, event) {
-			event.stopPropagation()
-			this.$store.dispatch('deleteMoodEntry', key).then(() => {
+		deleteEntry() {
+			this.$store.dispatch('deleteMoodEntry', this.editingMood).then(() => {
 				this.calculateScore(this.date.getMonth() + 1, this.date.getFullYear())
 			})
+			this.closeMoodModal()
+		},
+		editEntry(entry) {
+			this.comment = entry.customData.comment
+			this.date = entry.dates[0].start
+
+			switch(entry.customData.icon) {
+				case 'angry':
+					this.selected = -3
+					break
+				case 'sad-tear':
+					this.selected = -2
+					break
+				case 'frown-open':
+					this.selected = -1
+					break
+				case 'meh':
+					this.selected = 0
+					break
+				case 'grin':
+					this.selected = 1
+					break
+				case 'grin-beam':
+					this.selected = 2
+					break
+				case 'grin-tears':
+					this.selected = 3
+					break
+				default:
+					this.selected = 0
+			}
+
+			this.editingMood = entry.key
 		},
 		save() {
-			this.$tours['moodTrackerOnboarding'].stop()
+			if (this.$tours['moodTrackerOnboarding'].isRunning) {
+				this.$tours['moodTrackerOnboarding'].stop()
+			}
 			let icon
 			switch(this.selected) {
 				case -3:
@@ -324,6 +367,7 @@ export default {
 				comment: this.comment
 			}).then(() => {
 				this.addingMood = false
+				this.editingMood = -1
 				this.selected = ''
 				this.comment = ''
 				this.calculateScore(this.date.getMonth() + 1, this.date.getFullYear())
