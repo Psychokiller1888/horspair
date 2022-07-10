@@ -4,9 +4,7 @@
 			Nous utilisons des cookies pour rendre ta navigation plus fluide. Tu peux en apprendre plus ici. <span class="inlineButton blueBackground" @click="ackCookies">OK</span>
 		</div>
 		<div class="address">
-			Laurent Chervet<br>
-			Ruelle des Gerles 5<br>
-			1788 Praz-Vully
+			Les Effervescents
 		</div>
 		<div class="legals">
 			Terms of Service<br>
