@@ -171,14 +171,14 @@ export default {
 					header: {
 						title: 'Ajouter une entrée'
 					},
-					content: 'Entre un commentaire, un mot, une note, si tu en as besoin, ça t\'aidera à te rappeler ce bon moment!',
+					content: 'Entre un commentaire, un mot, une note, si tu en as besoin, ça t\'aidera à te rappeler ce moment!',
 					params: {
 						highlight: true,
 						placement: 'top'
 					},
 					before: type => new Promise((resolve) => {
 						this.comment = ''
-						const text = 'Découverte de l\'outil de suivis d\'humeur!'
+						const text = 'Découverte de l\'outil de suivis d\'humeur'
 						const self = this
 						let time = 0
 						for (let i = 0; i <= text.length - 1; i++) {
@@ -196,7 +196,7 @@ export default {
 					header: {
 						title: 'Ajouter une entrée'
 					},
-					content: 'Puis cliques simplement sur "Enregistrer"! Une entrée sera alors crée dans le calendrier. Tu peux avoir plusieurs entrée par jour. Pour supprimer une entrée, double clic sur celle-ci!',
+					content: 'Puis clique simplement sur "Enregistrer"! Une entrée sera alors créée dans le calendrier. Tu peux avoir plusieurs entrées par jour.',
 					params: {
 						highlight: true,
 						placement: 'top'
@@ -361,7 +361,8 @@ export default {
 					this.comment = ''
 					return
 			}
-			this.$store.dispatch('addNewMoodEntry', {
+			this.$store.dispatch(this.addingMood ? 'addNewMoodEntry' : 'editMoodEntry', {
+				id: this.addingMood ? -1 : this.editingMood,
 				date: this.date,
 				icon: icon,
 				comment: this.comment

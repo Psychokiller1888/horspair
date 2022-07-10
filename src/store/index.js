@@ -238,6 +238,38 @@ const store = new Vuex.Store({
 				throw new Error()
 			})
 		},
+		async editMoodEntry({commit}, data) {
+			await axiosInstance.patch(`/moodTracker/${Vue.$cookies.get('userId')}/`, {
+				id: data.id,
+				mood: data.icon,
+				date: data.date.toString(),
+				comment: data.comment
+			}).then(async response => {
+				if (response.status !== 200) {
+					throw new Error()
+				} else {
+					for (const [index, entry] of Object.entries(this.state.moodTrackerData)) {
+						if (entry.key === data.id) {
+							commit('editMood', {index: index, mood: data})
+							Vue.notify({
+								title: 'Succès',
+								type: 'success',
+								text: 'Entrée éditée'
+							})
+							break
+						}
+					}
+				}
+			}).catch(async (_reason) => {
+				console.log(_reason)
+				Vue.notify({
+					title: 'Erreur',
+					type: 'error',
+					text: 'Une erreur est survenue au moment de l\'enregistrement'
+				})
+				throw new Error()
+			})
+		},
 		async deleteMoodEntry({commit}, key) {
 			await axiosInstance.delete(`/moodTracker/${key}/`).then(async response => {
 				if (response.status !== 200) {
@@ -471,6 +503,15 @@ const store = new Vuex.Store({
 		},
 		addMood(state, data) {
 			state.moodTrackerData.push(data)
+		},
+		editMood(state, data) {
+			let wasMood = state.moodTrackerData[data.index]
+			const date = new Date(data.mood.date)
+			wasMood.customData.time = `${commons.addZeroBefore(date.getHours())}:${commons.addZeroBefore(date.getMinutes())}`
+			wasMood.customData.icon = data.mood.icon
+			wasMood.customData.comment = data.mood.comment
+			wasMood.dates = data.mood.date
+			state.moodTrackerData[data.index] = wasMood
 		},
 		removeMood(state, index) {
 			Vue.delete(state.moodTrackerData, index)
