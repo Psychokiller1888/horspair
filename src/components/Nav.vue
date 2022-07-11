@@ -21,6 +21,11 @@
 							<font-awesome-icon :icon="['far', 'messages']" fixed-width/> témoignages
 					</div>
 					</router-link>
+					<router-link to="/litterature">
+						<div class="mainSubMenuItem">
+							<font-awesome-icon :icon="['far', 'book']" fixed-width/> littérature
+						</div>
+					</router-link>
 					<div class="mainSubMenuItem" @click="openDiscord">
 						<font-awesome-icon :icon="['fab', 'discord']" fixed-width/> Discord
 					</div>

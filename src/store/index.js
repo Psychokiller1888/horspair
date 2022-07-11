@@ -139,7 +139,7 @@ const store = new Vuex.Store({
 					Vue.notify({
 						title: 'Connexion',
 						type: 'success',
-						text: `${(partDay > 2 && partDay < 18) ? 'Bonjours' : 'Bonsoir'} ${response.data['userData']['firstname']}!`
+						text: `${(partDay > 2 && partDay < 18) ? 'Bonjour' : 'Bonsoir'} ${response.data['userData']['firstname']}!`
 					})
 					await commit('connect', response.data['userData'])
 					await commit('setFriendList', response.data['friendList'])

@@ -3,6 +3,7 @@ import store from '@/store/index'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
 import Temoignages from '@/views/Temoignages'
+import Litterature from '@/views/Litterature'
 import Tracker from '@/views/Tracker'
 import Emdr from '@/views/Emdr'
 import Respiration from '@/views/Respiration'
@@ -28,6 +29,14 @@ const routes = [
 		path: '/temoignages',
 		name: 'Témoignages',
 		component: Temoignages,
+		meta: {
+			requiresAuth: false
+		}
+	},
+	{
+		path: '/litterature',
+		name: 'Littérature',
+		component: Litterature,
 		meta: {
 			requiresAuth: false
 		}
