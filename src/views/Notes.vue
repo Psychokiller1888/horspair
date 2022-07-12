@@ -1,72 +1,79 @@
 <template>
 	<div class="mainContainer">
-		<div class="board">
-			<div class="postit" style="background-color: #488a4b; top: 135px; left: 632px; transform: rotate(12deg)">
-				<div class="note">
-					Terminer le design concept
-					Terminer le design concept
-					Terminer le design concept
-					Terminer le design concept
-					Terminer le design concept
-					Terminer le design concept
-					Terminer le design concept
-					Terminer le design concept
-					Terminer le design concept
-				</div>
-				<div class="deadline">15 juillet 2022, 17h30</div>
-			</div>
-			<div class="postit" style="background-color: #93ff96; top: 182px; left: 836px; transform: rotate(-7deg); color: #1e1e1e;">
-				<div class="note">
-					<strong>Appeler les Toises</strong>
-				</div>
-				<div class="deadline red">02 juillet 2022, 12h00</div>
-			</div>
+		<div class="board" @click="clickOnBoard">
+			<note
+				v-for="(note, id) in notes"
+				:key="id"
+				:id="id"
+				:controller="this"
+				:object="note"
+			/>
 		</div>
 	</div>
 </template>
 
 <script>
+import MoveableItem from '@/js/movableItem'
+import note from '@/views/note'
+
 export default {
-	name: 'Notes'
+	name: 'Notes',
+	components: {
+		note
+	},
+	data: function() {
+		return {
+			moveableItem: new MoveableItem(this),
+			focused: null,
+			moveable: null,
+			notes: {
+				1: {
+					'class': 'postit',
+					'bgColor': 'green',
+					'txtColor': 'black',
+					'width': 250,
+					'height': 250,
+					'top': 137,
+					'left': 451,
+					'rot': -12,
+					'zIndex': 0,
+					'content': 'Appeler les Toises',
+					'deadline': '17 juillet 2022 12h30'
+				}
+			}
+		}
+	},
+	mounted: function() {
+
+	},
+	methods: {
+		clickOnBoard() {
+			if (this.focused) {
+				this.focused.destroyMoveable()
+				this.focused = null
+			}
+		},
+		setFocus(element) {
+			if (this.focused && this.focused.target === element) {
+				return
+			}
+			if (this.focused) {
+				this.focused.destroyMoveable()
+			}
+			this.focused = new MoveableItem(this, element)
+			this.focused.setMoveable(element, element)
+		}
+	}
 }
 </script>
 
 <style scoped>
 	.board {
+		position: relative;
 		width: 100%;
 		height: 100%;
 		display: flex;
 		background-color: #04000c;
 		flex-grow: 1;
-		position: relative;
-	}
-
-	.postit {
-		position: absolute;
-		width: 200px;
-		min-height: 200px;
-		-webkit-box-shadow: 4px 8px 15px 3px #000000;
-		box-shadow: 4px 8px 15px 3px #000000;
-		padding: 10px;
-		box-sizing: border-box;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.note {
-		font-family: "Comic Sans MS", "Monotype Corsiva", "Bradley Hand ITC", serif;
-		flex-grow: 1;
-		text-align: justify;
-	}
-
-	.deadline {
-		margin-top: 10px;
-		font-size: 0.8em;
-		text-align: right;
-	}
-
-	.red {
-		color: red;
-		font-weight: bolder;
 	}
 </style>
