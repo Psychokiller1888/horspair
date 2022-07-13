@@ -33,6 +33,7 @@ export default class MoveableItem {
 		this.target = target
 		this.moveable = new Moveable(document.querySelector('.board'), {
 			target:             target,
+			props:              note,
 			draggable:          true,
 			resizable:          true,
 			rotatable:          true,
@@ -51,20 +52,26 @@ export default class MoveableItem {
 			origin:             false
 		})
 
+		let self = this
 		this.moveable.on('drag', ({target, left, top, _clientX, _clientY}) => {
-			target.style.left = `${left}px`
-			target.style.top = `${top}px`
+			self.moveable.props.object.startX = left
+			self.moveable.props.object.startY = top
+			//target.style.left = `${left}px`
+			//target.style.top = `${top}px`
 		}).on('dragEnd', ({target, left, top}) => {
-			console.log('implement drag end')
+			self.moveable.props.save()
 		}).on('rotate', ({target, rotation}) => {
-			target.style.transform = `rotate(${rotation}deg)`
+			self.moveable.props.object.rotation = rotation
+			//target.style.transform = `rotate(${rotation}deg)`
 		}).on('rotateEnd', ({target, rotation}) => {
-			console.log('Implement rotate end')
+			self.moveable.props.save()
 		}).on('resize', ({target, width, height}) => {
-			target.style.width = `${width}px`
-			target.style.height = `${height}px`
+			self.moveable.props.object.width = width
+			self.moveable.props.object.height = height
+			//target.style.width = `${width}px`
+			//target.style.height = `${height}px`
 		}).on('resizeEnd', ({target, width, height}) => {
-			console.log('Implement resize end')
+			self.moveable.props.save()
 		})
 	}
 }

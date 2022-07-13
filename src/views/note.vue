@@ -1,16 +1,16 @@
 <template>
 	<div
 		:ref="`note_${id}`"
-		:class="object.class"
+		:class="`${object.type}Holder`"
 		v-bind:style="`
 		background-color: ${object.bgColor};
-		color: ${object.txtColor};
-		top: ${object.top}px;
-		left: ${object.left}px;
+		color: ${object.textColor};
+		top: ${object.startY}px;
+		left: ${object.startX}px;
 		width: ${object.width}px;
 		height: ${object.height}px;
 		z-index: ${object.zIndex};
-		transform: rotate(${object.rot}deg);
+		transform: rotate(${object.rotation}deg);
 		`"
 		@click="setFocus"
 	>
@@ -18,8 +18,8 @@
 			<div class="noteHeader">
 				<font-awesome-icon :icon="['far', 'gears']" @click="openSettings"/>
 			</div>
-			<div class="">
-				<strong>{{ object.content }}</strong>
+			<div>
+				{{ object.content }}
 			</div>
 		</div>
 		<div class="deadline red">{{ object.deadline }}</div>
@@ -35,19 +35,22 @@ export default {
 		'id'
 	],
 	methods: {
+		save: function() {
+			this.$store.dispatch('updateNote', this.object)
+		},
 		openSettings: function(e) {
 			e.stopPropagation()
 		},
 		setFocus: function(e) {
 			e.stopPropagation()
-			this.$parent.setFocus(this.$refs[`note_${this.id}`])
+			this.$parent.setFocus(this.$refs[`note_${this.id}`], this)
 		}
 	}
 }
 </script>
 
 <style scoped>
-.postit {
+.noteHolder {
 	position: absolute;
 	width: 200px;
 	min-height: 200px;

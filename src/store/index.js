@@ -67,6 +67,7 @@ const store = new Vuex.Store({
 		therapists:      {},
 		friends:         {},
 		moodTrackerData: [],
+		notes:           {},
 		guardianAngelTimer: 0,
 		guardianAngelNoAvailable: false,
 		guardianAvailabilities: {
@@ -146,6 +147,7 @@ const store = new Vuex.Store({
 					await commit('setGuardianAvailabilities', response.data['guardianAvailabilities'])
 					await commit('setGuardianWaitTimer', response.data['guardianWaitTime'])
 					await commit('setGuardianNoAvailable', response.data['guardianNoAvailable'])
+					await commit('setNotes', response.data['notes'])
 					commit('connecting', false)
 				}
 			}).catch(async (_reason) => {
@@ -355,6 +357,49 @@ const store = new Vuex.Store({
 				throw new Error()
 			})
 		},
+		async addNote({commit}, data) {
+			await axiosInstance.put('/notes/', data).then(response => {
+				if (response.status !== 200) {
+					throw new Error()
+				} else {
+					data.id = parseInt(response.data.insertId)
+					commit('addNote', data)
+					Vue.notify({
+						title: 'Succès',
+						type:  'success',
+						text:  'Nouvelle note ajoutée!'
+					})
+				}
+			}).catch(() => {
+				Vue.notify({
+					title: 'Erreur',
+					type:  'error',
+					text:  'Erreur au moment de la sauvegarde'
+				})
+			})
+		},
+		async updateNote({commit}, data) {
+			console.log(data)
+			let self = this
+			await axiosInstance.patch('/notes/', data).then(response => {
+				if (response.status !== 200) {
+					throw new Error()
+				} else {
+					Vue.set(self.state.notes, data.id, data)
+					Vue.notify({
+						title: 'Succès',
+						type:  'success',
+						text:  'Note mise à jour!'
+					})
+				}
+			}).catch(() => {
+				Vue.notify({
+					title: 'Erreur',
+					type:  'error',
+					text:  'Erreur au moment de la sauvegarde'
+				})
+			})
+		},
 		async addGuardianAvailabilities({commit}, data) {
 			await axiosInstance.post('/guardianAngel/availabilities/', data).then(response => {
 				if (response.status !== 200) {
@@ -450,6 +495,7 @@ const store = new Vuex.Store({
 			state.friends = {}
 			state.therapists = {}
 			state.moodTrackerData = []
+			state.notes = {}
 			state.guardianAngelNoAvailable = false
 			state.guardianAngelTimer = 0
 			state.guardianAvailabilities = {
@@ -500,6 +546,12 @@ const store = new Vuex.Store({
 		},
 		setGuardianAvailabilities(state, list) {
 			state.guardianAvailabilities = list
+		},
+		setNotes(state, list) {
+			state.notes = list
+		},
+		addNote(state, data) {
+			Vue.set(state.notes, data.id, data)
 		},
 		addMood(state, data) {
 			state.moodTrackerData.push(data)

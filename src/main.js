@@ -14,6 +14,8 @@ import PrettyCheck from 'pretty-checkbox-vue/check'
 import PrettyRadio from 'pretty-checkbox-vue/radio'
 import VueTour from 'vue-tour'
 require('vue-tour/dist/vue-tour.css')
+import VSwatches from 'vue-swatches'
+import 'vue-swatches/dist/vue-swatches.css'
 
 //import { Chart } from 'chart.js'
 //import ChartDataLabels from 'chartjs-plugin-datalabels'
@@ -64,7 +66,9 @@ import {
 	faQuoteRight,
 	faSpinner,
 	faBook,
-	faGears
+	faGears,
+	faPalette,
+	faPlus
 } from '@fortawesome/pro-regular-svg-icons'
 
 import {
@@ -72,6 +76,8 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 
 library.add(
+	faPlus,
+	faPalette,
 	faGears,
 	faBook,
 	faSpinner,
@@ -126,6 +132,7 @@ Vue.component('toggle', ToggleButton)
 Vue.component('p-input', PrettyInput)
 Vue.component('p-check', PrettyCheck)
 Vue.component('p-radio', PrettyRadio)
+Vue.component('color-picker', VSwatches)
 
 Vue.use(VueTour)
 Vue.use(VueCookies)

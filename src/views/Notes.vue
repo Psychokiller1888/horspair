@@ -1,12 +1,115 @@
 <template>
 	<div class="mainContainer">
+		<div ref="addModal" v-if="isBoardSetting">
+			<div class="modal">
+				<div class="modalContent">
+					<h1 class="textCentered">
+						Propriétés de ton tableau
+					</h1>
+					<div class="inlineSettingField">
+						<div class="inlineSettingLabel">
+							Couleur du tableau:
+						</div>
+						<div class="inlineSettingInput">
+							<color-picker
+								v-model="boardColor"
+								row-length="6"
+								shapes="circles"
+								show-border
+								show-fallback
+								fallback-input-type="color"
+							/>
+						</div>
+					</div>
+					<div class="inlineSettingField">
+						<div class="inlineSettingLabel">
+							Couleur par défaut des notes:
+						</div>
+						<div class="inlineSettingInput">
+							<color-picker
+								v-model="defaultNoteColor"
+								row-length="6"
+								shapes="circles"
+								show-border
+								show-fallback
+								fallback-input-type="color"
+							/>
+						</div>
+					</div>
+					<p class="buttonsWrapper" style="margin: 0 auto;">
+						<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="saveBoardSettings" title="enregistrer"/>
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="isBoardSetting = false" title="annuler"/>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div ref="addModal" v-if="isAddingNote">
+			<div class="modal">
+				<div class="modalContent">
+					<h1 class="textCentered">
+						Nouvelle note
+					</h1>
+					<div class="inlineSettingField">
+						<div class="inlineSettingLabel">
+							Contenu:
+						</div>
+						<div class="inlineSettingInput">
+							<textArea cols="50" rows="20" style="resize: none" v-model="noteDataTemplate.content" ref="noteContent"></textArea>
+						</div>
+					</div>
+					<div class="inlineSettingField">
+						<div class="inlineSettingLabel">
+							Date limite:
+						</div>
+						<div class="inlineSettingInput">
+							<v-date-picker v-model="noteDataTemplate.deadline" mode="datetime" locale="fr" is24hr :minute-increment="15"/>
+						</div>
+					</div>
+					<div class="inlineSettingField">
+						<div class="inlineSettingLabel">
+							Couleur de la note:
+						</div>
+						<div class="inlineSettingInput">
+							<color-picker
+								v-model="noteDataTemplate.bgColor"
+								row-length="6"
+								shapes="circles"
+								show-border
+								show-fallback
+								fallback-input-type="color"
+							/>
+						</div>
+					</div>
+					<div class="inlineSettingField">
+						<div class="inlineSettingLabel">
+							Couleur du texte:
+						</div>
+						<div class="inlineSettingInput">
+							<color-picker
+								v-model="noteDataTemplate.textColor"
+								row-length="6"
+								shapes="circles"
+								show-border
+								show-fallback
+								fallback-input-type="color"
+							/>
+						</div>
+					</div>
+					<p class="buttonsWrapper" style="margin: 0 auto;">
+						<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="saveNote" title="enregistrer"/>
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="isAddingNote = false" title="annuler"/>
+					</p>
+				</div>
+			</div>
+		</div>
 		<div class="boardHolder">
 			<div class="boardMenu">
 				<font-awesome-icon :icon="['far', 'gears']" @click="openBoardSettings"/>
+				<font-awesome-icon :icon="['far', 'plus']" @click="addNewNote"/>
 			</div>
-			<div ref="board" class="board" :class="{dragging: isDragging}" :style="`top: 0; left: 0; transform: scale(${zoomLevel});`" @click="clickOnBoard" @mousedown="mouseDownOnBoard">
+			<div ref="board" class="board" :class="{dragging: isDragging}" :style="`background-color: ${boardColor}; top: 0; left: 0; transform: scale(${zoomLevel});`" @click="clickOnBoard" @mousedown="mouseDownOnBoard">
 				<note
-					v-for="(note, id) in notes"
+					v-for="(note, id) in this.$store.state.notes"
 					:key="id"
 					:id="id"
 					:controller="this"
@@ -21,6 +124,7 @@
 import MoveableItem from '@/js/movableItem'
 import note from '@/views/note'
 import commons from '@/js/commons'
+import Vue from 'vue'
 
 export default {
 	name: 'Notes',
@@ -29,29 +133,20 @@ export default {
 	},
 	data: function() {
 		return {
+			defaultTextColor: '#000000',
+			defaultNoteColor: '#4bb625',
 			board: null,
 			zoomLevel: 1.0,
+			boardColor: '#04000C',
 			moveableItem: new MoveableItem(this),
 			focused: null,
 			moveable: null,
 			dragStartX: null,
 			dragStartY: null,
 			isDragging: false,
-			notes: {
-				1: {
-					'class': 'postit',
-					'bgColor': 'green',
-					'txtColor': 'black',
-					'width': 250,
-					'height': 250,
-					'top': 50000,
-					'left': 50000,
-					'rot': -12,
-					'zIndex': 0,
-					'content': 'Appeler les Toises',
-					'deadline': '17 juillet 2022 12h30'
-				}
-			}
+			isBoardSetting: false,
+			isAddingNote: false,
+			noteDataTemplate: {}
 		}
 	},
 	created: function() {
@@ -92,8 +187,45 @@ export default {
 		this.board = this.$refs['board']
 	},
 	methods: {
+		resetNewNoteData() {
+			this.noteDataTemplate = {
+				userId: Vue.$cookies.get('userId'),
+				type: 'note',
+				content: '',
+				deadline: new Date().setDate(new Date().getDate() + 1),
+				dismissed: false,
+				startX: -1,
+				startY: -1,
+				endX: null,
+				endY: null,
+				bgColor: '#e5ffdc',
+				textColor: '#000000',
+				width: 250,
+				height: 250,
+				zIndex: 999,
+				rotation: 0
+			}
+		},
+		addNewNote() {
+			this.resetNewNoteData()
+			const board = this.$refs['board']
+			board.style.left = '0'
+			board.style.top = '0'
+			board.style.transform = 'scale(1.0)'
+			this.isAddingNote = true
+		},
+		saveNote() {
+			this.isAddingNote = false
+			this.noteDataTemplate.content = this.$refs['noteContent'].value
+			this.noteDataTemplate.startX = 50000 - parseInt(this.$refs['board'].style.left)
+			this.noteDataTemplate.startY = 50000 - parseInt(this.$refs['board'].style.top)
+			this.$store.dispatch('addNote', this.noteDataTemplate)
+		},
+		saveBoardSettings() {
+			this.isBoardSetting = false
+		},
 		openBoardSettings() {
-
+			this.isBoardSetting = true
 		},
 		clickOnBoard() {
 			if (this.focused) {
@@ -110,15 +242,15 @@ export default {
 			this.dragStartY = null
 			this.isDragging = false
 		},
-		setFocus(element) {
+		setFocus(element, note) {
 			if (this.focused && this.focused.target === element) {
 				return
 			}
 			if (this.focused) {
 				this.focused.destroyMoveable()
 			}
-			this.focused = new MoveableItem(this, element)
-			this.focused.setMoveable(element, element)
+			this.focused = new MoveableItem(this)
+			this.focused.setMoveable(element, note)
 		}
 	}
 }
@@ -152,6 +284,7 @@ export default {
 		cursor: pointer;
 		color: var(--main-text-color);
 		transition: color 0.25s;
+		margin-left: 15px;
 	}
 	.boardMenu svg:hover {
 		color: var(--hover-text-color)
@@ -168,5 +301,17 @@ export default {
 	}
 	.dragging {
 		cursor: grabbing;
+	}
+	.inlineSettingField {
+		border-top: 1px solid var(--hover-bg-color);
+		padding: 15px 0 15px 0;
+		box-sizing: border-box;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.inlineSettingLabel {
+		flex-grow: 1;
 	}
 </style>
