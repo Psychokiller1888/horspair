@@ -75,11 +75,12 @@ export default {
 
 .noteHeader svg {
 	cursor: pointer;
-	color: var(--main-text-color)
+	color: var(--main-text-color);
+	transition: color 0.25s;
 }
 
 .noteHeader svg:hover {
-	color: var(--hover-text-color)
+	color: var(--hover-text-color);
 }
 
 .deadline {
