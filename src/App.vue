@@ -398,10 +398,12 @@ h2 {
 
 .modalContent {
 	width: 25%;
+	max-height: 75%;
 	margin: 0 auto;
 	background-color: var(--secondary-bg-color);
 	padding: 25px;
 	text-align: justify;
+	overflow-y: auto;
 }
 
 .fade-enter-active, .fade-leave-active {

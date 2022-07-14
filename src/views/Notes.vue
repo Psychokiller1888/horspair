@@ -17,6 +17,7 @@
 								shapes="circles"
 								show-border
 								show-fallback
+								popover-x="left"
 								fallback-input-type="color"
 							/>
 						</div>
@@ -43,11 +44,14 @@
 				</div>
 			</div>
 		</div>
-		<div ref="addModal" v-if="isAddingNote">
+		<div ref="addModal" v-if="isAddingNote || isEditingNote">
 			<div class="modal">
 				<div class="modalContent">
-					<h1 class="textCentered">
+					<h1 class="textCentered" v-if="isAddingNote">
 						Nouvelle note
+					</h1>
+					<h1 class="textCentered" v-else>
+						Editer une note
 					</h1>
 					<div class="inlineSettingField">
 						<div class="inlineSettingLabel">
@@ -74,6 +78,8 @@
 								v-model="noteDataTemplate.bgColor"
 								row-length="6"
 								shapes="circles"
+								popover-x="left"
+								popover-y="top"
 								show-border
 								show-fallback
 								fallback-input-type="color"
@@ -89,6 +95,8 @@
 								v-model="noteDataTemplate.textColor"
 								row-length="6"
 								shapes="circles"
+								popover-x="left"
+								popover-y="top"
 								show-border
 								show-fallback
 								fallback-input-type="color"
@@ -97,7 +105,7 @@
 					</div>
 					<p class="buttonsWrapper" style="margin: 0 auto;">
 						<font-awesome-icon :icon="['far', 'circle-check']" class="button" @click="saveNote" title="enregistrer"/>
-						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="isAddingNote = false" title="annuler"/>
+						<font-awesome-icon :icon="['far', 'circle-xmark']" class="button" @click="cancelNote" title="annuler"/>
 					</p>
 				</div>
 			</div>
@@ -109,7 +117,7 @@
 			</div>
 			<div ref="board" class="board" :class="{dragging: isDragging}" :style="`background-color: ${boardColor}; top: 0; left: 0; transform: scale(${zoomLevel});`" @click="clickOnBoard" @mousedown="mouseDownOnBoard">
 				<note
-					v-for="(note, id) in this.$store.state.notes"
+					v-for="(note, id) in notes"
 					:key="id"
 					:id="id"
 					:controller="this"
@@ -133,6 +141,7 @@ export default {
 	},
 	data: function() {
 		return {
+			notes: null,
 			defaultTextColor: '#000000',
 			defaultNoteColor: '#4bb625',
 			board: null,
@@ -146,13 +155,17 @@ export default {
 			isDragging: false,
 			isBoardSetting: false,
 			isAddingNote: false,
-			noteDataTemplate: {}
+			isEditingNote: false,
+			noteDataTemplate: {},
+			noteBackup: {},
+			noteObjectBackup: {}
 		}
 	},
 	created: function() {
 		let self = this
 		document.addEventListener('wheel', function (event) {
 			if (self.$route.path.toLowerCase() !== '/notes') return
+			if (self.isDragging || self.isEditingNote || self.isAddingNote) return
 			if (event.deltaY > 1) {
 				self.zoomLevel = Math.max(self.zoomLevel - 0.05, 0.1)
 			} else {
@@ -166,7 +179,7 @@ export default {
 		})
 		document.addEventListener('mousemove', function (event) {
 			if (self.$route.path.toLowerCase() !== '/notes') return
-			if (self.dragStartX === null) return
+			if (self.dragStartX === null || self.focused) return
 			if (!event.target.classList.contains('board')) return
 
 			self.isDragging = true
@@ -185,8 +198,15 @@ export default {
 	},
 	mounted: function() {
 		this.board = this.$refs['board']
+		this.notes = this.$store.state.notes
 	},
 	methods: {
+		editNote(note) {
+			this.noteBackup = note
+			this.noteObjectBackup = JSON.parse(JSON.stringify(note.object))
+			this.noteDataTemplate = note.object
+			this.isEditingNote = true
+		},
 		resetNewNoteData() {
 			this.noteDataTemplate = {
 				userId: Vue.$cookies.get('userId'),
@@ -213,6 +233,14 @@ export default {
 			board.style.top = '0'
 			board.style.transform = 'scale(1.0)'
 			this.isAddingNote = true
+		},
+		cancelNote() {
+			if (this.isEditingNote) {
+				//this.noteBackup.object = JSON.parse(JSON.stringify(this.noteObjectBackup))
+				this.isEditingNote = false
+			} else {
+				this.isAddingNote = false
+			}
 		},
 		saveNote() {
 			this.isAddingNote = false

@@ -362,7 +362,7 @@ const store = new Vuex.Store({
 				if (response.status !== 200) {
 					throw new Error()
 				} else {
-					data.id = parseInt(response.data.insertId)
+					Vue.set(data, 'id', response.data)
 					commit('addNote', data)
 					Vue.notify({
 						title: 'Succès',
@@ -379,13 +379,12 @@ const store = new Vuex.Store({
 			})
 		},
 		async updateNote({commit}, data) {
-			console.log(data)
 			let self = this
 			await axiosInstance.patch('/notes/', data).then(response => {
 				if (response.status !== 200) {
 					throw new Error()
 				} else {
-					Vue.set(self.state.notes, data.id, data)
+					console.log(self.state.notes)
 					Vue.notify({
 						title: 'Succès',
 						type:  'success',

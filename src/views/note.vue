@@ -2,16 +2,7 @@
 	<div
 		:ref="`note_${id}`"
 		:class="`${object.type}Holder`"
-		v-bind:style="`
-		background-color: ${object.bgColor};
-		color: ${object.textColor};
-		top: ${object.startY}px;
-		left: ${object.startX}px;
-		width: ${object.width}px;
-		height: ${object.height}px;
-		z-index: ${object.zIndex};
-		transform: rotate(${object.rotation}deg);
-		`"
+		v-bind:style="getStyle"
 		@click="setFocus"
 	>
 		<div class="note">
@@ -22,11 +13,13 @@
 				{{ object.content }}
 			</div>
 		</div>
-		<div class="deadline red">{{ object.deadline }}</div>
+		<div class="deadline" :class="{red: isOverdue}">{{ getDeadline }}</div>
 	</div>
 </template>
 
 <script>
+import commons from '@/js/commons'
+
 export default {
 	name: 'note',
 	props: [
@@ -34,12 +27,36 @@ export default {
 		'object',
 		'id'
 	],
+	computed: {
+		getStyle: function() {
+			return `
+				background-color: ${this.object.bgColor};
+				color: ${this.object.textColor};
+				top: ${this.object.startY}px;
+				left: ${this.object.startX}px;
+				width: ${this.object.width}px;
+				height: ${this.object.height}px;
+				z-index: ${this.object.zIndex};
+				transform: rotate(${this.object.rotation}deg);
+			`
+		},
+		getDeadline: function() {
+			let deadline = new Date(this.object.deadline)
+			return `${deadline.getDate()}.${commons.addZeroBefore(deadline.getMonth() + 1)}.${deadline.getFullYear()} ${commons.addZeroBefore(deadline.getHours())}:${commons.addZeroBefore(deadline.getMinutes())}`
+		},
+		isOverdue: function() {
+			const now = new Date()
+			const deadline = new Date(this.object.deadline)
+			return now > deadline
+		}
+	},
 	methods: {
 		save: function() {
 			this.$store.dispatch('updateNote', this.object)
 		},
 		openSettings: function(e) {
 			e.stopPropagation()
+			this.$parent.editNote(this)
 		},
 		setFocus: function(e) {
 			e.stopPropagation()
@@ -90,10 +107,14 @@ export default {
 	margin-top: 10px;
 	font-size: 0.8em;
 	text-align: right;
+	color: var(--main-text-color)
 }
 
 .red {
 	color: red;
 	font-weight: bolder;
 }
+
+
+
 </style>

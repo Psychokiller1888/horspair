@@ -53,24 +53,23 @@ export default class MoveableItem {
 		})
 
 		let self = this
-		this.moveable.on('drag', ({target, left, top, _clientX, _clientY}) => {
+		this.moveable.on('drag', ({target, left, top}) => {
 			self.moveable.props.object.startX = left
 			self.moveable.props.object.startY = top
-			//target.style.left = `${left}px`
-			//target.style.top = `${top}px`
-		}).on('dragEnd', ({target, left, top}) => {
-			self.moveable.props.save()
+			target.style.left = `${left}px`
+			target.style.top = `${top}px`
+		}).on('dragEnd', () => {
 		}).on('rotate', ({target, rotation}) => {
 			self.moveable.props.object.rotation = rotation
-			//target.style.transform = `rotate(${rotation}deg)`
-		}).on('rotateEnd', ({target, rotation}) => {
+			target.style.transform = `rotate(${rotation}deg)`
+		}).on('rotateEnd', () => {
 			self.moveable.props.save()
 		}).on('resize', ({target, width, height}) => {
 			self.moveable.props.object.width = width
 			self.moveable.props.object.height = height
-			//target.style.width = `${width}px`
-			//target.style.height = `${height}px`
-		}).on('resizeEnd', ({target, width, height}) => {
+			target.style.width = `${width}px`
+			target.style.height = `${height}px`
+		}).on('resizeEnd', () => {
 			self.moveable.props.save()
 		})
 	}
